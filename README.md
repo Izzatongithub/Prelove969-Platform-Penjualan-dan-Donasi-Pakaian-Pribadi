@@ -1,2 +1,2 @@
 # Prelove969-Platform-Penjualan-dan-Donasi-Pakaian-Pribadi
-nufa, izzat, dan wahyu
+nufa, izzat, dan wahyu dari universitas mataram
