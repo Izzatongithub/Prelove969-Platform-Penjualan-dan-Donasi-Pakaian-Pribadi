@@ -1,16 +1,23 @@
 <?php
 include '../config.php';
 
+session_start();
+
 $username = $_POST['username'];
 $password = $_POST['password'];
 
+$_SESSION['username'] = $username;
 
-$sql = "INSERT INTO user(username, password) VALUES('$username', '$password')";
+$sql = "SELECT * FROM user where username='$username' AND password='$password'";
+$result = mysqli_query($koneksi, $sql);
 
-if (mysqli_query($koneksi, $sql)) {
+$cek = mysqli_num_rows($result);
+
+if ($cek > 0) {
+    // $_SESSION['username'] = $username;
     header("location: ../user/index_user.php");
 }else{
-    echo "Error: ";
+    header("location: ../index.php?error=gagal");
 }
 
 ?>
