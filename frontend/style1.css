@@ -8,15 +8,45 @@ body {
 header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
+    align-items: start;
+    padding: 20px 30px;
     background: #fff;
+    flex-direction: column;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 20px;
 }
 
 .logo {
-    font-size: 24px;
+    flex: 0 0 auto;
+    font-size: 28px;
     font-weight: bold;
+    color: red;
+    margin-right: 50px;
 }
+
+.search {
+    flex: 1;
+    max-width: 500px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+}
+
+
+.menu{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 5px;
+}
+
 
 nav a {
     margin: 0 15px;
@@ -89,14 +119,6 @@ nav a {
     color: blue;
 }
 
-.search{
-    width: 25%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-}
-
 .btn {
     padding: 5px 10px;
     background: black;
@@ -125,10 +147,6 @@ nav a {
     padding: 10px;
     border-radius: 10px;
     
-}
-
-.filters-content{
-
 }
 
 select {
@@ -323,3 +341,76 @@ footer {
     font-size: 12px;
 }
 
+
+/* detail produk */
+.detail-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 2rem;
+    align-items: flex-start;
+    background-color: red;
+}
+
+.foto-besar {
+    flex: 1;
+    min-width: 500px;
+}
+
+.foto-besar img {
+    width: 200%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.galeri {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 2px solid #ccc;
+    transition: border-color 0.2s ease;
+}
+
+.thumbnail:hover {
+    border-color: #555;
+}
+
+.info-produk {
+    flex: 1.5;
+    min-width: 300px;
+}
+
+.info-produk h2 {
+    margin-top: 0;
+}
+
+.info-produk p {
+    margin: 0.4rem 0;
+}
+
+nav .btn {
+    display: inline-block;
+    background-color: #000;
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    margin: 0.5rem 0;
+    transition: background-color 0.2s ease;
+}
+
+nav .btn:hover {
+    background-color: #333;
+}

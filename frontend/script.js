@@ -54,5 +54,60 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+//untuk form uplaod gambar
+    document.querySelector('input[type="file"]').addEventListener('change', function(event) {
+        var fileList = event.target.files;
+        var previewContainer = document.createElement('div');
+        
+        for (var i = 0; i < fileList.length; i++) {
+            var file = fileList[i];
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                var imgElement = document.createElement('img');
+                imgElement.src = e.target.result;
+                imgElement.style.width = '100px'; // Menampilkan thumbnail gambar
+                imgElement.style.marginRight = '10px';
+                previewContainer.appendChild(imgElement);
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // Hapus preview sebelumnya jika ada
+        var previewDiv = document.getElementById('imagePreview');
+        if (previewDiv) {
+            previewDiv.innerHTML = '';
+        } else {
+            previewDiv = document.createElement('div');
+            previewDiv.id = 'imagePreview';
+            document.body.appendChild(previewDiv);
+        }
+        
+        previewDiv.appendChild(previewContainer);
+    });
+
+  // Menambahkan event listener untuk input file
+    document.querySelector('input[type="file"]').addEventListener('change', function(event) {
+        var fileList = event.target.files; // Mendapatkan file yang dipilih
+        var fileNamesContainer = document.getElementById('fileNamesList'); // Tempat untuk menampilkan daftar nama file
+        
+        // Mengosongkan daftar file sebelumnya
+        fileNamesContainer.innerHTML = '';
+
+        // Membuat list baru untuk nama file
+        var fileListElement = document.createElement('ul');
+        
+        // Looping untuk setiap file yang dipilih
+        for (var i = 0; i < fileList.length; i++) {
+            var fileName = fileList[i].name; // Mendapatkan nama file
+            var listItem = document.createElement('li'); // Membuat elemen list item untuk setiap file
+            listItem.textContent = fileName; // Menambahkan nama file ke dalam list item
+            fileListElement.appendChild(listItem); // Menambahkan list item ke dalam list
+        }
+
+        // Menambahkan daftar nama file ke dalam container
+        fileNamesContainer.appendChild(fileListElement);
+    });
 
 

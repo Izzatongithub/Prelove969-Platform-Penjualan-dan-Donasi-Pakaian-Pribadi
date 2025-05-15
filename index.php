@@ -105,22 +105,31 @@ include "config.php";
     <!-- Daftar Produk -->
     <section class="products">
         <?php
-        // Simulasi data produk (bisa diganti dengan database)
-        $products = [
-            ["name" => "Hoodie Hijau", "price" => "Rp 60.000", "image" => "hoodie.jpg"],
-            ["name" => "Celana Coklat", "price" => "Rp 25.000", "image" => "pants.jpg"],
-            ["name" => "Kaos Putih", "price" => "Rp 85.000", "image" => "shirt.jpg"],
-            ["name" => "Jeans FUBU", "price" => "Rp 250.000", "image" => "jeans.jpg"]
-        ];
+        $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto
+            FROM pakaian p
+            LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
+            LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
+            LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
+            LEFT JOIN (SELECT id_pakaian, path_foto FROM foto_produk GROUP BY id_pakaian) f 
+            ON p.id_pakaian = f.id_pakaian
+            ORDER BY p.id_pakaian DESC";
 
-        foreach ($products as $product) {
+            $result = mysqli_query($koneksi, $query);
+
+        while ($row = mysqli_fetch_assoc($result)) {
             echo "<div class='product'>
-                    <img src='images/{$product['image']}' alt='{$product['name']}'>
-                    <h3>{$product['name']}</h3>
-                    <p>{$product['price']}</p>
+                <a href='./user/detail_produk.php?id={$row['id_pakaian']}'>
+                <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
+                <h3>{$row['nama_pakaian']}</h3>
+                <p><strong>Harga:</strong> Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
+                <p><strong>Kategori:</strong> {$row['kategori']}</p>
+                <p><strong>Ukuran:</strong> {$row['ukuran']}</p>
+                <p><strong>Kondisi:</strong> {$row['kondisi']}</p>
+                <p>{$row['deskripsi']}</p>
+                </a>
                 </div>";
         }
-        ?>
+    ?>
     </section>
 
     <!-- Popup Login -->

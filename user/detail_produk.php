@@ -3,11 +3,31 @@
 <?php
     include "../config.php";
 
-    session_start();
-    if (!isset($_SESSION['username'])) {
-        header("Location: index.php?page=login");
-    }
+    // session_start();
+    // if (!isset($_SESSION['username'])) {
+    //     header("Location: index.php?page=login");
+    // }
 
+    $id = $_GET['id'];
+
+    $query = "SELECT p.*, k.kategori, u.ukuran, c.kondisi FROM pakaian p
+            LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
+            LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
+            LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi WHERE p.id_pakaian = $id";
+
+    $data = mysqli_fetch_assoc(mysqli_query($koneksi, $query));
+
+    // Ambil semua foto produk
+    $fotos = mysqli_query($koneksi, "SELECT * FROM foto_produk WHERE id_pakaian = $id ORDER BY urutan ASC");
+
+    // Ambil semua data ke dalam array
+$all_fotos = [];
+while ($foto = mysqli_fetch_assoc($fotos)) {
+    $all_fotos[] = $foto;
+}
+
+// Ambil gambar pertama sebagai gambar utama
+$gambar_utama = $all_fotos[0]['path_foto'];
 ?>
 
 
@@ -15,7 +35,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preloved Shop</title>
+    <title><?= $data['nama_pakaian']; ?> | Preloved</title>
     <link rel="stylesheet" href="../frontend/style1.css">
     <script src="../frontend/script.js" defer></script>
 </head>
@@ -82,7 +102,7 @@
                 <a href="register.php" class="btn">Logout</a>
         </nav>
     </header>
-        <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
+        <!-- <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
     
     <!-- Kategori -->
     <section class="categories">
@@ -110,65 +130,40 @@
             <option value="">Warna</option>
         </select>
     </section>
+    <!-- <div class="foto-besar">
+        <img id="mainImage" src="<?= mysqli_fetch_assoc($fotos)['path_foto']; ?>" alt="Gambar Utama">
+    </div> -->
 
     <!-- Daftar Produk -->
-<section class="products">
-    <?php
-        $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto
-            FROM pakaian p
-            LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
-            LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
-            LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
-            LEFT JOIN (SELECT id_pakaian, path_foto FROM foto_produk WHERE urutan = 1 GROUP BY id_pakaian) f 
-            ON p.id_pakaian = f.id_pakaian
-            ORDER BY p.id_pakaian DESC";
+    <div class="detail-container">
+        <div class="galeri">
+            <?php
+            mysqli_data_seek($fotos, 0); // Kembalikan pointer ke awal
+                while ($img = mysqli_fetch_assoc($fotos)) {
+                    echo "<img src='{$img['path_foto']}' class='thumbnail' onclick='changeImage(this.src)'>";
+                }
+            ?>
+        </div>
+    <div class="info-produk">
+        <h2><?= $data['nama_pakaian']; ?></h2>
+            <p><strong>Harga:</strong> Rp <?= number_format($data['harga'], 0, ',', '.'); ?></p>
+            <p><strong>Ukuran:</strong> <?= $data['ukuran']; ?></p>
+            <p><strong>Kategori:</strong> <?= $data['kategori']; ?></p>
+            <p><strong>Kondisi:</strong> <?= $data['kondisi']; ?></p>
+            <p><?= nl2br($data['deskripsi']); ?></p>
+        <nav>
+            <br><a href="checkout.php" class="btn">+ Beli sekarang</a><br><br>
+            <br><a href="keranjang.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">+ Keranjang</a><br><br>
+        </nav>
+    </div>
 
-            $result = mysqli_query($koneksi, $query);
+<script>
+function changeImage(src) {
+    document.getElementById("mainImage").src = src;
+}
+</script>
 
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<div class='product'>
-                <a href='detail_produk.php?id={$row['id_pakaian']}'>
-                    <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
-                    <h3>{$row['nama_pakaian']}</h3>
-                    <p><strong>Harga:</strong> Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
-                    <p><strong>Kategori:</strong> {$row['kategori']}</p>
-                    <p><strong>Ukuran:</strong> {$row['ukuran']}</p>
-                    <p><strong>Kondisi:</strong> {$row['kondisi']}</p>
-                    <p>{$row['deskripsi']}</p>
-                </div>";
-        }
-    ?>
-
-    </section>
+</section>
 
 </body>
-<footer>
-    <div class="footer-container">
-        <div class="footer-about">
-            <h3>Tentang Kami</h3>
-            <p>Website ini adalah platform preloved yang membantu pengguna menjual dan mendonasikan pakaian bekas yang masih layak pakai.</p>
-        </div>
-        <div class="footer-links">
-            <h3>Tautan Cepat</h3>
-            <ul>
-                <li><a href="#">Beranda</a></li>
-                <li><a href="#">Produk</a></li>
-                <li><a href="#">Donasi</a></li>
-                <li><a href="#">Kontak</a></li>
-            </ul>
-        </div>
-        <div class="footer-contact">
-            <h3>Kontak Kami</h3>
-            <p>Email: support@preloved.com</p>
-            <p>Telepon: +62 812 3456 7890</p>
-            <div class="social-icons">
-                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
-                <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
-                <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
-            </div>
-        </div>
-    </div>
-    <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
-</footer>
-
 </html>
