@@ -29,4 +29,9 @@ Admin:
 
 Alamat
 
-Teknologi
+# Teknologi
+1. PHP
+2. HTML
+3. CSS
+4. JavaScript
+5. MySQL
