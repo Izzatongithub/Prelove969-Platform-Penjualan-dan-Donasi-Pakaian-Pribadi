@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-
-<?php
+<html lang="id">
+    
+    <?php
+    session_start();
     include "../config.php";
-
-    // session_start();
-    // if (!isset($_SESSION['username'])) {
-    //     header("Location: index.php?page=login");
-    // }
-
     $id = $_GET['id'];
 
-    $query = "SELECT p.*, k.kategori, u.ukuran, c.kondisi FROM pakaian p
-            LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
-            LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
-            LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi WHERE p.id_pakaian = $id";
+$query = "SELECT p.*, k.kategori, u.ukuran, c.kondisi, us.nama AS nama_penjual
+    FROM pakaian p
+    LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
+    LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
+    LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
+    LEFT JOIN user us ON p.id_user = us.id_user
+    WHERE p.id_pakaian = $id";
+
 
     $data = mysqli_fetch_assoc(mysqli_query($koneksi, $query));
 
@@ -21,17 +21,15 @@
     $fotos = mysqli_query($koneksi, "SELECT * FROM foto_produk WHERE id_pakaian = $id ORDER BY urutan ASC");
 
     // Ambil semua data ke dalam array
-$all_fotos = [];
-while ($foto = mysqli_fetch_assoc($fotos)) {
-    $all_fotos[] = $foto;
-}
+    $all_fotos = [];
+    while ($foto = mysqli_fetch_assoc($fotos)) {
+        $all_fotos[] = $foto;
+    }
 
-// Ambil gambar pertama sebagai gambar utama
-$gambar_utama = $all_fotos[0]['path_foto'];
+    // Ambil gambar pertama sebagai gambar utama
+    $gambar_utama = $all_fotos[0]['path_foto'];
 ?>
 
-
-<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -138,10 +136,10 @@ $gambar_utama = $all_fotos[0]['path_foto'];
     <div class="detail-container">
         <div class="galeri">
             <?php
-            mysqli_data_seek($fotos, 0); // Kembalikan pointer ke awal
-                while ($img = mysqli_fetch_assoc($fotos)) {
-                    echo "<img src='{$img['path_foto']}' class='thumbnail' onclick='changeImage(this.src)'>";
-                }
+                mysqli_data_seek($fotos, 0); // Kembalikan pointer ke awal
+                    while ($img = mysqli_fetch_assoc($fotos)) {
+                        echo "<img src='{$img['path_foto']}' class='thumbnail' onclick='changeImage(this.src)'>";
+                    }
             ?>
         </div>
     <div class="info-produk">
@@ -150,19 +148,32 @@ $gambar_utama = $all_fotos[0]['path_foto'];
             <p><strong>Ukuran:</strong> <?= $data['ukuran']; ?></p>
             <p><strong>Kategori:</strong> <?= $data['kategori']; ?></p>
             <p><strong>Kondisi:</strong> <?= $data['kondisi']; ?></p>
+            <!-- <p><strong>Penjual:</strong> <?= htmlspecialchars($data['nama_penjual']) ?></p> -->
+             <p><strong>Penjual:</strong> 
+                <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>">
+                    <?= htmlspecialchars($data['nama_penjual']) ?>
+                </a>
+            </p>
+
             <p><?= nl2br($data['deskripsi']); ?></p>
         <nav>
-            <br><a href="checkout.php" class="btn">+ Beli sekarang</a><br><br>
-            <br><a href="keranjang.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">+ Keranjang</a><br><br>
-        </nav>
+            <?php 
+                if (isset($_SESSION['id_user'])): ?>
+                    <br><a href="checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">+ Beli sekarang</a>
+                     <!-- <a href="../proses/proses_checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">+ Beli Sekarang</a> -->
+                    <br><a href="keranjang.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">+ Keranjang</a><br><br>
+            <?php else: ?>
+                <p><em>Silakan login untuk membeli atau menambahkan ke keranjang.</em></p>
+            <?php endif; ?>
+</nav>
+
     </div>
 
 <script>
-function changeImage(src) {
-    document.getElementById("mainImage").src = src;
-}
+    function changeImage(src) {
+        document.getElementById("mainImage").src = src;
+    }
 </script>
-
 </section>
 
 </body>

@@ -1,10 +1,4 @@
 <!DOCTYPE html>
-
-<?php
-include "config.php";
-?>
-
-
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -13,6 +7,11 @@ include "config.php";
     <link rel="stylesheet" href="./frontend/style1.css">
     <script src="./frontend/script.js" defer></script>
 </head>
+
+<?php
+    include "config.php";
+?>
+
 <body>
 
     <!-- Navbar -->
@@ -103,34 +102,35 @@ include "config.php";
     </section>
 
     <!-- Daftar Produk -->
-    <section class="products">
-        <?php
-        $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto
-            FROM pakaian p
-            LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
-            LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
-            LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
-            LEFT JOIN (SELECT id_pakaian, path_foto FROM foto_produk GROUP BY id_pakaian) f 
-            ON p.id_pakaian = f.id_pakaian
-            ORDER BY p.id_pakaian DESC";
+<section class="products">
+    <?php
+        $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto FROM pakaian p
+                LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
+                LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
+                LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
+                LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian WHERE p.status_ketersediaan = 'tersedia'
+                ORDER BY p.id_pakaian DESC";
 
-            $result = mysqli_query($koneksi, $query);
+        $result = mysqli_query($koneksi, $query);
 
+        if (!$result) {
+            die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
+        }
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<div class='product'>
-                <a href='./user/detail_produk.php?id={$row['id_pakaian']}'>
-                <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
-                <h3>{$row['nama_pakaian']}</h3>
-                <p><strong>Harga:</strong> Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
-                <p><strong>Kategori:</strong> {$row['kategori']}</p>
-                <p><strong>Ukuran:</strong> {$row['ukuran']}</p>
-                <p><strong>Kondisi:</strong> {$row['kondisi']}</p>
-                <p>{$row['deskripsi']}</p>
+                <a href='user/detail_produk.php?id={$row['id_pakaian']}'>
+                    <img src='upload/{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
+                    <h3>{$row['nama_pakaian']}</h3>
+                    <p><strong>Harga:</strong> Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
+                    <p><strong>Kategori:</strong> {$row['kategori']}</p>
+                    <p><strong>Ukuran:</strong> {$row['ukuran']}</p>
+                    <p><strong>Kondisi:</strong> {$row['kondisi']}</p>
+                    <p>{$row['deskripsi']}</p>
                 </a>
-                </div>";
+                    </div>";
         }
     ?>
-    </section>
+</section>
 
     <!-- Popup Login -->
     <div id="loginModal" class="modal">

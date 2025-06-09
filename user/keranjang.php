@@ -32,8 +32,10 @@ if (isset($_GET['id_pakaian'])) {
 }
 
     // Tampilkan isi keranjang
-    $query = "SELECT p.nama_pakaian, p.harga, p.id_pakaian FROM keranjang_detail kd 
-    JOIN pakaian p ON kd.id_produk = p.id_pakaian WHERE kd.id_keranjang = '$id_keranjang'";
+    $query = "SELECT p.id_pakaian, p.nama_pakaian, p.harga, f.path_foto FROM keranjang_detail kd
+    JOIN pakaian p ON kd.id_produk = p.id_pakaian LEFT JOIN (SELECT id_pakaian, MIN(path_foto) AS path_foto FROM foto_produk
+    GROUP BY id_pakaian) f ON p.id_pakaian = f.id_pakaian
+    WHERE kd.id_keranjang = '$id_keranjang'";
 
     $result = mysqli_query($koneksi, $query);
 
@@ -45,12 +47,20 @@ if (isset($_GET['id_pakaian'])) {
 
     // $dataKeranjang = mysqli_fetch_assoc($result);
 
-    echo "<h2>Keranjang Belanja</h2><ul>";
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<li>{$row['nama_pakaian']} - Rp {$row['harga']}</li>";
-        $total += $row['harga'];
-    }
-echo "</ul><p>Total: Rp $total</p>";
+    echo "<h2>Keranjang Belanja</h2>";
+    echo "<div style='display: flex; flex-direction: column; gap: 20px;'>";
 
-echo "<a href='checkout.php?id_keranjang=$id_keranjang'>Checkout</a>";
+    while ($row = mysqli_fetch_assoc($result)) {
+        $total += $row['harga'];
+        echo "<div style='border:1px solid #ccc; padding:10px; display:flex; align-items:center; gap:15px'>";
+        echo "<img src='../upload/{$row['path_foto']}' width='100' height='100' style='object-fit:cover;border-radius:5px'>";
+        echo "<div>";
+        echo "<h4 style='margin:0'>{$row['nama_pakaian']}</h4>";
+        echo "<p style='margin:0'>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>";
+        echo "<a href='hapus_keranjang.php?id_produk={$row['id_pakaian']}' style='color:red'>Hapus</a>";
+        echo "</div></div>";
+    }
+        echo "</div>";
+        echo "<hr><h3>Total: Rp " . number_format($total, 0, ',', '.') . "</h3>";
+        echo "<a href='checkout.php?id_keranjang=$id_keranjang' class='btn'>Checkout</a>";
 ?>

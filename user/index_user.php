@@ -1,16 +1,4 @@
 <!DOCTYPE html>
-
-<?php
-    include "../config.php";
-
-    session_start();
-    if (!isset($_SESSION['username'])) {
-        header("Location: index.php?page=login");
-    }
-
-?>
-
-
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -19,6 +7,15 @@
     <link rel="stylesheet" href="../frontend/style1.css">
     <script src="../frontend/script.js" defer></script>
 </head>
+
+<?php
+    include "../config.php";
+    session_start();
+    if (!isset($_SESSION['username'])) {
+        header("Location: index.php?page=login");
+    }
+?>
+
 <body>
     <!-- Navbar -->
     <header>
@@ -26,6 +23,11 @@
             <div class="logo">PRELOVE969</div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
             <a href="jual_pakaian.php">Jual</a>
+            <a href="keranjang.php">keranjang</a>
+            <a href="pesananku.php">Pesanan saya</a>
+            <a href="pesanan_masuk.php">Pesanan masuk</a>
+            <a href="profil_penjual.php">Profil saya</a>
+            <a href="wishlist.php">Wishlist</a>
         </div>
         <nav class="menu">
             <div class="dropdown">
@@ -77,9 +79,9 @@
                 <a href="#">Branded</a>
                 <a href="#">Anak</a>
                 <a href="#" class="sale">Sale</a>
-                <a href="#" class="donate">Donasi</a>
+                <a href="form_donasi.php" class="donate">Donasi</a>
                 <!-- <a href="#" id="loginBtn">Login</a> -->
-                <a href="register.php" class="btn">Logout</a>
+                <a href="../index.php" class="btn">Logout</a>
         </nav>
     </header>
         <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
@@ -112,34 +114,100 @@
     </section>
 
     <!-- Daftar Produk -->
-<section class="products">
+    <section class="products">
     <?php
-        $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto
-            FROM pakaian p
-            LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
-            LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
-            LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
-            LEFT JOIN (SELECT id_pakaian, path_foto FROM foto_produk WHERE urutan = 1 GROUP BY id_pakaian) f 
-            ON p.id_pakaian = f.id_pakaian
-            ORDER BY p.id_pakaian DESC";
+    //     $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto
+    // FROM pakaian p
+    // LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
+    // LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
+    // LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
+    // LEFT JOIN (
+    //     SELECT * FROM foto_produk WHERE urutan = 1
+    // ) f ON p.id_pakaian = f.id_pakaian
+    // WHERE p.status_ketersediaan = 'tersedia'
+    // ORDER BY p.id_pakaian DESC";
 
-            $result = mysqli_query($koneksi, $query);
+    $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto, p.tgl_upload
+FROM pakaian p
+LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
+LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
+LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
+LEFT JOIN (
+    SELECT * FROM foto_produk WHERE urutan = 1
+) f ON p.id_pakaian = f.id_pakaian
+WHERE p.status_ketersediaan = 'tersedia'
+ORDER BY p.id_pakaian DESC";
 
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<div class='product'>
-                <a href='detail_produk.php?id={$row['id_pakaian']}'>
-                    <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
-                    <h3>{$row['nama_pakaian']}</h3>
-                    <p><strong>Harga:</strong> Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
-                    <p><strong>Kategori:</strong> {$row['kategori']}</p>
-                    <p><strong>Ukuran:</strong> {$row['ukuran']}</p>
-                    <p><strong>Kondisi:</strong> {$row['kondisi']}</p>
-                    <p>{$row['deskripsi']}</p>
-                </div>";
-        }
-    ?>
 
-    </section>
+$result = mysqli_query($koneksi, $query);
+
+if (!$result) {
+    die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
+}
+
+            function waktuUpload($waktu) {
+                $sekarang = time(); // waktu saat ini (timestamp)
+                $waktuUpload = strtotime($waktu); // ubah waktu dari database ke timestamp
+                $selisih = $sekarang - $waktuUpload; // hitung selisih waktu (detik)
+
+                if ($selisih < 60) {
+                    return 'Baru saja';
+                } elseif ($selisih < 3600) {
+                    $menit = floor($selisih / 60);
+                    return "$menit menit yang lalu";
+                } elseif ($selisih < 86400) {
+                    $jam = floor($selisih / 3600);
+                    return "$jam jam yang lalu";
+                } elseif ($selisih < 604800) {
+                    $hari = floor($selisih / 86400);
+                    return "$hari hari yang lalu";
+                } else {
+                    return date("d M Y", $waktuUpload); // jika lebih dari 7 hari, tampilkan tanggal
+                }
+            }
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                $id_user = $_SESSION['id_user'];
+                // Di dalam while, sebelum echo tombol
+            $id_pakaian = $row['id_pakaian'];
+            $cek = mysqli_query($koneksi, "SELECT * FROM likes WHERE id_user = '$id_user' AND id_pakaian = '$id_pakaian'");
+            $sudah_suka = mysqli_num_rows($cek) > 0;
+
+    echo "<div class='product'>
+        <a href='detail_produk.php?id={$row['id_pakaian']}'>
+            <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
+            <h3>{$row['nama_pakaian']}</h3>
+            <p><strong>Harga:</strong> Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
+            <p><strong>Kategori:</strong> {$row['kategori']}</p>
+            <p><strong>Ukuran:</strong> {$row['ukuran']}</p>
+            <p><strong>Kondisi:</strong> {$row['kondisi']}</p>
+            <p>{$row['deskripsi']}</p>
+            <p><em>Diunggah " . waktuUpload($row['tgl_upload']) . "</em></p>
+        </a>";
+    
+    if (isset($_SESSION['id_user'])) {
+        echo "<form method='POST' action='../proses/proses_likes.php' style='display:inline;'>";
+        echo"<input type='hidden' name='id_pakaian' value='{$row['id_pakaian']}'>";
+                if ($sudah_suka){
+                    echo"<button type='submit' name='likes' value='batal' style='border:none; background:none; cursor:pointer; font-size:18px;'>
+                        💔 Batal Sukai
+                    </button>";
+                }else{
+                    echo"<button type='submit' name='likes' value='suka' style='border:none; background:none; cursor:pointer; font-size:18px;'>
+                        ❤️ Sukai
+                    </button>";
+                }
+        echo"</form>";
+    }
+
+    $jumlah_suka = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM likes WHERE id_pakaian='$id_pakaian'"));
+    echo "<p>Disukai oleh $jumlah_suka orang</p>";
+
+
+    echo "</div>";
+}
+?>
+</section>
 
 </body>
 <footer>

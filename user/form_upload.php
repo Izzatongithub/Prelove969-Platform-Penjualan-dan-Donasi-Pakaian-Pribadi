@@ -88,7 +88,15 @@
             </option>
         <?php }
         ?>
-    </select>
+    </select><br>
+
+    <label for="status">Gender:</label>
+<select name="gender" id="status">
+  <option value="pria">Pria</option>
+  <option value="wanita">Wanita</option>
+  <option value="unisex">Unisex</option>
+</select>
+
 
 
     <input type="submit" name="submit" value="Simpan Produk">

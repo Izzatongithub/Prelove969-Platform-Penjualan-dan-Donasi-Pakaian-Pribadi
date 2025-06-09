@@ -10,20 +10,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_kategori = $_POST['kategori'];
     $id_ukuran = $_POST['ukuran'];
     $id_kondisi = $_POST['kondisi'];
+    $gender = $_POST['gender'];
 
     // 1. Simpan data ke tabel produk
-    $sql = "INSERT INTO pakaian (id_user, nama_pakaian, deskripsi, harga, id_kategori, id_ukuran, id_kondisi) 
-        VALUES ($id_user, '$nama_pakaian', '$deskripsi', $harga, $id_kategori, $id_ukuran, $id_kondisi)";
+    $sql = "INSERT INTO pakaian (id_user, nama_pakaian, gender, deskripsi, harga, id_kategori, id_ukuran, id_kondisi) 
+        VALUES ($id_user, '$nama_pakaian', '$gender', '$deskripsi', $harga, $id_kategori, $id_ukuran, $id_kondisi)";
 
     $perintah = mysqli_query($koneksi, $sql);
 
       // Cek apakah produk berhasil disimpan
     if ($perintah) {
         $id_produk = mysqli_insert_id($koneksi); // ID produk terakhir disimpan
-
-        echo "<pre>";
-        print_r($_FILES['foto_produk']);
-        echo "</pre>";
 
         // Proses upload semua foto
         $jumlah_foto = count($_FILES['foto_produk']['name']);
@@ -53,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         echo "Produk dan semua foto berhasil diunggah!";
-        // header("location: ../user/form_upload.php");
+        header("location: ../user/form_upload.php");
     } else {
         // echo "Gagal menyimpan produk.";
          echo "Error: " . mysqli_error($koneksi);
