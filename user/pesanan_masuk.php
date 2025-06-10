@@ -54,18 +54,37 @@ $query = mysqli_query($koneksi, "SELECT t.id_transaksi, t.kode_invoice, t.status
                 <p><strong>Harga:</strong> Rp<?= number_format($row['harga'], 0, ',', '.'); ?></p>
                 <p><strong>Status:</strong> <?= ucfirst($row['status_transaksi']); ?></p>
 
-                <?php if ($row['status_transaksi'] === 'diproses'): ?>
-                    <form method="POST" action="../proses/proses_pesanan.php">
-                        <input type="hidden" name="id_transaksi" value="<?= $row['id_transaksi']; ?>">
-                        <select name="status_transaksi">
-                            <option value="">-- Pilih --</option>
-                            <option value="diproses">Diproses</option>
-                            <option value="dikirim">Dikirim</option>
-                            <!-- <option value="selesai">Selesai</option> -->
-                        </select>
-                        <button type="submit" class="btn-proses">Update Status</button>
-                    </form>
-                <?php else: ?>
+                <?php
+                    $current_status = $row['status_transaksi'];
+                    $next_status_options = [];
+
+                    switch ($current_status) {
+                        case 'menunggu':
+                            $next_status_options = ['diproses'];
+                            break;
+                        case 'diproses':
+                            $next_status_options = ['dikirim'];
+                            break;
+                        case 'dikirim':
+                            echo "<p><em>Pesanan sedang dikirim ke pembeli.</em></p>";
+                            break;
+                        case 'selesai':
+                            echo "<p><em>Pesanan telah selesai.</em></p>";
+                            break;
+                    }
+                    ?>
+
+                            <?php if (!empty($next_status_options)): ?>
+                <form method="POST" action="../proses/proses_pesanan.php">
+                    <input type="hidden" name="id_transaksi" value="<?= $row['id_transaksi']; ?>">
+                    <select name="status_transaksi" required>
+                        <option value="">-- Pilih Status --</option>
+                        <?php foreach ($next_status_options as $status): ?>
+                            <option value="<?= $status ?>"><?= ucfirst($status) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button type="submit" class="btn-proses">Update Status</button>
+                </form>
                     <p><em>Pesanan sedang <?= $row['status_transaksi']; ?></em></p>
                 <?php endif; ?>
             </div>

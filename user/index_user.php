@@ -26,7 +26,7 @@
             <a href="keranjang.php">keranjang</a>
             <a href="pesananku.php">Pesanan saya</a>
             <a href="pesanan_masuk.php">Pesanan masuk</a>
-            <a href="profil_penjual.php">Profil saya</a>
+            <a href="profil_saya.php">Profil saya</a>
             <a href="wishlist.php">Wishlist</a>
         </div>
         <nav class="menu">

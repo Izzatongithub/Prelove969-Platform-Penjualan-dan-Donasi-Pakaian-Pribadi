@@ -8,6 +8,32 @@
         header("Location: index.php?page=login");
     }
 
+    // Ambil semua ukuran dan kategorikan
+    $ukuran_pakaian = mysqli_query($koneksi, "SELECT * FROM ukuran_pakaian WHERE tipe_ukuran = 'pakaian'");
+    $ukuran_footwear = mysqli_query($koneksi, "SELECT * FROM ukuran_pakaian WHERE tipe_ukuran = 'sepatu'");
+    $ukuran_bottoms = mysqli_query($koneksi, "SELECT * FROM ukuran_pakaian WHERE tipe_ukuran = 'celana'");
+    $ukuran_bagspurses = mysqli_query($koneksi, "SELECT * FROM ukuran_pakaian WHERE tipe_ukuran = 'lain'");
+
+    // Simpan ke array untuk dioper ke JavaScript
+    $ukuranData = [
+        'pakaian' => [],
+        'sepatu' => [],
+        'celana' => [],
+        'lain' => []
+    ];
+
+    while ($row = mysqli_fetch_assoc($ukuran_pakaian)) {
+        $ukuranData['pakaian'][] = $row;
+    }
+    while ($row = mysqli_fetch_assoc($ukuran_footwear)) {
+        $ukuranData['sepatu'][] = $row;
+    }
+    while ($row = mysqli_fetch_assoc($ukuran_bottoms)) {
+        $ukuranData['celana'][] = $row;
+    }
+    while ($row = mysqli_fetch_assoc($ukuran_bagspurses)) {
+        $ukuranData['lain'][] = $row;
+    }
 ?>
 
 
@@ -46,7 +72,7 @@
     <input type="number" name="harga" required><br>
     
     <label>Kategori:</label><br>
-    <select name="kategori" id="kategi">
+    <select name="kategori" id="kategori">
         <option value="0">-- Pilih Kategori --</option>
         <?php
 
@@ -63,7 +89,7 @@
     <label>Ukuran:</label><br>
     <select name="ukuran" id="ukuran">
         <option value="0">-- Pilih Ukuran --</option>
-        <?php
+        <!-- <?php
 
         $no = 1;
         $qry = mysqli_query($koneksi, "SELECT * FROM ukuran_pakaian");
@@ -72,7 +98,7 @@
             <option data="<?= $data['ukuran'] ?>" value="<?= $data['id_ukuran'] ?>"><?= $data['ukuran'] ?>
             </option>
         <?php }
-        ?>
+        ?> -->
     </select><br>
     
     <label>Kondisi pakaian:</label><br>
@@ -101,6 +127,38 @@
 
     <input type="submit" name="submit" value="Simpan Produk">
 </form>
+
+<script>
+    const ukuranData = <?= json_encode($ukuranData); ?>;
+    const kategoriSelect = document.getElementById('kategori');
+    const ukuranSelect = document.getElementById('ukuran');
+
+    kategoriSelect.addEventListener('change', function () {
+        const selectedOption = kategoriSelect.options[kategoriSelect.selectedIndex];
+        const kategoriNama = selectedOption.getAttribute('data');
+
+        let tipeUkuran = 'pakaian'; // default
+        if (kategoriNama === 'Footwear') {
+            tipeUkuran = 'sepatu';
+        } else if (kategoriNama === 'Bottoms') {
+            tipeUkuran = 'celana';
+        } else if (kategoriNama === 'Bags & purses') {
+            tipeUkuran = 'lain';
+        }
+
+        // Kosongkan ukuran
+        ukuranSelect.innerHTML = '<option value="">-- Pilih Ukuran --</option>';
+
+        // Tambahkan opsi dari data yang sesuai
+        ukuranData[tipeUkuran].forEach(item => {
+            const opt = document.createElement('option');
+            opt.value = item.id_ukuran;
+            opt.textContent = item.ukuran;
+            ukuranSelect.appendChild(opt);
+        });
+    });
+</script>
+
 
 </body>
 <footer>
