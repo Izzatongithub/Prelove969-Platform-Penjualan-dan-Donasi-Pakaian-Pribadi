@@ -34,6 +34,16 @@
         FROM reviews WHERE id_penjual = '$id_penjual'");
 
     $rating = mysqli_fetch_assoc($qRating);
+
+    $qUlasan = mysqli_query($koneksi, "SELECT r.*, u.nama AS nama_pembeli FROM reviews r
+            LEFT JOIN user u ON r.id_pembeli = u.id_user
+            WHERE r.id_penjual = '$id_user'");
+
+if (!$qUlasan) {
+    die("Query error: " . mysqli_error($koneksi));
+}
+
+
 ?>
 
 <body>
@@ -49,7 +59,7 @@
             <a href="?gender=unisex">Unisex</a>
             <!-- <a href="#">Anak</a> -->
             <a href="#" class="sale">Sale</a>
-            <a href="#" class="donate">Donasi</a>
+            <a href="form_donasi.php" class="donate">Donasi</a>
             <a href="#" id="registerBtn" class='btn'>Logout</a>
             
         </nav>
@@ -62,7 +72,7 @@
         <a href="profil_saya.php">Profil saya</a>
         <a href="wishlist.php">Wishlist</a>
     </div>
-    <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
+    <!-- <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
 </section>
 
     <div class="profile-container">
@@ -91,6 +101,24 @@
             </div>
             <?php endwhile; ?>
         </div>
+
+        <div class="review-section">
+        <h3>Ulasan Pembeli</h3><br>
+        <?php if (mysqli_num_rows($qUlasan) > 0): ?>
+    <?php while ($row = mysqli_fetch_assoc($qUlasan)) : ?>
+        <div class="review-card">
+            <p><strong>Pembeli:</strong> <?= htmlspecialchars($row['nama_pembeli'] ?? 'Tidak diketahui') ?></p>
+            <p><strong>Barang:</strong> <?= htmlspecialchars($row['nama_pakaian'] ?? 'Tidak tersedia') ?></p>
+            <p><strong>Rating:</strong> <?= $row['rating'] ?>/5</p>
+            <p><strong>Ulasan:</strong> <?= htmlspecialchars($row['ulasan']) ?></p>
+            <hr>
+        </div>
+    <?php endwhile; ?>
+<?php else: ?>
+    <p>Belum ada ulasan untuk penjual ini.</p>
+<?php endif; ?>
+    </div>
+
     </div>
 </div>
 

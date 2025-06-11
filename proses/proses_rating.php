@@ -15,5 +15,5 @@ mysqli_query($koneksi, "INSERT INTO reviews (id_transaksi, id_penjual, id_pembel
 // Ubah status transaksi menjadi "selesai"
 mysqli_query($koneksi, "UPDATE transaksi SET status_transaksi = 'selesai' WHERE id_transaksi = '$id_transaksi'");
 
-header("Location: ../user/riwayat_transaksi.php");
+header("Location: ../user/pesananku.php");
 exit();

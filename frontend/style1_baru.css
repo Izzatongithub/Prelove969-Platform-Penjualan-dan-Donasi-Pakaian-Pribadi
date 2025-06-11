@@ -920,7 +920,7 @@ a {
 
 .btn-primary{
     margin-top: 10px;
-    margin-left: 250px;
+    margin-left: 0px;
     margin-right: 0;
     background-color: #ff69b4;
     color: white;
@@ -935,4 +935,20 @@ a {
 
 .btn-primary:hover {
     background-color: #d63384;
+}
+
+/* review */
+.review-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 10px;
+}
+
+.review-card {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    border-radius: 8px;
 }

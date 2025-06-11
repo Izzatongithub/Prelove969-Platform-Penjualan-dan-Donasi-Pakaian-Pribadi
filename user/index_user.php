@@ -40,7 +40,7 @@
             <a href="?gender=unisex">Unisex</a>
             <!-- <a href="#">Anak</a> -->
             <a href="form_donasi.php" class="donate">Donasi</a>
-            <a href="#" id="registerBtn" class='btn'>Logout</a>
+            <a href="logout.php" class='btn'>Logout</a>
             
         </nav>
     </header>
@@ -234,13 +234,19 @@
         echo "<form method='POST' action='../proses/proses_likes.php' style='display:inline;'>";
         echo"<input type='hidden' name='id_pakaian' value='{$row['id_pakaian']}'>";
                 if ($sudah_suka){
-                    echo"<button type='submit' name='likes' value='batal' style='border:none; background:none; cursor:pointer; font-size:18px;'>
-                        💔 Batal Sukai
-                    </button>";
+                    echo "<div style='text-align: left;'>
+                        <button type='submit' name='likes' value='batal' 
+                            style='border: none; background: none; cursor: pointer; font-size: 18px;'>
+                            💔
+                        </button>
+                    </div>";
                 }else{
-                    echo"<button type='submit' name='likes' value='suka' style='border:none; background:none; cursor:pointer; font-size:18px;'>
-                        ❤️ Sukai
-                    </button>";
+                    echo "<div style='text-align: left;'>
+                        <button type='submit' name='likes' value='batal' 
+                            style='border: none; background: none; cursor: pointer; font-size: 18px;'>
+                            ❤️
+                        </button>
+                    </div>";
                 }
         echo"</form>";
     }

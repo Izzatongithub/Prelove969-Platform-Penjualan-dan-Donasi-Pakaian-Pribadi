@@ -1,126 +1,139 @@
-<?php
-session_start();
-include '../config.php';
-
-$id_user = $_SESSION['id_user'];
-$total = 0;
-$items = [];
-
-if (isset($_GET['id_pakaian'])) {
-    // ✅ Checkout langsung
-    $id_pakaian = $_GET['id_pakaian'];
-    $query = mysqli_query($koneksi, "
-        SELECT p.id_pakaian, p.nama_pakaian, p.harga, f.path_foto 
-        FROM pakaian p
-        LEFT JOIN (
-            SELECT id_pakaian, MIN(path_foto) AS path_foto FROM foto_produk GROUP BY id_pakaian
-        ) f ON p.id_pakaian = f.id_pakaian
-        WHERE p.id_pakaian = '$id_pakaian'
-    ");
-} else {
-    // ✅ Checkout dari keranjang
-    $query = mysqli_query($koneksi, "
-        SELECT p.id_pakaian, p.nama_pakaian, p.harga, f.path_foto 
-        FROM keranjang k
-        JOIN keranjang_detail kd ON k.id_keranjang = kd.id_keranjang
-        JOIN pakaian p ON kd.id_produk = p.id_pakaian
-        LEFT JOIN (
-            SELECT id_pakaian, MIN(path_foto) AS path_foto FROM foto_produk GROUP BY id_pakaian
-        ) f ON p.id_pakaian = f.id_pakaian
-        WHERE k.id_user = '$id_user'
-    ");
-}
-
-if (!$query || mysqli_num_rows($query) == 0) {
-    die("Tidak ada produk untuk di-checkout.");
-}
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Checkout</title>
-    <style>
-        .checkout-container {
-            max-width: 700px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: #f9f9f9;
-        }
-        .produk-item {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-        }
-        .produk-item img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .produk-info {
-            flex: 1;
-        }
-        .total {
-            font-weight: bold;
-            text-align: right;
-            margin-top: 20px;
-        }
-        .form-checkout {
-            /* margin-top: 1px; */
-            text-align: right;
-        }
-        .form-checkout select,
-        .form-checkout button {
-            display: inline-block;
-            background-color: #ff69b4;
-            color: white;
-            padding: 10px 25px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .form-checkout button:hover {
-            background-color: #ff1493;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preloved Shop</title>
+    <link rel="stylesheet" href="../frontend/style1_baru.css">
+    <script src="../frontend/script.js" defer></script>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
+<?php
+    session_start();
+    include '../config.php'; // koneksi ke database
+
+    // Cek apakah user sudah login
+    if (!isset($_SESSION['id_user'])) {
+        header("Location: login.php");
+        exit();
+    }
+
+    $id_user = $_SESSION['id_user'];
+    $total = 0;
+    $items = [];
+
+    if (isset($_GET['id_pakaian'])) {
+    // ✅ Checkout langsung
+        $id_pakaian = $_GET['id_pakaian'];
+        $query = mysqli_query($koneksi, "SELECT p.id_pakaian, p.nama_pakaian, p.harga, f.path_foto FROM pakaian p
+            LEFT JOIN (
+                SELECT id_pakaian, MIN(path_foto) AS path_foto FROM foto_produk GROUP BY id_pakaian
+            ) f ON p.id_pakaian = f.id_pakaian
+            WHERE p.id_pakaian = '$id_pakaian'");
+    } else {
+        // ✅ Checkout dari keranjang
+        $query = mysqli_query($koneksi, "SELECT p.id_pakaian, p.nama_pakaian, p.harga, f.path_foto FROM keranjang k
+            JOIN keranjang_detail kd ON k.id_keranjang = kd.id_keranjang
+            JOIN pakaian p ON kd.id_produk = p.id_pakaian
+            LEFT JOIN (
+                SELECT id_pakaian, MIN(path_foto) AS path_foto FROM foto_produk GROUP BY id_pakaian
+            ) f ON p.id_pakaian = f.id_pakaian
+            WHERE k.id_user = '$id_user'");
+    }
+
+    if (!$query || mysqli_num_rows($query) == 0) {
+        die("Tidak ada produk untuk di-checkout.");
+    }
+
+    ?>
 <body>
+    <!-- Navbar -->
+    <header>
+        <div class="header-top">
+            <div class="logo">
+                <a href='index_user.php'>PRELOVE969</a>
+            </div>
+            <input type="text" id="search" class="search" placeholder="Cari pakaian...">
+        </div>
+        <nav class="navbar">
+            <!-- <a href="?gender=wanita">Wanita</a>
+            <a href="?gender=pria">Pria</a>
+            <a href="?gender=unisex">Unisex</a>
+            <a href="#" class="sale">Sale</a> -->
+            <a href="jual_pakaian.php">Jual</a>
+            <a href="keranjang.php">Keranjang</a>
+            <a href="pesananku.php">Pesanan saya</a>
+            <a href="pesanan_masuk.php">Pesanan masuk</a>
+            <a href="profil_saya.php">Profil saya</a>
+            <a href="wishlist.php">Wishlist</a>
+            <a href="#" class="donate">Donasi</a>
+            <a href="#" id="registerBtn" class='btn'>Logout</a>
+        </nav>
+        <div class="main-links">
+        </div>
+        <!-- <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
+    </header>
+        <?php
+            echo "<div class='cart-container'>";
+            echo "<h2 class='cart-title'>Checkout</h2>";
+            echo "<div class='cart-wrapper'>";
 
-<div class="checkout-container">
-    <h2>Checkout</h2>
-
-    <?php while ($item = mysqli_fetch_assoc($query)) : ?>
-        <div class="produk-item">
-            <img src="../uploads/<?= $item['path_foto'] ?>" alt="<?= $item['nama_pakaian'] ?>">
-            <div class="produk-info">
-                <p><strong><?= $item['nama_pakaian'] ?></strong></p>
-                <p>Rp <?= number_format($item['harga'], 0, ',', '.') ?></p>
+            while ($row = mysqli_fetch_assoc($query)) {
+                $total += $row['harga'];
+                echo "<div class='cart-item'>";
+                echo "<img src='../uploads/" . $row['path_foto'] . "' alt='" . $row['nama_pakaian'] . "'>";
+                echo "<div class='cart-info'>";
+                echo "<h4>{$row['nama_pakaian']}</h4>";
+                echo "<p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>";
+                echo "</div></div>";
+            }
+        ?>
+        <!-- Form Checkout (ditulis di luar PHP) -->
+            <form action="../proses/proses_checkout.php" method="POST" class="form-checkout">
+                <input type="hidden" name="id_pakaian" value="<?= $id_pakaian ?>">
+                <!-- <label for="status_transaksi" class="form-label">Pilih metode pembayaran</label>
+                <div class="status-flex">
+                    <select class="form-select" name="metode_pembayaran" id="metode_pembayaran" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="cod">Bayar di Tempat (COD)</option>
+                        <option value="midtrans">Pembayaran Online (Midtrans)</option>
+                    </select>
+                </div> -->
+                <button type="submit" class="btn-primary">Checkout</button>
+            </form>
+        <?php
+            echo "</div>"; // close cart-wrapper
+            echo "</div>"; // close cart-container
+        ?>
+</body>
+<footer>
+    <div class="footer-container">
+        <div class="footer-about">
+            <h3>Tentang Kami</h3>
+            <p>Website ini adalah platform preloved yang membantu pengguna menjual dan mendonasikan pakaian bekas yang masih layak pakai.</p>
+        </div>
+        <div class="footer-links">
+            <h3>Tautan Cepat</h3>
+            <ul>
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Produk</a></li>
+                <li><a href="#">Donasi</a></li>
+                <li><a href="#">Kontak</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h3>Kontak Kami</h3>
+            <p>Email: support@preloved.com</p>
+            <p>Telepon: +62 812 3456 7890</p>
+            <div class="social-icons">
+                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
+                <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
+                <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
             </div>
         </div>
-        <?php $total += $item['harga']; ?>
-    <?php endwhile; ?>
+    </div>
+    <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
+</footer>
 
-    <p class="total">Total: Rp <?= number_format($total, 0, ',', '.') ?></p>
-
-    <form action="../proses/proses_checkout.php" method="POST" class="form-checkout">
-        <input type="hidden" name="id_pakaian" value="<?= $id_pakaian ?>">
-        <label for="metode_pembayaran">Lanjut:</label>
-        <!-- <select name="metode_pembayaran" id="metode_pembayaran" required>
-            <option value="">-- Pilih --</option>
-            <option value="cod">Bayar di Tempat (COD)</option>
-            <option value="midtrans">Pembayaran Online (Midtrans)</option> -->
-        </select>
-        <br><br>
-        <button type="submit" class="form-checkout button">Checkout</button>
-    </form>
-</div>
-
-</body>
 </html>
