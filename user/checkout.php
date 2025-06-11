@@ -72,13 +72,22 @@ if (!$query || mysqli_num_rows($query) == 0) {
             margin-top: 20px;
         }
         .form-checkout {
-            margin-top: 20px;
+            /* margin-top: 1px; */
             text-align: right;
         }
         .form-checkout select,
         .form-checkout button {
-            padding: 10px;
-            border-radius: 6px;
+            display: inline-block;
+            background-color: #ff69b4;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .form-checkout button:hover {
+            background-color: #ff1493;
         }
     </style>
 </head>
@@ -109,7 +118,7 @@ if (!$query || mysqli_num_rows($query) == 0) {
             <option value="midtrans">Pembayaran Online (Midtrans)</option> -->
         </select>
         <br><br>
-        <button type="submit">Checkout</button>
+        <button type="submit" class="form-checkout button">Checkout</button>
     </form>
 </div>
 

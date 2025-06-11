@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prelove696 - Masuk atau Daftar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form action="register.php" method="POST" class="register-form" id="registerForm">
+                <div class="header">
+                    <h2>Prelove696</h2>
+                </div>
+                <h3>Daftar Akun Baru</h3>
+                <input type="text" name="username" placeholder="Nama Lengkap" required />
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <input type="password" name="confirm_password" placeholder="Konfirmasi Password" required />
+                <div id="registerError" class="error-message"></div>
+                <button type="submit">Daftar</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form action="login.php" method="POST" class="login-form" id="loginForm">
+                <div class="header">
+                    <h2>Prelove696</h2>
+                </div>
+                <h3>Masuk ke Akun Anda</h3>
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <a href="#" class="forgot-password">Lupa password?</a>
+                <div id="loginError" class="error-message"></div>
+                <button type="submit">Masuk</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome back, Treasure Hunter!</h1>
+                    <p>Untuk tetap terhubung dengan kami, silakan masuk dengan akun Anda.</p>
+                    <button class="ghost" id="signIn">Masuk</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Start your journey to timeless style.</h1>
+                    <p>Masukkan detail pribadi Anda dan mulai perjalanan preloved Anda bersama kami.</p>
+                    <button class="ghost" id="signUp">Daftar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
