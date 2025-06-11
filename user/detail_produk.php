@@ -22,10 +22,8 @@
 
 
     $data = mysqli_fetch_assoc(mysqli_query($koneksi, $query));
-
     // Ambil semua foto produk
     $fotos = mysqli_query($koneksi, "SELECT * FROM foto_produk WHERE id_pakaian = $id ORDER BY urutan ASC");
-
     // Ambil semua data ke dalam array
     $all_fotos = [];
     while ($foto = mysqli_fetch_assoc($fotos)) {
@@ -34,6 +32,20 @@
 
     // Ambil gambar pertama sebagai gambar utama
     $gambar_utama = $all_fotos[0]['path_foto'];
+
+    $id_penjual = $data['id_user']; // ambil dari produk
+    $qRating = mysqli_query($koneksi, "SELECT AVG(rating) AS rata_rata, COUNT(*) AS total FROM reviews WHERE id_penjual = '$id_penjual'");
+    $rating = mysqli_fetch_assoc($qRating);
+
+    // Fungsi untuk menampilkan bintang visual
+    function tampilkanBintang($rating) {
+        $stars = round($rating); // pembulatan ke atas/bawah
+        $output = '';
+        for ($i = 1; $i <= 5; $i++) {
+            $output .= $i <= $stars ? '★' : '☆';
+        }
+        return $output;
+    }
 ?>
 <body>
     <!-- Navbar -->
@@ -62,42 +74,74 @@
     <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
 
     <!-- Daftar Produk -->
-    <div class='cart-container'>
-        <div class='cart-item'>
-            <?php
-                mysqli_data_seek($fotos, 0); // Kembalikan pointer ke awal
-                    while ($img = mysqli_fetch_assoc($fotos)) {
-                        echo "<img src='{$img['path_foto']}' class='thumbnail' onclick='changeImage(this.src)'>";
-                    }
-            ?>
-                <div class='cart-wrapper'>
-                    <h2><?= $data['nama_pakaian']; ?></h2>
-                    <p> <?= $data['ukuran'], " | ", $data['kondisi']; ?></p>
-                    <p>Rp <?= number_format($data['harga'], 0, ',', '.'); ?>
-                    <p><?= nl2br($data['deskripsi']); ?></p>
-                    <p><strong>Penjual:</strong> 
-                    <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>"><?= htmlspecialchars($data['nama_penjual']) ?></a>
-                </div></p>
-            </div>
-            <nav>
-                <?php 
-                    if (isset($_SESSION['id_user'])): ?>
-                        <br><a href="checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">+ Beli sekarang</a>
-                         <!-- <a href="../proses/proses_checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">+ Beli Sekarang</a> -->
-                        <br><a href="keranjang.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">+ Keranjang</a><br><br>
-                <?php else: ?>
-                    <p><em>Silakan login untuk membeli atau menambahkan ke keranjang.</em></p>
-                <?php endif; ?>
-            </nav>
-        </div>
+            <!-- Galeri Foto -->
+<div class="detail-box">
+    <!-- Kolom kiri: gambar utama dan thumbnail -->
+    <div class="image-section">
+        <!-- Gambar utama -->
+        <?php
+            // Ambil gambar pertama sebagai default main image
+            mysqli_data_seek($fotos, 0);
+            $firstImg = mysqli_fetch_assoc($fotos);
+        ?>
+        <img id="mainImage" src="../upload/<?= $firstImg['path_foto'] ?>" alt="Gambar Utama" class="main-image">
 
+        <!-- Thumbnail di bawah gambar utama -->
+        <div class="thumbnail-gallery">
+            <?php
+                mysqli_data_seek($fotos, 0);
+                while ($img = mysqli_fetch_assoc($fotos)) {
+                    echo "<img src='../upload/{$img['path_foto']}' class='product-thumbnail' onclick='changeImage(this.src)'>";
+                }
+            ?>
+        </div>
+    </div>
+
+    <!-- Kolom kanan: info produk -->
+    <div class="detail-info">
+        <h2><?= $data['nama_pakaian']; ?></h2>
+        <p><?= $data['ukuran'] . " | " . $data['kondisi']; ?></p>
+        <p>Rp <?= number_format($data['harga'], 0, ',', '.'); ?></p>
+        <p><?= nl2br($data['deskripsi']); ?></p>
+        <hr>
+        <p><strong>Penjual:</strong>
+            <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>">
+                <?= htmlspecialchars($data['nama_penjual']) ?>
+            </a>
+        </p>
+        <?php 
+            if ($rating && $rating['total'] > 0): ?>
+                <div class='rating'>
+                    <p>
+                        Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
+                        (<?= number_format($rating['rata_rata'], 1) ?>/5 dari <?= $rating['total'] ?> ulasan)
+                    </p>
+        <?php else: ?>
+                <p>☆☆☆☆☆</p>
+        <?php endif; ?>
+                <div class="detail-buttons">
+                    <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>" class='btn'>Lihat profile</a>
+                    <a href="profil_saya.php" class='btn'>Massage</a>
+                </div>
+                <div class="detail-buttons">
+                    <?php if (isset($_SESSION['id_user'])): ?>
+                        <hr>
+                        <br><a href="checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Beli Sekarang</a>
+                        <a href="keranjang.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">+ Keranjang</a>
+                    <?php else: ?>
+                        <p><em>Silakan login untuk membeli atau menambahkan ke keranjang.</em></p>
+                    <?php endif; ?>
+                </div>
+            </div>
+    </div>
+
+</section>
+</body>
     <script>
         function changeImage(src) {
             document.getElementById("mainImage").src = src;
         }
     </script>
-</section>
-</body>
 <footer>
     <div class="footer-container">
         <div class="footer-about">
