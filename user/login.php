@@ -11,371 +11,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* Custom CSS Variables - sama dengan homepage */
-        :root {
-            --primary-color: #ff6b9d;
-            --secondary-color: #a8e6cf;
-            --accent-color: #ffd93d;
-            --light-pink: #ffe4e8;
-            --light-green: #e8f5e8;
-            --light-purple: #f0e8ff;
-            --text-dark: #2c3e50;
-            --text-light: #6c757d;
-        }
-        
-        /* Font Family */
-        body {
-            font-family: 'Poppins', sans-serif;
-            color: var(--text-dark);
-            background: linear-gradient(135deg, var(--light-pink) 0%, var(--light-purple) 50%, var(--light-green) 100%);
-            min-height: 100vh;
-        }
-        
-        /* Auth Container */
-        .auth-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 0;
-        }
-        
-        .auth-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-            max-width: 900px;
-            width: 100%;
-        }
-        
-        .auth-left {
-            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
-            color: white;
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            min-height: 500px;
-        }
-        
-        .auth-right {
-            padding: 3rem;
-        }
-        
-        .auth-logo {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        
-        .auth-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .auth-subtitle {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-        
-        .auth-illustration {
-            width: 150px;
-            height: 150px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 2rem;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .auth-illustration i {
-            font-size: 3rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        /* Form Styles */
-        .form-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark);
-        }
-        
-        .form-subtitle {
-            color: var(--text-light);
-            margin-bottom: 2rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            font-weight: 500;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-control {
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(255, 107, 157, 0.25);
-        }
-        
-        .input-group {
-            position: relative;
-        }
-        
-        .input-group-text {
-            background: transparent;
-            border: 2px solid #e9ecef;
-            border-right: none;
-            border-radius: 10px 0 0 10px;
-            color: var(--text-light);
-        }
-        
-        .input-group .form-control {
-            border-left: none;
-            border-radius: 0 10px 10px 0;
-        }
-        
-        .input-group:focus-within .input-group-text {
-            border-color: var(--primary-color);
-        }
-        
-        /* Password Toggle */
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--text-light);
-            cursor: pointer;
-            z-index: 10;
-        }
-        
-        .password-toggle:hover {
-            color: var(--primary-color);
-        }
-        
-        /* Role Selection */
-        .role-selection {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .role-option {
-            flex: 1;
-            text-align: center;
-        }
-        
-        .role-option input[type="radio"] {
-            display: none;
-        }
-        
-        .role-option label {
-            display: block;
-            padding: 1rem;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
-        }
-        
-        .role-option input[type="radio"]:checked + label {
-            border-color: var(--primary-color);
-            background: rgba(255, 107, 157, 0.1);
-            color: var(--primary-color);
-        }
-        
-        .role-option label:hover {
-            border-color: var(--primary-color);
-        }
-        
-        .role-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-        
-        .role-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-        
-        .role-desc {
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-        
-        /* Buttons */
-        .btn-auth {
-            background: linear-gradient(45deg, var(--primary-color), #ff8fab);
-            border: none;
-            color: white;
-            padding: 0.75rem 2rem;
-            border-radius: 10px;
-            font-weight: 600;
-            width: 100%;
-            transition: all 0.3s ease;
-            margin-bottom: 1rem;
-        }
-        
-        .btn-auth:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
-            color: white;
-        }
-        
-        .btn-switch {
-            background: transparent;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 0.75rem 2rem;
-            border-radius: 10px;
-            font-weight: 600;
-            width: 100%;
-            transition: all 0.3s ease;
-            margin-bottom: 1rem;
-        }
-        
-        .btn-switch:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        /* Links */
-        .auth-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .auth-link:hover {
-            color: #ff8fab;
-            text-decoration: underline;
-        }
-        
-        .text-center-auth {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-        
-        /* Error Messages */
-        .error-message {
-            color: #dc3545;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-        
-        .form-control.is-invalid {
-            border-color: #dc3545;
-        }
-        
-        .form-control.is-valid {
-            border-color: #28a745;
-        }
-        
-        /* Success Message */
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            display: none;
-        }
-        
-        /* Back to Home */
-        .back-home {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            z-index: 10;
-        }
-        
-        .back-home:hover {
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .auth-container {
-                padding: 1rem;
-            }
-            
-            .auth-left {
-                padding: 2rem;
-                min-height: 300px;
-            }
-            
-            .auth-right {
-                padding: 2rem;
-            }
-            
-            .role-selection {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .auth-illustration {
-                width: 100px;
-                height: 100px;
-                margin-bottom: 1rem;
-            }
-            
-            .auth-illustration i {
-                font-size: 2rem;
-            }
-        }
-        
-        /* Page specific styles */
-        .page-login .auth-left {
-            background: linear-gradient(135deg, var(--primary-color), #ff8fab);
-        }
-        
-        .page-register .auth-left {
-            background: linear-gradient(135deg, var(--secondary-color), #7fcdcd);
-        }
-        
-        /* Hide/Show Pages */
-        .page {
-            display: none;
-        }
-        
-        .page.active {
-            display: block;
-        }
-    </style>
+    <link rel="stylesheet" href="../frontend/style_login.css">
 </head>
 <body>
 
@@ -421,7 +57,7 @@
                                         <form id="loginForm" novalidate>
                                             <!-- Email -->
                                             <div class="form-group">
-                                                <label for="loginEmail" class="form-label">Email atau Username</label>
+                                                <label for="loginEmail" class="form-label">Username</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text">
                                                         <i class="fas fa-envelope"></i>
@@ -627,7 +263,7 @@
                                         <!-- Switch to Login -->
                                         <div class="text-center-auth">
                                             <p>Sudah punya akun? 
-                                                <a href="#" class="auth-link" onclick="switchPage('login')">Masuk sekarang</a>
+                                                <a href="" class="auth-link" onclick="switchPage('login')">Masuk sekarang</a>
                                             </p>
                                         </div>
                                     </div>
@@ -771,58 +407,127 @@
             return isValid;
         }
         
-        // Register form validation
-        function validateRegister() {
-            let isValid = true;
-            
-            // Name validation
-            const name = document.getElementById('registerName').value.trim();
-            if (!name) {
-                showError('registerName', 'Nama lengkap harus diisi');
-                isValid = false;
-            } else if (name.length < 2) {
-                showError('registerName', 'Nama minimal 2 karakter');
-                isValid = false;
-            } else {
-                showSuccess('registerName');
-            }
-            
-            // Email validation
-            const email = document.getElementById('registerEmail').value.trim();
-            if (!email) {
-                showError('registerEmail', 'Email harus diisi');
-                isValid = false;
-            } else if (!isValidEmail(email)) {
-                showError('registerEmail', 'Format email tidak valid');
-                isValid = false;
-            } else {
-                showSuccess('registerEmail');
-            }
-            
-            // Password validation
-            const password = document.getElementById('registerPassword').value;
-            if (!password) {
-                showError('registerPassword', 'Password harus diisi');
-                isValid = false;
-            } else if (password.length < 6) {
-                showError('registerPassword', 'Password minimal 6 karakter');
-                isValid = false;
-            } else {
-                showSuccess('registerPassword');
-            }
-            
-            // Confirm password validation
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            if (!confirmPassword) {
-                showError('confirmPassword', 'Konfirmasi password harus diisi');
-                isValid = false;
-            } else if (password !== confirmPassword) {
-                showError('confirmPassword', 'Password tidak cocok');
-                isValid = false;
-            } else {
-                showSuccess('confirmPassword');
-            }
-            
-            // Role validation
-            const role
-        }
+ // Register form validation
+function validateRegister() {
+    let isValid = true;
+    
+    // Name validation
+    const name = document.getElementById('registerName').value.trim();
+    if (!name) {
+        showError('registerName', 'Nama lengkap harus diisi');
+        isValid = false;
+    } else if (name.length < 2) {
+        showError('registerName', 'Nama minimal 2 karakter');
+        isValid = false;
+    } else {
+        showSuccess('registerName');
+    }
+    
+    // Email validation
+    const email = document.getElementById('registerEmail').value.trim();
+    if (!email) {
+        showError('registerEmail', 'Email harus diisi');
+        isValid = false;
+    } else if (!isValidEmail(email)) {
+        showError('registerEmail', 'Format email tidak valid');
+        isValid = false;
+    } else {
+        showSuccess('registerEmail');
+    }
+    
+    // Password validation
+    const password = document.getElementById('registerPassword').value;
+    if (!password) {
+        showError('registerPassword', 'Password harus diisi');
+        isValid = false;
+    } else if (password.length < 6) {
+        showError('registerPassword', 'Password minimal 6 karakter');
+        isValid = false;
+    } else {
+        showSuccess('registerPassword');
+    }
+    
+    // Confirm password validation
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    if (!confirmPassword) {
+        showError('confirmPassword', 'Konfirmasi password harus diisi');
+        isValid = false;
+    } else if (password !== confirmPassword) {
+        showError('confirmPassword', 'Password tidak cocok');
+        isValid = false;
+    } else {
+        showSuccess('confirmPassword');
+    }
+    
+    // Role validation
+    const roleSelected = document.querySelector('input[name="role"]:checked');
+    if (!roleSelected) {
+        showError('registerRole', 'Pilih peran Anda');
+        isValid = false;
+    } else {
+        document.getElementById('registerRoleError').style.display = 'none';
+    }
+    
+    // Terms validation
+    if (!document.getElementById('acceptTerms').checked) {
+        showError('acceptTerms', 'Anda harus menyetujui syarat dan ketentuan');
+        isValid = false;
+    } else {
+        document.getElementById('acceptTermsError').style.display = 'none';
+    }
+    
+    return isValid;
+}
+
+// Form submission handlers
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (validateLogin()) {
+        // Simulate successful login
+        document.getElementById('loginSuccess').style.display = 'block';
+        setTimeout(() => {
+            // Redirect to dashboard in real implementation
+            alert('Login berhasil! Mengarahkan ke dashboard...');
+        }, 1500);
+    }
+});
+
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (validateRegister()) {
+        // Simulate successful registration
+        document.getElementById('registerSuccess').style.display = 'block';
+        setTimeout(() => {
+            switchPage('login');
+        }, 2000);
+    }
+});
+
+// Fix the switchPage function
+function switchPage(page) {
+    const loginPage = document.getElementById('loginPage');
+    const registerPage = document.getElementById('registerPage');
+    
+    if (page === 'login' || page === 'loginPage') {
+        loginPage.classList.add('active');
+        registerPage.classList.remove('active');
+    } else if (page === 'register' || page === 'registerPage') {
+        registerPage.classList.add('active');
+        loginPage.classList.remove('active');
+    }
+    
+    // Clear forms when switching
+    clearForms();
+}
+
+// Fix the onclick handlers in HTML
+// Change the links to use the correct page identifiers
+// In your HTML, change:
+// <a href="registerPage" class="auth-link" onclick="switchPage('registerPage')">Daftar sekarang</a>
+// to:
+// <a href="#" class="auth-link" onclick="switchPage('register')">Daftar sekarang</a>
+
+// And change:
+// <a href="" class="auth-link" onclick="switchPage('login')">Masuk sekarang</a>
+// to:
+// <a href="#" class="auth-link" onclick="switchPage('login')">Masuk sekarang</a>

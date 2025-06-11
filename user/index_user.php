@@ -146,25 +146,25 @@ if (!$result) {
 }
 
             function waktuUpload($waktu) {
-                $sekarang = time(); // waktu saat ini (timestamp)
-                $waktuUpload = strtotime($waktu); // ubah waktu dari database ke timestamp
-                $selisih = $sekarang - $waktuUpload; // hitung selisih waktu (detik)
+    $sekarang = time(); // waktu saat ini (timestamp)
+    $waktuUpload = strtotime($waktu); // ubah waktu dari database ke timestamp
+    $selisih = $sekarang - $waktuUpload; // hitung selisih waktu (detik)
 
-                if ($selisih < 60) {
-                    return 'Baru saja';
-                } elseif ($selisih < 3600) {
-                    $menit = floor($selisih / 60);
-                    return "$menit menit yang lalu";
-                } elseif ($selisih < 86400) {
-                    $jam = floor($selisih / 3600);
-                    return "$jam jam yang lalu";
-                } elseif ($selisih < 604800) {
-                    $hari = floor($selisih / 86400);
-                    return "$hari hari yang lalu";
-                } else {
-                    return date("d M Y", $waktuUpload); // jika lebih dari 7 hari, tampilkan tanggal
-                }
-            }
+    if ($selisih < 60) {
+        return 'Baru saja';
+    } elseif ($selisih < 3600) {
+        $menit = floor($selisih / 60);
+        return "$menit menit yang lalu";
+    } elseif ($selisih < 86400) {
+        $jam = floor($selisih / 3600);
+        return "$jam jam yang lalu";
+    } elseif ($selisih < 604800) {
+        $hari = floor($selisih / 86400);
+        return "$hari hari yang lalu";
+    } else {
+        return date("d M Y", $waktuUpload); // jika lebih dari 7 hari, tampilkan tanggal
+    }
+}
 
             while ($row = mysqli_fetch_assoc($result)) {
                 $id_user = $_SESSION['id_user'];

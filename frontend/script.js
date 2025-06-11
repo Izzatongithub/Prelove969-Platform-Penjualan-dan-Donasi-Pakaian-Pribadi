@@ -110,4 +110,62 @@ document.addEventListener("DOMContentLoaded", function () {
         fileNamesContainer.appendChild(fileListElement);
     });
 
+    //close modal
+    document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById("loginModal");
+    const btn = document.getElementById("loginBtn");
+    const span = document.querySelector(".close");
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+});
+
+//search
+//menyaring daftar produk secara langsung saat pengguna mengetik
+document.getElementById('search').addEventListener('input', function () {
+    const keyword = this.value.toLowerCase();
+    const products = document.querySelectorAll('.product');
+
+    products.forEach(product => {
+        const title = product.querySelector('h3').textContent.toLowerCase();
+        const description = product.querySelector('p')?.textContent.toLowerCase() || '';
+
+        if (title.includes(keyword) || description.includes(keyword)) {
+            product.style.display = 'block';
+        } else {
+            product.style.display = 'none';
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('search');
+    searchInput.addEventListener('input', function () {
+        const keyword = this.value.toLowerCase();
+        const products = document.querySelectorAll('.product');
+
+        products.forEach(product => {
+            const title = product.querySelector('h3').textContent.toLowerCase();
+            const description = product.querySelector('p')?.textContent.toLowerCase() || '';
+
+            if (title.includes(keyword) || description.includes(keyword)) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    });
+});
+
 

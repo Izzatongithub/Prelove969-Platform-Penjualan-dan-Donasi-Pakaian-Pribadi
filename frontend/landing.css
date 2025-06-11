@@ -1,0 +1,181 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff0f5;
+  color: #333;
+  scroll-behavior: smooth;
+}
+
+.navbar {
+  background-color: #ffc0cb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  font-weight: 800;
+  font-size: 1.8rem;
+  color: white;
+}
+
+.navbar nav a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.navbar nav a:hover {
+  color: #4b0082;
+}
+
+.btn-primary, .btn-secondary, .btn-outline {
+  padding: 0.7rem 1.5rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #ff69b4;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #ff1493;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid #ff69b4;
+  color: #ff69b4;
+  margin-top: 1rem;
+}
+
+.btn-secondary:hover {
+  background-color: #ff69b4;
+  color: white;
+}
+
+.btn-outline {
+  border: 2px solid white;
+  color: white;
+  padding: 0.5rem 1.2rem;
+}
+
+.btn-outline:hover {
+  background-color: white;
+  color: #ff69b4;
+}
+
+.hero {
+  background: url('img/hero-bg.jpg') no-repeat center center/cover;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+}
+
+.hero-content {
+  background-color: rgba(255, 182, 193, 0.8);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 700px;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.section {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #c71585;
+}
+
+.section-desc {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card h3 {
+  margin: 0.8rem 0 0.3rem;
+  color: #c71585;
+}
+
+.card p {
+  padding: 0 1rem 1rem;
+  color: #555;
+}
+
+.cta {
+  background-color: #ffe4e1;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.cta h2 {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+footer {
+  background-color: #ffc0cb;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}

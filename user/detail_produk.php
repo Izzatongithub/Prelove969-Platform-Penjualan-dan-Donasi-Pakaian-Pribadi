@@ -34,7 +34,7 @@ $query = "SELECT p.*, k.kategori, u.ukuran, c.kondisi, us.nama AS nama_penjual
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $data['nama_pakaian']; ?> | Preloved</title>
-    <link rel="stylesheet" href="../frontend/style1.css">
+    <link rel="stylesheet" href="../frontend/style1_baru.css">
     <script src="../frontend/script.js" defer></script>
 </head>
 <body>
