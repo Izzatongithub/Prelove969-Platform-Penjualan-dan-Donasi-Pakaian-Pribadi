@@ -885,3 +885,30 @@ a {
         padding-top: 10px;
     }
 }
+
+/* update status transaksi */
+.status-flex {
+    display: flex;
+    gap: 10px; /* Jarak antara select dan button */
+    align-items: center;
+    margin-top: 5px;
+}
+
+.status-flex select {
+    flex: 1; /* Biar select menyesuaikan lebar */
+}
+
+.btn-proses {
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-proses:hover {
+    background-color: #d63384;
+}
