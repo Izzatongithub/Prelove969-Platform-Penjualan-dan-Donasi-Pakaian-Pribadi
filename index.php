@@ -144,7 +144,7 @@ window.addEventListener('DOMContentLoaded', () => {
         $filterUkuran   = isset($_GET['ukuran']) ? $_GET['ukuran'] : '';
         $filterGender = isset($_GET['gender']) ? $_GET['gender'] : '';
 
-        // Query dasar
+        // Query
         $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto, p.tgl_upload 
             FROM pakaian p
             LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori

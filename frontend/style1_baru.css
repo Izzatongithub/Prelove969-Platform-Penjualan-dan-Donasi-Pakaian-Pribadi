@@ -787,3 +787,101 @@ a {
     }
 }
 
+/* Container utama pesanan */
+/* Container utama untuk setiap pesanan */
+.pesanan-container {
+    display: flex;
+    align-items: center; /* Biar gambar dan info sejajar vertikal */
+    gap: 20px;            /* Jarak antara gambar dan info */
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(214, 51, 132, 0.2);
+    max-width: 900px;
+    margin: 20px auto;     /* Jarak antar container */
+    flex-wrap: wrap;       /* Biar responsif di layar kecil */
+}
+
+/* Bagian gambar */
+.pesanan-gambar {
+    flex: 0 0 150px;       /* Ukuran tetap */
+    text-align: center;
+}
+
+.pesanan-gambar img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ffc0cb;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Informasi produk */
+.pesanan-info {
+    flex: 1;
+    min-width: 200px;
+}
+
+.pesanan-info p {
+    margin: 3px 0;
+    font-size: 16px;
+}
+
+.pesanan-info a {
+    color: #d63384;
+    text-decoration: none;
+}
+
+.pesanan-info a:hover {
+    text-decoration: underline;
+}
+
+/* Status pesanan */
+.pesanan-status {
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 12px;
+    display: inline-block;
+    background-color: #ffe4ec;
+    margin-top: 10px;
+}
+
+.status-dikirim {
+    background-color: #c3f3c3;
+    color: #2e7d32;
+}
+
+/* Tombol rating */
+.pesanan-button {
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.pesanan-button:hover {
+    background-color: #d63384;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .pesanan-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .pesanan-gambar, .pesanan-info {
+        flex: unset;
+        width: 100%;
+    }
+
+    .pesanan-info {
+        padding-top: 10px;
+    }
+}

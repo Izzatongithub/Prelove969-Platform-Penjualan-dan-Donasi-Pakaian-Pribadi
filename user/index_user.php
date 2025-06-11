@@ -38,7 +38,7 @@
             <a href="?gender=unisex">Unisex</a>
             <!-- <a href="#">Anak</a> -->
             <a href="#" class="sale">Sale</a>
-            <a href="#" class="donate">Donasi</a>
+            <a href="form_donasi.php" class="donate">Donasi</a>
             <a href="#" id="registerBtn" class='btn'>Logout</a>
             
         </nav>
@@ -52,6 +52,7 @@
         <a href="wishlist.php">Wishlist</a>
     </div>
     <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
+
     <!-- Filter -->
     <section class="filters">
     <select id="category-filter" class="filters-content">
@@ -66,38 +67,130 @@
     </select>
 </section>
 
+<script>
+    // Data ukuran dari PHP (diubah jadi JS array)
+    const ukuranData = <?= json_encode($ukuranArray); ?>;
+
+    const sizeSelect = document.getElementById('size-filter');
+    const categorySelect = document.getElementById('category-filter');
+
+    // Fungsi untuk menentukan tipe berdasarkan kategori
+    function getTipeFromKategori(kategori) {
+        switch (kategori.toLowerCase()) {
+            case 'footwear': return 'sepatu';
+            case 'bottoms': return 'celana';
+            case 'bags&purses': return 'lain';
+            default: return 'pakaian';
+        }
+    }
+
+    
+    categorySelect.addEventListener('change', function () {
+        const kategori = this.value;
+        const tipe = getTipeFromKategori(kategori);
+
+        // Kosongkan dan isi ulang <select> ukuran
+        sizeSelect.innerHTML = '<option value="">Size</option>';
+        if (ukuranData[tipe]) {
+            ukuranData[tipe].forEach(ukuran => {
+                const opt = document.createElement('option');
+                opt.value = ukuran;
+                opt.textContent = ukuran;
+                sizeSelect.appendChild(opt);
+            });
+        }
+
+        // Redirect jika hanya pilih kategori
+        const url = new URL(window.location.href);
+        url.searchParams.set('kategori', kategori);
+        url.searchParams.delete('ukuran'); // Reset ukuran
+        window.location.href = url.toString();
+    });
+
+    sizeSelect.addEventListener('change', function () {
+        const kategori = categorySelect.value;
+        const ukuran = this.value;
+        const genderParam = new URLSearchParams(window.location.search).get('gender');
+        
+        
+        const url = new URL(window.location.href);
+        if (kategori) url.searchParams.set('kategori', kategori);
+        if (ukuran) url.searchParams.set('ukuran', ukuran);
+        if (genderParam) url.searchParams.set('gender', genderParam);
+
+        window.location.href = url.toString();
+    });
+
+    // Set nilai dropdown sesuai URL
+    window.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const selectedKategori = params.get('kategori') || '';
+        const selectedUkuran = params.get('ukuran') || '';
+
+        if (selectedKategori) {
+            categorySelect.value = selectedKategori;
+            const tipe = getTipeFromKategori(selectedKategori);
+            sizeSelect.innerHTML = '<option value="">Size</option>';
+            if (ukuranData[tipe]) {
+                ukuranData[tipe].forEach(ukuran => {
+                    const opt = document.createElement('option');
+                    opt.value = ukuran;
+                    opt.textContent = ukuran;
+                    sizeSelect.appendChild(opt);
+                });
+            }
+        }
+
+        if (selectedUkuran) {
+            sizeSelect.value = selectedUkuran;
+        }
+    });
+</script>
 
     <!-- Daftar Produk -->
     <section class="products">
     <?php
-    //     $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto
-    // FROM pakaian p
-    // LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
-    // LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
-    // LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
-    // LEFT JOIN (
-    //     SELECT * FROM foto_produk WHERE urutan = 1
-    // ) f ON p.id_pakaian = f.id_pakaian
-    // WHERE p.status_ketersediaan = 'tersedia'
-    // ORDER BY p.id_pakaian DESC";
 
-    $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto, p.tgl_upload
-    FROM pakaian p
-    LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
-    LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
-    LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
-    LEFT JOIN (
-        SELECT * FROM foto_produk WHERE urutan = 1
-    ) f ON p.id_pakaian = f.id_pakaian
-    WHERE p.status_ketersediaan = 'tersedia'
-    ORDER BY p.id_pakaian DESC";
+        // Tangkap filter dari URL
+        $filterKategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
+        $filterUkuran   = isset($_GET['ukuran']) ? $_GET['ukuran'] : '';
+        $filterGender = isset($_GET['gender']) ? $_GET['gender'] : '';
 
+         $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto, p.tgl_upload 
+            FROM pakaian p
+            LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
+            LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
+            LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
+            LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian 
+            WHERE p.status_ketersediaan = 'tersedia'";
+        // Tambahkan filter jika ada
+        if (!empty($filterKategori)) {
+            $filterKategori = mysqli_real_escape_string($koneksi, $filterKategori);
+            $query .= " AND k.kategori = '$filterKategori'";
+        }
+        if (!empty($filterUkuran)) {
+            $filterUkuran = mysqli_real_escape_string($koneksi, $filterUkuran);
+            $query .= " AND u.ukuran = '$filterUkuran'";
+        }
 
-$result = mysqli_query($koneksi, $query);
+        if (!empty($filterGender)) {
+            $filterGender = mysqli_real_escape_string($koneksi, $filterGender);
+            $query .= " AND p.gender = '$filterGender'";
+        }
 
-if (!$result) {
-    die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
-}
+        $query .= " ORDER BY p.id_pakaian DESC";
+
+        $result = mysqli_query($koneksi, $query);
+
+        if (!$result) {
+            die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
+        }
+
+        $result = mysqli_query($koneksi, $query);
+
+        if (!$result) {
+            die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
+        }
 
             function waktuUpload($waktu) {
             $sekarang = time(); // waktu saat ini (timestamp)

@@ -64,46 +64,50 @@
     <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
 </section>
 
-    <div class="profile-container">
-    <div class="profile-header">
-        <img src="foto-penjual.jpg" alt="Foto Profil Penjual">
-        <div class="profile-info">
-        <!-- <h3><?= htmlspecialchars($dataUser['nama']) ?></h3>
-        <p><?= htmlspecialchars($dataUser['email']) ?></p> -->
-        <!-- <?php
-            echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
-            echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
-        ?> -->
+<h1>Pesanan Saya</h1>
+    <!-- <div class="profile-container"> -->
+        <!-- <div class="profile-header">
+            <img src="foto-penjual.jpg" alt="Foto Profil Penjual">
+            <div class="profile-info">
+                <h3><?= htmlspecialchars($dataUser['nama']) ?></h3>
+                <p><?= htmlspecialchars($dataUser['email']) ?></p>
+                <?php
+                    echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
+                    echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
+                ?>
+            </div>
+        </div> -->
+
+        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+        <div class="pesanan-container">
+            <div class="pesanan-gambar">
+                <img src="<?= $row['path_foto']; ?>" alt="<?= $row['nama_pakaian']; ?>">
+            </div>
+                <div class="pesanan-info">
+                    <p><strong>Invoice:</strong> <?= $row['kode_invoice']; ?></p>
+                    <p><strong>Produk:</strong> <?= $row['nama_pakaian']; ?></p>
+                    <p><strong>Harga:</strong> Rp<?= number_format($row['harga'], 0, ',', '.'); ?></p>
+                    <p><strong>Tanggal:</strong> <?= $row['tgl_transaksi']; ?></p>
+                    <p><strong>Shop:</strong>
+                    <a href="profil_penjual.php?id_user=<?= $row['id_penjual'] ?>">
+                        <?= htmlspecialchars($row['nama_penjual']) ?>
+                    </a>
+                </p>
+                <p class="pesanan-status <?= $row['status_transaksi'] === 'dikirim' ? 'status-dikirim' : '' ?>">
+                    <strong>Status:</strong> <?= ucfirst($row['status_transaksi']); ?>
+                </p>
+                
+                <?php if ($row['status_transaksi'] === 'dikirim') { ?>
+                    <form method="POST" action="form_rating.php">
+                        <input type="hidden" name="id_transaksi" value="<?= $row['id_transaksi']; ?>">
+                        <button type="submit" class="pesanan-button">Konfirmasi & Beri Rating</button>
+                    </form>
+                    <?php } ?>
+            </div>
         </div>
     </div>
-
-    <div class="uploaded-products-container">
-        <h1>Pesanan Saya</h1>
-            <div class="pesanan-container">
-                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-            <div style="border:1px solid #ccc; padding:10px; margin:10px;">
-                <img src="<?= $row['path_foto']; ?>" width="100" height="100" style="object-fit:cover;"><br>
-                <strong>Invoice:</strong> <?= $row['kode_invoice']; ?><br>
-                <strong>Produk:</strong> <?= $row['nama_pakaian']; ?><br>
-                <strong>Harga:</strong> Rp<?= number_format($row['harga'], 0, ',', '.'); ?><br>
-                <strong>Tanggal:</strong> <?= $row['tgl_transaksi']; ?><br>
-                <p><strong>Penjual:</strong> 
-            <a href="profil_penjual.php?id_user=<?= $row['id_penjual'] ?>">
-                <?= htmlspecialchars($row['nama_penjual']) ?>
-            </a>
-            </p>
-        <strong>Status:</strong> <?= ucfirst($row['status_transaksi']); ?><br>
-        <?php if ($row['status_transaksi'] === 'dikirim') { ?>
-            <form method="POST" action="form_rating.php">
-                <input type="hidden" name="id_transaksi" value="<?= $row['id_transaksi']; ?>">
-                <button type="submit">Konfirmasi dan Beri Rating</button>
-            </form>
-        <?php } ?>
-    </div>
 <?php } ?>
-    </div>
-    </div>
-    </div>
+
 
 </body>
 <footer>

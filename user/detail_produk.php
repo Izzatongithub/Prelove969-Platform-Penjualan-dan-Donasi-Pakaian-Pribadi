@@ -97,7 +97,7 @@
     <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
 
     <!-- Daftar Produk -->
-            <!-- Galeri Foto -->
+    <!-- Galeri Foto -->
 <div class="detail-box">
     <!-- Kolom kiri: gambar utama dan thumbnail -->
     <div class="image-section">
