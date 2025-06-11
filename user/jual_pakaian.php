@@ -63,6 +63,7 @@
             <a href="#" id="registerBtn" class='btn'>Logout</a>
             
         </nav>
+        <span> <?php echo"<h5>Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
     </header>
         <div class="main-links">
             <a href="jual_pakaian.php">Jual</a>
@@ -72,126 +73,105 @@
             <a href="profil_saya.php">Profil saya</a>
             <a href="wishlist.php">Wishlist</a>
         </div>
-    <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
-    <!-- Filter -->
-    <section class="filters">
-        <select id="category-filter" class="filters-content">
-            <option value="">Category</option>
-            <?php while ($kat = mysqli_fetch_assoc($kategoriQuery)) : ?>
-                <option value="<?= $kat['kategori']; ?>"><?= $kat['kategori']; ?></option>
-            <?php endwhile; ?>
-        </select>
-        <select id="size-filter">
-            <option value="">Size</option>
-        </select>
-    </section>
 
     <div class="container-sm">
-        <h2>Tambah produk</h2>
-    <!-- Content here -->
-    <form action="../proses/proses_upload_foto.php" method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="formFileMultiple" class="form-label">Upload Foto Produk:</label>
-        <input class="form-control" type="file" id="formFileMultiple" name="foto_produk[]" multiple>
+    <br><h2>Tambah produk</h2><br>
+        <!-- Content here -->
+        <form action="../proses/proses_upload_foto.php" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="formFileMultiple" class="form-label">Upload Foto Produk:</label>
+                <input class="form-control" type="file" id="formFileMultiple" name="foto_produk[]" multiple>
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Nama Produk:</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="nama_pakaian" placeholder="Title">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Deskripsi</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi" placeholder="Deskripsikan produkmu dengan detail dan jelas"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Harga:</label>
+                <input type="number" class="form-control" id="exampleFormControlInput1" name="harga" placeholder="Title">
+            </div>
+            <label for="exampleFormControlTextarea1" class="form-label">Category</label>
+            <select class="form-select" aria-label="Default select example" name="kategori" id="kategori">
+                <option selected>Select category</option>
+                <?php
+
+                $no = 1;
+                $qry = mysqli_query($koneksi, "SELECT * FROM kategori_pakaian");
+                while ($data = mysqli_fetch_array($qry)) {
+                ?>
+                    <option data="<?= $data['kategori'] ?>" value="<?= $data['id_kategori'] ?>"><?= $data['kategori'] ?>
+                    </option>
+                <?php }
+                ?>
+            </select>
+            <label for="exampleFormControlTextarea1" class="form-label">Size</label>
+            <select class="form-select" aria-label="Default select example" id="ukuran" name="ukuran">
+                <option selected>Select size</option>
+                
+            </select>
+            <label for="exampleFormControlTextarea1" class="form-label">Kondisi</label>
+            <select class="form-select" aria-label="Default select example" name="kondisi">
+                <option selected>Pilih kondisi</option>
+                <?php
+
+                $no = 1;
+                $qry = mysqli_query($koneksi, "SELECT * FROM kondisi_pakaian");
+                while ($data = mysqli_fetch_array($qry)) {
+                ?>
+                    <option data="<?= $data['kondisi'] ?>" value="<?= $data['id_kondisi'] ?>"><?= $data['kondisi'] ?>
+                    </option>
+                <?php }
+                ?>
+            </select>
+            <label for="exampleFormControlTextarea1" class="form-label">Gender</label>
+                <select class="form-select" aria-label="Default select example" name="gender">
+                    <option selected>Pilih Gender</option>
+                    <option value="pria">Pria</option>
+                    <option value="wanita">Wanita</option>
+                    <option value="unisex">Unisex</option>
+                </select>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
-    <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Nama Produk:</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title">
-    </div>
-    <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Deskripsi</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Deskripsikan produkmu dengan detail dan jelas"></textarea>
-    </div>
-    <select class="form-select" aria-label="Default select example">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-    </select>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    </div>
 
+<script>
+    const ukuranData = <?= json_encode($ukuranData); ?>;
+    const kategoriSelect = document.getElementById('kategori');
+    const ukuranSelect = document.getElementById('ukuran');
 
-    <h2>Tambah produk</h2>
-    <form action="../proses/proses_upload_foto.php" method="post" enctype="multipart/form-data">
+    kategoriSelect.addEventListener('change', function () {
+        const selectedOption = kategoriSelect.options[kategoriSelect.selectedIndex];
+        const kategoriNama = selectedOption.getAttribute('data');
 
-    <label>Upload Foto Produk:</label><br>
-    <input type="file" name="foto_produk[]" multiple required><br><br>
+        let tipeUkuran = 'pakaian'; // default
+        if (kategoriNama === 'Footwear') {
+            tipeUkuran = 'sepatu';
+        } else if (kategoriNama === 'Bottoms') {
+            tipeUkuran = 'celana';
+        } else if (kategoriNama === 'Bags & purses') {
+            tipeUkuran = 'lain';
+        }
 
-    <label>Nama Produk:</label><br>
-    <input type="text" name="nama_pakaian" required><br>
+        // Kosongkan ukuran
+        ukuranSelect.innerHTML = '<option value="">-- Pilih Ukuran --</option>';
 
-    <label>Deskripsi:</label><br>
-    <textarea name="deskripsi" required></textarea><br>
-
-    <label>Harga:</label><br>
-    <input type="number" name="harga" required><br>
-    
-    <label>Kategori:</label><br>
-    <select name="kategori" id="kategori">
-        <option value="0">-- Pilih Kategori --</option>
-        <?php
-
-        $no = 1;
-        $qry = mysqli_query($koneksi, "SELECT * FROM kategori_pakaian");
-        while ($data = mysqli_fetch_array($qry)) {
-        ?>
-            <option data="<?= $data['kategori'] ?>" value="<?= $data['id_kategori'] ?>"><?= $data['kategori'] ?>
-            </option>
-        <?php }
-        ?>
-    </select><br>
-    
-    <label>Ukuran:</label><br>
-    <select name="ukuran" id="ukuran">
-        <option value="0">-- Pilih Ukuran --</option>
-        <!-- <?php
-
-        $no = 1;
-        $qry = mysqli_query($koneksi, "SELECT * FROM ukuran_pakaian");
-        while ($data = mysqli_fetch_array($qry)) {
-        ?>
-            <option data="<?= $data['ukuran'] ?>" value="<?= $data['id_ukuran'] ?>"><?= $data['ukuran'] ?>
-            </option>
-        <?php }
-        ?> -->
-    </select><br>
-    
-    <label>Kondisi pakaian:</label><br>
-    <select name="kondisi" id="kondisi">
-        <option value="0">-- Pilih kondisi --</option>
-        <?php
-
-        $no = 1;
-        $qry = mysqli_query($koneksi, "SELECT * FROM kondisi_pakaian");
-        while ($data = mysqli_fetch_array($qry)) {
-        ?>
-            <option data="<?= $data['kondisi'] ?>" value="<?= $data['id_kondisi'] ?>"><?= $data['kondisi'] ?>
-            </option>
-        <?php }
-        ?>
-    </select><br>
-
-    <label for="status">Gender:</label>
-<select name="gender" id="status">
-  <option value="pria">Pria</option>
-  <option value="wanita">Wanita</option>
-  <option value="unisex">Unisex</option>
-</select>
-
-
-
-    <input type="submit" name="submit" value="Simpan Produk">
-</form>
+        // Tambahkan opsi dari data yang sesuai
+        ukuranData[tipeUkuran].forEach(item => {
+            const opt = document.createElement('option');
+            opt.value = item.id_ukuran;
+            opt.textContent = item.ukuran;
+            ukuranSelect.appendChild(opt);
+        });
+    });
+</script>
 
 
 </body>
