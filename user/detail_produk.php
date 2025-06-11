@@ -12,7 +12,7 @@
     include "../config.php";
     $id = $_GET['id'];
 
-    $query = "SELECT p.*, k.kategori, u.ukuran, c.kondisi, us.nama AS nama_penjual
+    $query = "SELECT p.*, k.kategori, u.ukuran, c.kondisi, us.nama AS nama_penjual, p.tgl_upload
         FROM pakaian p
         LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
         LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
@@ -46,6 +46,29 @@
         }
         return $output;
     }
+
+    //waktu upload pakaian
+    function waktuUpload($waktu) {
+            $sekarang = time(); // waktu saat ini (timestamp)
+            $waktuUpload = strtotime($waktu); // ubah waktu dari database ke timestamp
+            $selisih = $sekarang - $waktuUpload; // hitung selisih waktu (detik)
+
+            if ($selisih < 60) {
+                return 'Baru saja';
+            } elseif ($selisih < 3600) {
+                $menit = floor($selisih / 60);
+                return "$menit menit yang lalu";
+            } elseif ($selisih < 86400) {
+                $jam = floor($selisih / 3600);
+                return "$jam jam yang lalu";
+            } elseif ($selisih < 604800) {
+                $hari = floor($selisih / 86400);
+                return "$hari hari yang lalu";
+            } else {
+                return date("d M Y", $waktuUpload); // jika lebih dari 7 hari, tampilkan tanggal
+            }
+        }
+
 ?>
 <body>
     <!-- Navbar -->
@@ -103,6 +126,7 @@
         <p><?= $data['ukuran'] . " | " . $data['kondisi']; ?></p>
         <p>Rp <?= number_format($data['harga'], 0, ',', '.'); ?></p>
         <p><?= nl2br($data['deskripsi']); ?></p>
+        <p>Diunggah <?= waktuUpload($data['tgl_upload']) ?></p>
         <hr>
         <p><strong>Penjual:</strong>
             <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>">
@@ -133,6 +157,7 @@
                     <?php endif; ?>
                 </div>
             </div>
+        </div>
     </div>
 
 </section>

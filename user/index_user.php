@@ -82,15 +82,15 @@
     // ORDER BY p.id_pakaian DESC";
 
     $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto, p.tgl_upload
-FROM pakaian p
-LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
-LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
-LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
-LEFT JOIN (
-    SELECT * FROM foto_produk WHERE urutan = 1
-) f ON p.id_pakaian = f.id_pakaian
-WHERE p.status_ketersediaan = 'tersedia'
-ORDER BY p.id_pakaian DESC";
+    FROM pakaian p
+    LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
+    LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
+    LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
+    LEFT JOIN (
+        SELECT * FROM foto_produk WHERE urutan = 1
+    ) f ON p.id_pakaian = f.id_pakaian
+    WHERE p.status_ketersediaan = 'tersedia'
+    ORDER BY p.id_pakaian DESC";
 
 
 $result = mysqli_query($koneksi, $query);
@@ -100,25 +100,25 @@ if (!$result) {
 }
 
             function waktuUpload($waktu) {
-    $sekarang = time(); // waktu saat ini (timestamp)
-    $waktuUpload = strtotime($waktu); // ubah waktu dari database ke timestamp
-    $selisih = $sekarang - $waktuUpload; // hitung selisih waktu (detik)
+            $sekarang = time(); // waktu saat ini (timestamp)
+            $waktuUpload = strtotime($waktu); // ubah waktu dari database ke timestamp
+            $selisih = $sekarang - $waktuUpload; // hitung selisih waktu (detik)
 
-    if ($selisih < 60) {
-        return 'Baru saja';
-    } elseif ($selisih < 3600) {
-        $menit = floor($selisih / 60);
-        return "$menit menit yang lalu";
-    } elseif ($selisih < 86400) {
-        $jam = floor($selisih / 3600);
-        return "$jam jam yang lalu";
-    } elseif ($selisih < 604800) {
-        $hari = floor($selisih / 86400);
-        return "$hari hari yang lalu";
-    } else {
-        return date("d M Y", $waktuUpload); // jika lebih dari 7 hari, tampilkan tanggal
-    }
-}
+            if ($selisih < 60) {
+                return 'Baru saja';
+            } elseif ($selisih < 3600) {
+                $menit = floor($selisih / 60);
+                return "$menit menit yang lalu";
+            } elseif ($selisih < 86400) {
+                $jam = floor($selisih / 3600);
+                return "$jam jam yang lalu";
+            } elseif ($selisih < 604800) {
+                $hari = floor($selisih / 86400);
+                return "$hari hari yang lalu";
+            } else {
+                return date("d M Y", $waktuUpload); // jika lebih dari 7 hari, tampilkan tanggal
+            }
+        }
 
             while ($row = mysqli_fetch_assoc($result)) {
                 $id_user = $_SESSION['id_user'];
