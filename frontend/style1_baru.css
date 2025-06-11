@@ -894,9 +894,9 @@ a {
     margin-top: 5px;
 }
 
-.status-flex select {
-    flex: 1; /* Biar select menyesuaikan lebar */
-}
+/* .status-flex select { */
+     /* flex: 1; Biar select menyesuaikan lebar */
+/* } */
 
 .btn-proses {
     background-color: #ff69b4;
@@ -910,5 +910,24 @@ a {
 }
 
 .btn-proses:hover {
+    background-color: #d63384;
+}
+
+.btn-primary{
+    margin-top: 10px;
+    margin-left: 250px;
+    margin-right: 0;
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+
+}
+
+.btn-primary:hover {
     background-color: #d63384;
 }

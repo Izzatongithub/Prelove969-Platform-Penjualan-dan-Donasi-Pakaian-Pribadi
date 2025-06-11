@@ -216,9 +216,9 @@
             while ($row = mysqli_fetch_assoc($result)) {
                 $id_user = $_SESSION['id_user'];
                 // Di dalam while, sebelum echo tombol
-            $id_pakaian = $row['id_pakaian'];
-            $cek = mysqli_query($koneksi, "SELECT * FROM likes WHERE id_user = '$id_user' AND id_pakaian = '$id_pakaian'");
-            $sudah_suka = mysqli_num_rows($cek) > 0;
+                $id_pakaian = $row['id_pakaian'];
+                $cek = mysqli_query($koneksi, "SELECT * FROM likes WHERE id_user = '$id_user' AND id_pakaian = '$id_pakaian'");
+                $sudah_suka = mysqli_num_rows($cek) > 0;
 
     echo "<div class='product'>
         <a href='detail_produk.php?id={$row['id_pakaian']}'>

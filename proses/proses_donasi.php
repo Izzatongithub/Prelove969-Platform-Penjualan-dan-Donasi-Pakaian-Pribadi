@@ -1,13 +1,11 @@
 <?php
 include '../config.php'; // file koneksi ke database
+session_start();
 
 // Ambil data dari form
+$id_user = $_SESSION['id_user'];
 $nama = $_POST['nama'];
 $no_telp = $_POST['no_telp'];
-// $jenis = $_POST['jenis_pakaian'];
-// $ukuran = $_POST['ukuran'];
-// $kondisi = $_POST['kondisi'];
-// $jumlah = $_POST['jumlah'];
 $metode = $_POST['metode_donasi'];
 $alamat = $_POST['alamat'];
 
@@ -24,8 +22,8 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
 }
 
 // Simpan ke database
-$sql = "INSERT INTO donasi (nama, no_telp, metode_donasi, alamat, foto) 
-    VALUES ('$nama', '$no_telp', '$metode', '$alamat', '$foto')";
+$sql = "INSERT INTO donasi (id_user, nama, no_telp, metode_donasi, alamat, foto) 
+    VALUES ('$id_user', '$nama', '$no_telp', '$metode', '$alamat', '$foto')";
 
 $result = mysqli_query($koneksi, $sql);
 $cek = mysqli_num_rows($result);

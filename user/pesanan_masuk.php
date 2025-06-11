@@ -97,7 +97,8 @@
                 <?php if (!empty($next_status_options)): ?>
                                 <form method="POST" action="../proses/proses_pesanan.php">
                 <input type="hidden" name="id_transaksi" value="<?= $row['id_transaksi']; ?>">
-                <br><label for="exampleFormControlTextarea1" class="form-label">Update status</label>
+                <p><em>Pesanan sedang <?= $row['status_transaksi']; ?></em></p><br>
+                <label for="exampleFormControlTextarea1" class="form-label">Update status</label>
                 <div class="status-flex">
                     <select class="form-select" name="status_transaksi">
                         <option selected>Pilih status</option>
@@ -106,11 +107,10 @@
                         <?php endforeach; ?>
                     </select>
                     <!-- <button type="submit" class="btn-proses">Update Status</button> -->
-                    <button type="submit" class="btn btn-primary">Update Status</button>
                 </div>
+                <button type="submit" class="btn-primary">Update Status</button>
             </form>
 
-                        <p><em>Pesanan sedang <?= $row['status_transaksi']; ?></em></p>
                     <?php endif; ?>
                     </div>
                 </div>

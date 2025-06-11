@@ -1,39 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preloved Shop</title>
+    <link rel="stylesheet" href="../frontend/style1_baru.css">
+    <script src="../frontend/script.js" defer></script>
+</head>
+
 <?php
-session_start();
-include '../config.php';
+    include "../config.php";
+    session_start();
+    if (!isset($_SESSION['username'])) {
+        header("Location: index.php?page=login");
+    }
 
-$id_user = $_SESSION['id_user'];
+    $id_user = $_SESSION['id_user'];
+    // Ambil data user
+    $query_user = mysqli_query($koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
+    $data_user = mysqli_fetch_assoc($query_user);
 
-// Ambil data user
-$query_user = mysqli_query($koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
-$data_user = mysqli_fetch_assoc($query_user);
+    // Ambil daftar pakaian yang diunggah user
+    $query_produk = mysqli_query($koneksi, "SELECT p.*, f.path_foto FROM pakaian p
+        LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f 
+        ON p.id_pakaian = f.id_pakaian
+        WHERE p.id_user = '$id_user'
+    ");
 
-// Ambil daftar pakaian yang diunggah user
-$query_produk = mysqli_query($koneksi, "
-    SELECT p.*, f.path_foto FROM pakaian p
-    LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f 
-    ON p.id_pakaian = f.id_pakaian
-    WHERE p.id_user = '$id_user'
-");
+    $qRating = mysqli_query($koneksi, "SELECT AVG(rating) AS rata_rata, COUNT(*) AS total
+        FROM reviews WHERE id_penjual = '$id_user'");
+    $rating = mysqli_fetch_assoc($qRating);
+
 ?>
 
-<h2>Profil Saya</h2>
-<p><strong>Nama:</strong> <?= $data_user['nama'] ?></p>
-<p><strong>Email:</strong> <?= $data_user['email'] ?></p>
-<p><strong>No HP:</strong> <?= $data_user['no_telp'] ?></p>
-<p><strong>Alamat:</strong> <?= $data_user['alamat'] ?></p>
-
-<a href="edit_profil.php">Edit Profil</a> | <a href="hapus_profil.php">Hapus Akun</a>
-
-<hr>
-
-<h2>Pakaian yang Diunggah</h2>
-<?php while ($pakaian = mysqli_fetch_assoc($query_produk)) { ?>
-    <div style="border:1px solid #ccc; margin-bottom:10px; padding:10px;">
-        <img src="../uploads/<?= $pakaian['path_foto'] ?>" width="100"><br>
-        <strong><?= $pakaian['nama_pakaian'] ?></strong><br>
-        Harga: Rp<?= number_format($pakaian['harga'], 0, ',', '.') ?><br>
-        <a href="edit_produk.php?id=<?= $pakaian['id_pakaian'] ?>">Edit</a> |
-        <a href="delete_produk.php?id_pakaian=<?= $pakaian['id_pakaian'] ?>" onclick="return confirm('Yakin?')">Hapus</a>
+<body>
+    <!-- Navbar -->
+    <header>
+        <div class="header-top">
+            <div class="logo">PRELOVE969</div>
+            <input type="text" id="search" class="search" placeholder="Cari pakaian...">
+        </div>
+        <nav class="navbar">
+            <a href="?gender=wanita">Wanita</a>
+            <a href="?gender=pria">Pria</a>
+            <a href="?gender=unisex">Unisex</a>
+            <!-- <a href="#">Anak</a> -->
+            <a href="#" class="sale">Sale</a>
+            <a href="#" class="donate">Donasi</a>
+            <a href="#" id="registerBtn" class='btn'>Logout</a>
+            
+        </nav>
+    </header>
+    <div class="main-links">
+        <a href="jual_pakaian.php">Jual</a>
+        <a href="keranjang.php">Keranjang</a>
+        <a href="pesananku.php">Pesanan saya</a>
+        <a href="pesanan_masuk.php">Pesanan masuk</a>
+        <a href="profil_saya.php">Profil saya</a>
+        <a href="wishlist.php">Wishlist</a>
     </div>
-<?php } ?>
+    <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
+</section>
+
+    <div class="profile-container">
+    <div class="profile-header">
+        <img src="foto-penjual.jpg" alt="Foto Profil Penjual">
+        <div class="profile-info">
+        <h2>Profil Saya</h2>
+        <p><strong>Nama:</strong> <?= $data_user['nama'] ?></p>
+        <p><strong>Email:</strong> <?= $data_user['email'] ?></p>
+        <p><strong>No HP:</strong> <?= $data_user['no_telp'] ?></p>
+        <p><strong>Alamat:</strong> <?= $data_user['alamat'] ?></p>
+        <?php
+            echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
+            echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
+        ?>
+        </div>
+    </div>
+
+    <div class="uploaded-products-container">
+        <h3>Produk yang Diunggah</h3><br>
+        <div class="uploaded-products-grid">
+            <?php while ($pakaian = mysqli_fetch_assoc($query_produk)) { ?>
+                <div class="product-card">
+                <img src="../uploads/<?= $pakaian['path_foto'] ?>" width="100"><br>
+                <strong><?= $pakaian['nama_pakaian'] ?></strong><br>
+                Harga: Rp<?= number_format($pakaian['harga'], 0, ',', '.') ?><br>
+                <a href="edit_produk.php?id=<?= $pakaian['id_pakaian'] ?>">Edit</a> |
+                <a href="delete_produk.php?id_pakaian=<?= $pakaian['id_pakaian'] ?>" onclick="return confirm('Yakin?')">Hapus</a>
+            </div>
+        <?php } ?>
+        </div>
+    </div>
+</div>
+
+</body>
+<footer>
+    <div class="footer-container">
+        <div class="footer-about">
+            <h3>Tentang Kami</h3>
+            <p>Website ini adalah platform preloved yang membantu pengguna menjual dan mendonasikan pakaian bekas yang masih layak pakai.</p>
+        </div>
+        <div class="footer-links">
+            <h3>Tautan Cepat</h3>
+            <ul>
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Produk</a></li>
+                <li><a href="#">Donasi</a></li>
+                <li><a href="#">Kontak</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h3>Kontak Kami</h3>
+            <p>Email: support@preloved.com</p>
+            <p>Telepon: +62 812 3456 7890</p>
+            <div class="social-icons">
+                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
+                <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
+                <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
+            </div>
+        </div>
+    </div>
+    <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
+</footer>
+
+</html>
