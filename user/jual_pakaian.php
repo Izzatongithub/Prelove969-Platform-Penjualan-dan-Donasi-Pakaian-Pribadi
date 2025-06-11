@@ -50,29 +50,31 @@
     <!-- Navbar -->
     <header>
         <div class="header-top">
-            <div class="logo">PRELOVE969</div>
+            <div class="logo">
+                <a href='index_user.php'>PRELOVE969</a>
+            </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
         <nav class="navbar">
-            <a href="?gender=wanita">Wanita</a>
+            <!-- <a href="?gender=wanita">Wanita</a>
             <a href="?gender=pria">Pria</a>
             <a href="?gender=unisex">Unisex</a>
-            <!-- <a href="#">Anak</a> -->
-            <a href="#" class="sale">Sale</a>
-            <a href="#" class="donate">Donasi</a>
-            <a href="#" id="registerBtn" class='btn'>Logout</a>
-            
-        </nav>
-        <span> <?php echo"<h5>Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
-    </header>
-        <div class="main-links">
+            <a href="#">Anak</a>
+            <a href="#" class="sale">Sale</a> -->
             <a href="jual_pakaian.php">Jual</a>
             <a href="keranjang.php">Keranjang</a>
             <a href="pesananku.php">Pesanan saya</a>
             <a href="pesanan_masuk.php">Pesanan masuk</a>
             <a href="profil_saya.php">Profil saya</a>
             <a href="wishlist.php">Wishlist</a>
+            <a href="#" class="donate">Donasi</a>
+            <a href="#" id="registerBtn" class='btn'>Logout</a>
+            
+        </nav>
+        <div class="main-links">
         </div>
+            <span><?php echo"<h5>Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
+    </header>
 
     <div class="container-sm">
     <br><h2>Tambah produk</h2><br>
@@ -134,12 +136,8 @@
                     <option value="wanita">Wanita</option>
                     <option value="unisex">Unisex</option>
                 </select>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
     </div>
 
 <script>

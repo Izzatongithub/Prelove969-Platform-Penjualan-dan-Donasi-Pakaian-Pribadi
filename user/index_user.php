@@ -29,7 +29,9 @@
     <!-- Navbar -->
     <header>
         <div class="header-top">
-            <div class="logo">PRELOVE969</div>
+            <div class="logo">
+                <a href='index_user.php'>PRELOVE969</a>
+            </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
         <nav class="navbar">
@@ -37,7 +39,6 @@
             <a href="?gender=pria">Pria</a>
             <a href="?gender=unisex">Unisex</a>
             <!-- <a href="#">Anak</a> -->
-            <a href="#" class="sale">Sale</a>
             <a href="form_donasi.php" class="donate">Donasi</a>
             <a href="#" id="registerBtn" class='btn'>Logout</a>
             
@@ -51,10 +52,10 @@
         <a href="profil_saya.php">Profil saya</a>
         <a href="wishlist.php">Wishlist</a>
     </div>
-    <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
-
+    
     <!-- Filter -->
     <section class="filters">
+        <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
     <select id="category-filter" class="filters-content">
         <option value="">Category</option>
         <?php while ($kat = mysqli_fetch_assoc($kategoriQuery)) : ?>
