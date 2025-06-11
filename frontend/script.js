@@ -12,47 +12,91 @@ document.getElementById("search").addEventListener("input", function() {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    let loginBtn = document.getElementById("loginBtn");
-    let loginModal = document.getElementById("loginModal");
-    let closeBtn = document.querySelector(".close");
+//modal popup login/registrasi
+    const loginModal = document.getElementById("loginModal");
+    const registerModal = document.getElementById("registerModal");
 
-    if (!loginBtn || !loginModal || !closeBtn) {
-        console.error("Elemen modal tidak ditemukan!");
-        return;
-    }
+    // Ambil semua tombol yang bisa memicu login atau register
+    const loginBtns = document.querySelectorAll("#loginBtn");
+    const registerBtns = document.querySelectorAll("#registerBtn");
 
-    // Saat tombol Login diklik, modal muncul
-    loginBtn.addEventListener("click", function(event) {
-        event.preventDefault();
-        loginModal.classList.add("show");
+    const closeButtons = document.querySelectorAll("close");
+
+    // Tampilkan modal login saat tombol login diklik
+    loginBtns.forEach(btn => {
+        btn.addEventListener("click", function(e) {
+            e.preventDefault();
+            registerModal.style.display = "none";
+            loginModal.style.display = "block";
+        });
     });
 
-    // Saat tombol close (X) diklik, modal hilang
-    closeBtn.addEventListener("click", function() {
-        loginModal.classList.remove("show");
+    // Tampilkan modal register saat tombol register diklik
+    registerBtns.forEach(btn => {
+        btn.addEventListener("click", function(e) {
+            e.preventDefault();
+            loginModal.style.display = "none";
+            registerModal.style.display = "block";
+        });
     });
 
-    // Klik di luar modal untuk menutupnya
+    // Tutup modal saat tombol close diklik
+    closeButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            loginModal.style.display = "none";
+            registerModal.style.display = "none";
+        });
+    });
+
+    // Tutup modal jika klik di luar modal
+    // Tutup modal jika klik di luar area modal
     window.addEventListener("click", function(event) {
-        if (event.target === loginModal) {
-            loginModal.classList.remove("show");
+        if (event.target == loginModal || event.target == registerModal) {
+            loginModal.style.display = "none";
+            registerModal.style.display = "none";
         }
     });
-});
+// document.addEventListener("DOMContentLoaded", function() {
+//     let loginBtn = document.getElementById("loginBtn");
+//     let loginModal = document.getElementById("loginModal");
+//     let closeBtn = document.querySelector(".close");
 
-document.addEventListener("DOMContentLoaded", function () {
-    let dropdown = document.querySelector(".dropdown");
-    let dropdownMenu = document.querySelector(".dropdown-menu");
+//     if (!loginBtn || !loginModal || !closeBtn) {
+//         console.error("Elemen modal tidak ditemukan!");
+//         return;
+//     }
 
-    dropdown.addEventListener("mouseenter", function () {
-        dropdownMenu.style.display = "flex";
-    });
+//     // Saat tombol Login diklik, modal muncul
+//     loginBtn.addEventListener("click", function(event) {
+//         event.preventDefault();
+//         loginModal.classList.add("show");
+//     });
 
-    dropdown.addEventListener("mouseleave", function () {
-        dropdownMenu.style.display = "none";
-    });
-});
+//     // Saat tombol close (X) diklik, modal hilang
+//     closeBtn.addEventListener("click", function() {
+//         loginModal.classList.remove("show");
+//     });
+
+//     // Klik di luar modal untuk menutupnya
+//     window.addEventListener("click", function(event) {
+//         if (event.target === loginModal) {
+//             loginModal.classList.remove("show");
+//         }
+//     });
+// });
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     let dropdown = document.querySelector(".dropdown");
+//     let dropdownMenu = document.querySelector(".dropdown-menu");
+
+//     dropdown.addEventListener("mouseenter", function () {
+//         dropdownMenu.style.display = "flex";
+//     });
+
+//     dropdown.addEventListener("mouseleave", function () {
+//         dropdownMenu.style.display = "none";
+//     });
+// });
 
 //untuk form uplaod gambar
     document.querySelector('input[type="file"]').addEventListener('change', function(event) {

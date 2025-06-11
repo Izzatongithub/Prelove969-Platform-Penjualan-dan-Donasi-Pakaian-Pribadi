@@ -35,19 +35,9 @@
             <a href="#" class="sale">Sale</a>
             <a href="#" class="donate">Donasi</a>
             <a href="#" id="loginBtn">Login</a>
-            <a href="register.php" class="btn">Sign Up</a>
+            <a href="#" id="registerBtn" class='btn'>Sign Up</a>
         </nav>
     </header>
-
-    <!-- Kategori -->
-    <!-- <section class="categories">
-        <button>Footwear</button>
-        <button>Tops</button>
-        <button>Bottoms</button>
-        <button>Outerwear</button>
-        <button>Underwear</button>
-        <button>Accessories</button>
-    </section> -->
 
     <!-- Filter -->
  <section class="filters">
@@ -209,7 +199,23 @@ window.addEventListener('DOMContentLoaded', () => {
                 <input type="text" name="username" placeholder="Username" required size="200">
                 <input type="password" name="password" placeholder="Password" required><br><br>
                 <button type="submit" name="submit">Login</button><br><br>
-                <p>Belum punya akun? <a href=signup.php>Signup</a></p>
+                <p>Belum punya akun? <a href='#' id="registerBtn">Signup</a></p>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Popup Registrasi -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Daftar Akun</h2>
+            <form action="./proses/proses-register.php" method="POST">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm_password" placeholder="Ulangi Password" required><br><br>
+                <button type="submit" name="submit">Daftar</button><br><br>
+                <p>Sudah punya akun? <a href="#" id="loginBtn">Login</a></p>
             </form>
         </div>
     </div>

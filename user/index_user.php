@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preloved Shop</title>
-    <link rel="stylesheet" href="../frontend/style1.css">
+    <link rel="stylesheet" href="../frontend/style1_baru.css">
     <script src="../frontend/script.js" defer></script>
 </head>
 
@@ -14,104 +14,58 @@
     if (!isset($_SESSION['username'])) {
         header("Location: index.php?page=login");
     }
+
+    // Ambil data kategori
+    $kategoriQuery = mysqli_query($koneksi, "SELECT * FROM kategori_pakaian");
+    $ukuranQuery = mysqli_query($koneksi, "SELECT * FROM ukuran_pakaian");
+    $ukuranArray = [];
+    while ($row = mysqli_fetch_assoc($ukuranQuery)) {
+        $ukuranArray[$row['tipe_ukuran']][] = $row['ukuran'];
+    }
+
 ?>
 
 <body>
     <!-- Navbar -->
     <header>
-        <div class="topbar">
+        <div class="header-top">
             <div class="logo">PRELOVE969</div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
-            <a href="jual_pakaian.php">Jual</a>
-            <a href="keranjang.php">keranjang</a>
-            <a href="pesananku.php">Pesanan saya</a>
-            <a href="pesanan_masuk.php">Pesanan masuk</a>
-            <a href="profil_saya.php">Profil saya</a>
-            <a href="wishlist.php">Wishlist</a>
         </div>
-        <nav class="menu">
-            <div class="dropdown">
-                <a href="#">Wanita</a>
-                <div class="dropdown-menu">
-                    <div class="dropdown-column">
-                        <h4>Baju</h4>
-                        <a href="#">T-shirts</a>
-                        <a href="#">Polo shirts</a>
-                        <a href="#">Kemeja</a>
-                        <a href="#">Sweater</a>
-                        <a href="#">Hoodie</a>
-                        <a href="#">Jaket</a>
-                        <a href="#">Jeans</a>
-                        <a href="#">Celana</a>
-                        <a href="#">Shorts</a>
-                    </div>
-                </div>
-             </div>
-        <div class="dropdown">
-            <a href="#">Pria</a>
-                <div class="dropdown-menu">
-                    <div class="dropdown-column">
-                        <h4>Baju</h4>
-                            <a href="#">T-shirts</a>
-                            <a href="#">Polo shirts</a>
-                            <a href="#">Kemeja</a>
-                            <a href="#">Sweater</a>
-                            <a href="#">Hoodie</a>
-                            <a href="#">Jaket</a>
-                            <a href="#">Jeans</a>
-                            <a href="#">Celana</a>
-                            <a href="#">Shorts</a>
-                    </div>
-                    <div class="dropdown-column">
-                        <h4>Baju</h4>
-                            <a href="#">T-shirts</a>
-                            <a href="#">Polo shirts</a>
-                            <a href="#">Kemeja</a>
-                            <a href="#">Sweater</a>
-                            <a href="#">Hoodie</a>
-                            <a href="#">Jaket</a>
-                            <a href="#">Jeans</a>
-                            <a href="#">Celana</a>
-                            <a href="#">Shorts</a>
-                    </div>
-                </div>
-            </div>
-                <a href="#">Branded</a>
-                <a href="#">Anak</a>
-                <a href="#" class="sale">Sale</a>
-                <a href="form_donasi.php" class="donate">Donasi</a>
-                <!-- <a href="#" id="loginBtn">Login</a> -->
-                <a href="../index.php" class="btn">Logout</a>
+        <nav class="navbar">
+            <a href="?gender=wanita">Wanita</a>
+            <a href="?gender=pria">Pria</a>
+            <a href="?gender=unisex">Unisex</a>
+            <!-- <a href="#">Anak</a> -->
+            <a href="#" class="sale">Sale</a>
+            <a href="#" class="donate">Donasi</a>
+            <a href="#" id="registerBtn" class='btn'>Logout</a>
+            
         </nav>
     </header>
-        <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
-    
-    <!-- Kategori -->
-    <section class="categories">
-        <button>Footwear</button>
-        <button>Tops</button>
-        <button>Bottoms</button>
-        <button>Outerwear</button>
-        <button>Underwear</button>
-        <button>Accessories</button>
-    </section>
-
+    <div class="main-links">
+        <a href="jual_pakaian.php">Jual</a>
+        <a href="keranjang.php">Keranjang</a>
+        <a href="pesananku.php">Pesanan saya</a>
+        <a href="pesanan_masuk.php">Pesanan masuk</a>
+        <a href="profil_saya.php">Profil saya</a>
+        <a href="wishlist.php">Wishlist</a>
+    </div>
+    <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
     <!-- Filter -->
     <section class="filters">
-        <select id="category-filter" class="filters-content">
-            <option value="">Category</option>
-            <option value="tops">Tops</option>
-            <option value="bottoms">Bottoms</option>
-        </select>
-        <select id="size-filter">
-            <option value="">Size</option>
-            <option value="S">S</option>
-            <option value="M">M</option>
-        </select>
-        <select id="color-filter">
-            <option value="">Warna</option>
-        </select>
-    </section>
+    <select id="category-filter" class="filters-content">
+        <option value="">Category</option>
+        <?php while ($kat = mysqli_fetch_assoc($kategoriQuery)) : ?>
+            <option value="<?= $kat['kategori']; ?>"><?= $kat['kategori']; ?></option>
+        <?php endwhile; ?>
+    </select>
+
+    <select id="size-filter">
+        <option value="">Size</option>
+    </select>
+</section>
+
 
     <!-- Daftar Produk -->
     <section class="products">
@@ -177,11 +131,8 @@ if (!$result) {
         <a href='detail_produk.php?id={$row['id_pakaian']}'>
             <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
             <h3>{$row['nama_pakaian']}</h3>
-            <p><strong>Harga:</strong> Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
-            <p><strong>Kategori:</strong> {$row['kategori']}</p>
-            <p><strong>Ukuran:</strong> {$row['ukuran']}</p>
-            <p><strong>Kondisi:</strong> {$row['kondisi']}</p>
-            <p>{$row['deskripsi']}</p>
+            <p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
+            <p> {$row['ukuran']}</p>
             <p><em>Diunggah " . waktuUpload($row['tgl_upload']) . "</em></p>
         </a>";
     

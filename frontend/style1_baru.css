@@ -1,3 +1,18 @@
+/* Header wrapper */
+.header-top {
+display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 10px 30px;
+    gap: 100px; /* Tambahkan jarak antar elemen */
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #e91e63;
+}   
+
 /* Umum */
 * {
     margin: 0;
@@ -30,19 +45,18 @@ header {
     color: #8b0000;
 }
 
-/* Search Bar Container (jika dibutuhkan pembungkus) */
+/* Search Container */
 .search-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* ini untuk horizontal center */
+    align-items: center;      /* opsional: untuk vertical align */
     margin: 20px auto;
-    max-width: 100px;
-    padding: 0 20px;
+    width: 100%;   
 }
 
-/* Search Input Style */
+/* Search Input */
 .search {
-    width: 35%;
+    width: 500px; /* Atur panjang di sini, bisa px atau % */
     padding: 10px 20px;
     border: 2px solid #ffb6c1;
     border-radius: 30px;
@@ -54,13 +68,11 @@ header {
     box-shadow: 0 2px 6px rgba(255, 182, 193, 0.4);
 }
 
-/* Saat Fokus */
 .search:focus {
     border-color: #ff69b4;
     background-color: #ffffff;
     box-shadow: 0 2px 8px rgba(255, 105, 180, 0.5);
 }
-
 
 .navbar a {
     margin: 0 12px;
@@ -430,4 +442,23 @@ a {
     .products {
         grid-template-columns: 1fr;
     }
+}
+
+/* fitur utama */
+.main-links {
+    text-align: left;
+    padding: 10px 30px;
+}
+
+.main-links a {
+    margin-right: 20px;
+    text-decoration: none;
+    color: #8b0000;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.main-links a:hover {
+    /* color: #e91e63; */
+        color: #d63384;
 }
