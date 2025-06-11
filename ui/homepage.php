@@ -33,9 +33,10 @@
         
         /* Header Styling */
         .navbar {
-            padding: 1rem 0;
+            padding: 0; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            background-color: white !important;
+            background-color: white !important; 
+            position: static;
         }
         
         .navbar-brand {
@@ -49,6 +50,7 @@
             color: var(--text-dark) !important;
             margin: 0 0.5rem;
             transition: color 0.3s ease;
+            padding: 0.5em 0.75em;
         }
         
         .nav-link:hover {
@@ -123,7 +125,7 @@
             50% { transform: translateY(-20px); }
         }
         
-        /* Tombol CTA Hero */
+        /* Tombol CTA Hero
         .btn-cta-sell {
             background: linear-gradient(45deg, var(--primary-color), #ff8fab);
             border: none;
@@ -167,7 +169,7 @@
             background: var(--primary-color);
             color: white;
             transform: translateY(-3px);
-        }
+        } */
         
         /* Features Section */
         .features-section {
@@ -240,7 +242,7 @@
             line-height: 1.6;
         }
         
-        .btn-feature {
+        /* .btn-feature {
             border-radius: 50px;
             padding: 0.7rem 1.5rem;
             font-weight: 600;
@@ -260,7 +262,7 @@
         .btn-feature.browse {
             background-color: rgba(255, 217, 61, 0.1);
             color: #e6c200;
-        }
+        } */
         
         /* Stats Section */
         .stats-section {
@@ -441,7 +443,7 @@
         <div class="container">
             <!-- Logo -->
             <a class="navbar-brand" href="#">
-                <i class="fas fa-heart me-2"></i>Prelove969
+                <i class="#"></i>Prelove969
             </a>
             
             <!-- Mobile Toggle Button -->
@@ -452,7 +454,7 @@
             <!-- Navigation Menu -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-4">
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="#home">Home</a>
                     </li>
                     <li class="nav-item">
@@ -463,7 +465,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#kategori">Kategori</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="#login">Login</a>
                     </li>
@@ -487,7 +489,7 @@
                         Wujudkan fashion berkelanjutan sambil membantu sesama.
                     </p>
                     
-                    <!-- CTA Buttons -->
+                    <!-- CTA Buttons
                     <div class="d-flex flex-wrap">
                         <button class="btn btn-cta-sell">
                             <i class="fas fa-plus me-2"></i>Jual Pakaian
@@ -499,7 +501,7 @@
                             <i class="fas fa-search me-2"></i>Telusuri Produk
                         </button>
                     </div>
-                </div>
+                </div> -->
                 
                 <div class="col-lg-6">
                     <div class="hero-illustration">
@@ -532,7 +534,7 @@
                             Ubah pakaian yang sudah tidak terpakai menjadi penghasilan tambahan. 
                             Proses mudah, aman, dan menguntungkan.
                         </p>
-                        <button class="btn btn-feature sell">Mulai Jual</button>
+                        <!-- <button class="btn btn-feature sell">Mulai Jual</button> -->
                     </div>
                 </div>
                 
@@ -547,7 +549,7 @@
                             Berbagi kebaikan dengan mendonasikan pakaian layak pakai 
                             ke lembaga sosial terpercaya.
                         </p>
-                        <button class="btn btn-feature donate">Donasi Sekarang</button>
+                        <!-- <button class="btn btn-feature donate">Donasi Sekarang</button> -->
                     </div>
                 </div>
                 
@@ -562,7 +564,7 @@
                             Temukan pakaian preloved berkualitas dengan harga terjangkau. 
                             Fashion unik yang ramah lingkungan.
                         </p>
-                        <button class="btn btn-feature browse">Jelajahi Sekarang</button>
+                        <!-- <button class="btn btn-feature browse">Jelajahi Sekarang</button> -->
                     </div>
                 </div>
             </div>
@@ -710,8 +712,8 @@
                     <h5 class="footer-title">Kontak</h5>
                     <div class="contact-info">
                         <p><i class="fas fa-envelope me-2"></i> info@prelove969.com</p>
-                        <p><i class="fas fa-phone me-2"></i> +62 812-3456-7890</p>
-                        <p><i class="fas fa-map-marker-alt me-2"></i> Jakarta, Indonesia</p>
+                        <p><i class="fas fa-phone me-2"></i> +62 85-3372-35764</p>
+                        <p><i class="fas fa-map-marker-alt me-2"></i> Mataram, Indonesia</p>
                     </div>
                 </div>
             </div>
