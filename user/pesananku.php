@@ -39,32 +39,32 @@
     <!-- Navbar -->
     <header>
         <div class="header-top">
-            <div class="logo">PRELOVE969</div>
+            <div class="logo">
+                <a href='index_user.php'>PRELOVE969</a>
+            </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
         <nav class="navbar">
-            <a href="?gender=wanita">Wanita</a>
+            <!-- <a href="?gender=wanita">Wanita</a>
             <a href="?gender=pria">Pria</a>
             <a href="?gender=unisex">Unisex</a>
-            <!-- <a href="#">Anak</a> -->
-            <a href="#" class="sale">Sale</a>
+            <a href="#">Anak</a>
+            <a href="#" class="sale">Sale</a> -->
+            <a href="jual_pakaian.php">Jual</a>
+            <a href="keranjang.php">Keranjang</a>
+            <a href="pesananku.php">Pesanan saya</a>
+            <a href="pesanan_masuk.php">Pesanan masuk</a>
+            <a href="profil_saya.php">Profil saya</a>
+            <a href="wishlist.php">Wishlist</a>
             <a href="#" class="donate">Donasi</a>
             <a href="#" id="registerBtn" class='btn'>Logout</a>
-            
         </nav>
+        <div class="main-links">
+        </div>
+        <!-- <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
     </header>
-    <div class="main-links">
-        <a href="jual_pakaian.php">Jual</a>
-        <a href="keranjang.php">Keranjang</a>
-        <a href="pesananku.php">Pesanan saya</a>
-        <a href="pesanan_masuk.php">Pesanan masuk</a>
-        <a href="profil_saya.php">Profil saya</a>
-        <a href="wishlist.php">Wishlist</a>
-    </div>
-    <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
-</section>
 
-<h1>Pesanan Saya</h1>
+<h2 align='center'>Pesanan Saya</h2>
     <!-- <div class="profile-container"> -->
         <!-- <div class="profile-header">
             <img src="foto-penjual.jpg" alt="Foto Profil Penjual">

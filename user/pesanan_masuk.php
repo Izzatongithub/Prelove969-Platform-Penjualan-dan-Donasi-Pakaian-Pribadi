@@ -40,84 +40,90 @@
     <!-- Navbar -->
     <header>
         <div class="header-top">
-            <div class="logo">PRELOVE969</div>
+            <div class="logo">
+                <a href='index_user.php'>PRELOVE969</a>
+            </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
         <nav class="navbar">
-            <a href="?gender=wanita">Wanita</a>
+            <!-- <a href="?gender=wanita">Wanita</a>
             <a href="?gender=pria">Pria</a>
             <a href="?gender=unisex">Unisex</a>
-            <a href="#" class="sale">Sale</a>
-            <a href="#" class="donate">Donasi</a>
-            <a href="#" id="registerBtn" class='btn'>Logout</a>
-        </nav>
-    </header>
-        <div class="main-links">
+            <a href="#" class="sale">Sale</a> -->
             <a href="jual_pakaian.php">Jual</a>
             <a href="keranjang.php">Keranjang</a>
             <a href="pesananku.php">Pesanan saya</a>
             <a href="pesanan_masuk.php">Pesanan masuk</a>
             <a href="profil_saya.php">Profil saya</a>
             <a href="wishlist.php">Wishlist</a>
+            <a href="#" class="donate">Donasi</a>
+            <a href="#" id="registerBtn" class='btn'>Logout</a>
+        </nav>
+        <div class="main-links">
         </div>
-    <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
+        <!-- <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
+    </header>
+
         <div class='cart-container'>
         <h2 class='cart-title'>Pesanan Masuk</h2>
         <div class='cart-wrapper'>
-        <?php while($row = mysqli_fetch_assoc($query)): ?>
-            <div class='cart-item'>
-                <img src="../uploads/<?= $row['path_foto']; ?>" alt="Foto">
-                <div class='cart-info'>
-                    <p><strong>Invoice:</strong> <?= $row['kode_invoice']; ?></p>
-                    <p><strong>Pembeli:</strong> <?= $row['nama_pembeli']; ?></p>
-                    <p><strong>Produk:</strong> <?= $row['nama_pakaian']; ?></p>
-                    <p><strong>Harga:</strong> Rp<?= number_format($row['harga'], 0, ',', '.'); ?></p>
-                    <p><strong>Status:</strong> <?= ucfirst($row['status_transaksi']); ?></p>
+        <?php if (mysqli_num_rows($query) > 0): ?>
+            <?php while($row = mysqli_fetch_assoc($query)): ?>
+                <div class='cart-item'>
+                    <img src="../uploads/<?= $row['path_foto']; ?>" alt="Foto">
+                    <div class='cart-info'>
+                        <p><strong>Invoice:</strong> <?= $row['kode_invoice']; ?></p>
+                        <p><strong>Pembeli:</strong> <?= $row['nama_pembeli']; ?></p>
+                        <p><strong>Produk:</strong> <?= $row['nama_pakaian']; ?></p>
+                        <p><strong>Harga:</strong> Rp<?= number_format($row['harga'], 0, ',', '.'); ?></p>
+                        <p><strong>Status:</strong> <?= ucfirst($row['status_transaksi']); ?></p>
 
-                    <?php
-                        $current_status = $row['status_transaksi'];
-                        $next_status_options = [];
+                        <?php
+                            $current_status = $row['status_transaksi'];
+                            $next_status_options = [];
 
-                        switch ($current_status) {
-                            case 'menunggu':
-                                $next_status_options = ['diproses'];
-                                break;
-                            case 'diproses':
-                                $next_status_options = ['dikirim'];
-                                break;
-                            case 'dikirim':
-                                echo "<p><em>Pesanan sedang dikirim ke pembeli.</em></p>";
-                                break;
-                            case 'selesai':
-                                echo "<p><em>Pesanan telah selesai.</em></p>";
-                                break;
-                        }
+                            switch ($current_status) {
+                                case 'menunggu':
+                                    $next_status_options = ['diproses'];
+                                    break;
+                                case 'diproses':
+                                    $next_status_options = ['dikirim'];
+                                    break;
+                                case 'dikirim':
+                                    echo "<p><em>Pesanan sedang dikirim ke pembeli.</em></p>";
+                                    break;
+                                case 'selesai':
+                                    echo "<p><em>Pesanan telah selesai.</em></p>";
+                                    break;
+                            }
                         ?>
 
-                <?php if (!empty($next_status_options)): ?>
-                                <form method="POST" action="../proses/proses_pesanan.php">
-                <input type="hidden" name="id_transaksi" value="<?= $row['id_transaksi']; ?>">
-                <p><em>Pesanan sedang <?= $row['status_transaksi']; ?></em></p><br>
-                <label for="exampleFormControlTextarea1" class="form-label">Update status</label>
-                <div class="status-flex">
-                    <select class="form-select" name="status_transaksi">
-                        <option selected>Pilih status</option>
-                        <?php foreach ($next_status_options as $status): ?>
-                            <option value="<?= $status ?>"><?= ucfirst($status) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <!-- <button type="submit" class="btn-proses">Update Status</button> -->
-                </div>
-                <button type="submit" class="btn-primary">Update Status</button>
-            </form>
-
-                    <?php endif; ?>
+                        <?php if (!empty($next_status_options)): ?>
+                            <form method="POST" action="../proses/proses_pesanan.php">
+                                <input type="hidden" name="id_transaksi" value="<?= $row['id_transaksi']; ?>">
+                                <p><em>Pesanan sedang <?= $row['status_transaksi']; ?></em></p><br>
+                                <label for="status_transaksi" class="form-label">Update status</label>
+                                <div class="status-flex">
+                                    <select class="form-select" name="status_transaksi" required>
+                                        <option value="">Pilih status</option>
+                                        <?php foreach ($next_status_options as $status): ?>
+                                            <option value="<?= $status ?>"><?= ucfirst($status) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary">Update Status</button>
+                            </form>
+                        <?php endif; ?>
                     </div>
                 </div>
-                <?php endwhile; ?>
+            <?php endwhile; ?>
+                <?php else: ?>
+                    <p class="empty-msg">Belum ada pesanan masuk.</p>
+                <?php endif; ?>
+                </div>
             </div>
         </div>
-    </div>
+
 </body>
 <footer>
     <div class="footer-container">

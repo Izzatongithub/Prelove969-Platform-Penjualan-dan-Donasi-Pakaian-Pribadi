@@ -73,7 +73,7 @@
         </nav>
         <div class="main-links">
         </div>
-            <span><?php echo"<h5>Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
+            <!-- <span><?php echo"<h5>Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
     </header>
 
     <div class="container-sm">
