@@ -83,7 +83,9 @@
             <a href="?gender=unisex">Unisex</a>
             <a href="#" class="sale">Sale</a>
             <a href="#" class="donate">Donasi</a>
-            <a href="#" id="registerBtn" class='btn'>Logout</a>
+            <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
+                <a href="logout.php" class="btn">Logout</a>
+            <?php endif; ?>
         </nav>
     </header>
         <div class="main-links">
@@ -94,7 +96,10 @@
             <a href="profil_saya.php">Profil saya</a>
             <a href="wishlist.php">Wishlist</a>
         </div>
-    <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
+    <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
+        <span><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, <?= htmlspecialchars($_SESSION['username']) ?></h3></span>
+    <?php endif; ?>
+
 
     <!-- Daftar Produk -->
     <!-- Galeri Foto -->
@@ -138,20 +143,22 @@
                 <div class='rating'>
                     <p>
                         Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
-                        (<?= number_format($rating['rata_rata'], 1) ?>/5 dari <?= $rating['total'] ?> ulasan)
+                        (<?= number_format($rating['rata_rata'], 1) ?>/5)
+                        <!-- Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
+                        (<?= number_format($rating['rata_rata'], 1) ?>/5 dari <?= $rating['total'] ?> ulasan) -->
                     </p>
         <?php else: ?>
                 <p>☆☆☆☆☆</p>
         <?php endif; ?>
                 <div class="detail-buttons">
                     <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>" class='btn'>Lihat profile</a>
-                    <a href="profil_saya.php" class='btn'>Massage</a>
+                    <!-- <a href="profil_saya.php" class='btn'>Massage</a> -->
                 </div>
                 <div class="detail-buttons">
                     <?php if (isset($_SESSION['id_user'])): ?>
-                        <hr>
-                        <br><a href="checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Beli Sekarang</a>
-                        <a href="keranjang.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">+ Keranjang</a>
+                        <hr><br>
+                        <!-- <br><a href="checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Beli Sekarang</a> -->
+                        <a href="keranjang.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Keranjang</a>
                     <?php else: ?>
                         <p><em>Silakan login untuk membeli atau menambahkan ke keranjang.</em></p>
                     <?php endif; ?>

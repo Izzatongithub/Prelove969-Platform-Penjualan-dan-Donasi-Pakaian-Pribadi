@@ -55,7 +55,23 @@
 
 <!-- Form Checkout -->
 <form action="" method="" class="form-checkout">
-    <button id="pay-button" class='btn-primary'>Bayar Sekarang!</button>
+    <button id="pay-button" class='btn-primary' type="button">Bayar Sekarang!</button>
+    <script>
+    document.getElementById('pay-button').addEventListener('click', function () {
+        snap.pay("<?= $_SESSION['snap_token'] ?>", {
+            onSuccess: function(result) {
+                window.location.href = "payment_success.php?status=sukses";
+            },
+            onPending: function(result) {
+                alert("Pembayaran tertunda.");
+            },
+            onError: function(result) {
+                alert("Terjadi kesalahan pembayaran.");
+            }
+        });
+    });
+    </script>
+
     </form>
 
 <?php

@@ -92,14 +92,14 @@
         <!-- Form Checkout (ditulis di luar PHP) -->
             <form action="../proses/proses_checkout.php" method="POST" class="form-checkout">
                 <input type="hidden" name="id_pakaian" value="<?= $id_pakaian ?>">
-                <!-- <label for="status_transaksi" class="form-label">Pilih metode pembayaran</label>
+                <label for="status_transaksi" class="form-label">Pilih metode pembayaran</label>
                 <div class="status-flex">
                     <select class="form-select" name="metode_pembayaran" id="metode_pembayaran" required>
                         <option value="">-- Pilih --</option>
                         <option value="cod">Bayar di Tempat (COD)</option>
                         <option value="midtrans">Pembayaran Online (Midtrans)</option>
                     </select>
-                </div> -->
+                </div>
                 <button type="submit" class="btn-primary">Checkout</button>
             </form>
         <?php

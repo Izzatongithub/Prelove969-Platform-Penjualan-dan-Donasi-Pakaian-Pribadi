@@ -11,9 +11,9 @@
 <?php
     include "../config.php";
     session_start();
-    if (!isset($_SESSION['username'])) {
-        header("Location: index.php?page=login");
-    }
+    // if (!isset($_SESSION['username'])) {
+    //     header("Location: index.php?page=login");
+    // }
 
     $id_user = $_GET['id_user'];
 
@@ -32,7 +32,6 @@
     $id_penjual = $_GET['id_user'];
     $qRating = mysqli_query($koneksi, "SELECT AVG(rating) AS rata_rata, COUNT(*) AS total
         FROM reviews WHERE id_penjual = '$id_penjual'");
-
     $rating = mysqli_fetch_assoc($qRating);
 
     $qUlasan = mysqli_query($koneksi, "SELECT r.*, u.nama AS nama_pembeli FROM reviews r
@@ -60,7 +59,9 @@ if (!$qUlasan) {
             <!-- <a href="#">Anak</a> -->
             <a href="#" class="sale">Sale</a>
             <a href="form_donasi.php" class="donate">Donasi</a>
-            <a href="#" id="registerBtn" class='btn'>Logout</a>
+            <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
+                <a href="logout.php" class="btn">Logout</a>
+            <?php endif; ?>
             
         </nav>
     </header>

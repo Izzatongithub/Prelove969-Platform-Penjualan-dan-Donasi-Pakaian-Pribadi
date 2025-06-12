@@ -12,6 +12,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_kondisi = $_POST['kondisi'];
     $gender = $_POST['gender'];
 
+    // Validasi harga
+    if ($harga < 25000) {
+        echo "<script>
+            alert('Harga harus di atas 25.000');
+            window.history.back(); // Kembali ke halaman form
+        </script>";
+        exit();
+    }
+
     // 1. Simpan data ke tabel produk
     $sql = "INSERT INTO pakaian (id_user, nama_pakaian, gender, deskripsi, harga, id_kategori, id_ukuran, id_kondisi) 
         VALUES ($id_user, '$nama_pakaian', '$gender', '$deskripsi', $harga, $id_kategori, $id_ukuran, $id_kondisi)";
@@ -58,4 +67,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo "Akses tidak sah.";
 }
+
 ?>

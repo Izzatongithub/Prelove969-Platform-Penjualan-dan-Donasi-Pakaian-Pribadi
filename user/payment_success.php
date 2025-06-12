@@ -32,17 +32,13 @@ if ($status === 'sukses') {
     }
 
     // 3. Hapus isi keranjang
-    $hapus = mysqli_query($koneksi, "
-        DELETE FROM keranjang_detail 
-        WHERE id_keranjang = (
-            SELECT id_keranjang FROM transaksi WHERE id_transaksi='$id_transaksi'
-        )
-    ");
+    $hapus = mysqli_query($koneksi, "DELETE FROM keranjang_detail 
+        WHERE id_keranjang = (SELECT id_keranjang FROM transaksi WHERE id_transaksi='$id_transaksi')");
     if (!$hapus) {
         echo "Gagal hapus keranjang: " . mysqli_error($koneksi);
     }
 }
 
-header("Location: riwayat_transaksi.php?kode=" . $_SESSION['kode_invoice']);
+header("Location: pesananku.php?kode=" . $_SESSION['kode_invoice']);
 exit;
 ?>

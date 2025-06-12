@@ -164,6 +164,7 @@
             LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
             LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian 
             WHERE p.status_ketersediaan = 'tersedia'";
+
         // Tambahkan filter jika ada
         if (!empty($filterKategori)) {
             $filterKategori = mysqli_real_escape_string($koneksi, $filterKategori);
@@ -214,49 +215,45 @@
             }
         }
 
-            while ($row = mysqli_fetch_assoc($result)) {
-                $id_user = $_SESSION['id_user'];
-                // Di dalam while, sebelum echo tombol
-                $id_pakaian = $row['id_pakaian'];
-                $cek = mysqli_query($koneksi, "SELECT * FROM likes WHERE id_user = '$id_user' AND id_pakaian = '$id_pakaian'");
-                $sudah_suka = mysqli_num_rows($cek) > 0;
+        while ($row = mysqli_fetch_assoc($result)) {
+    $id_user = $_SESSION['id_user'];
+    $id_pakaian = $row['id_pakaian'];
+    $cek = mysqli_query($koneksi, "SELECT * FROM likes WHERE id_user = '$id_user' AND id_pakaian = '$id_pakaian'");
+    $sudah_suka = mysqli_num_rows($cek) > 0;
 
     echo "<div class='product'>
-        <a href='detail_produk.php?id={$row['id_pakaian']}'>
-            <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
-            <h3>{$row['nama_pakaian']}</h3>
-            <p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
-            <p> {$row['ukuran']}</p>
-            <p><em>Diunggah " . waktuUpload($row['tgl_upload']) . "</em></p>
-        </a>";
-    
+            <a href='detail_produk.php?id={$row['id_pakaian']}'>
+                <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
+                <h3>{$row['nama_pakaian']}</h3>
+                <p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
+                <p>{$row['ukuran']}</p>
+                <p><em>Diunggah " . waktuUpload($row['tgl_upload']) . "</em></p>
+            </a>";
+
     if (isset($_SESSION['id_user'])) {
-        echo "<form method='POST' action='../proses/proses_likes.php' style='display:inline;'>";
-        echo"<input type='hidden' name='id_pakaian' value='{$row['id_pakaian']}'>";
-                if ($sudah_suka){
-                    echo "<div style='text-align: left;'>
-                        <button type='submit' name='likes' value='batal' 
-                            style='border: none; background: none; cursor: pointer; font-size: 18px;'>
-                            💔
-                        </button>
-                    </div>";
-                }else{
-                    echo "<div style='text-align: left;'>
-                        <button type='submit' name='likes' value='batal' 
-                            style='border: none; background: none; cursor: pointer; font-size: 18px;'>
-                            ❤️
-                        </button>
-                    </div>";
-                }
-        echo"</form>";
+        echo "<form method='POST' action='../proses/proses_likes.php' style='display:inline; margin-top: 5px;'>";
+        echo "<input type='hidden' name='id_pakaian' value='{$row['id_pakaian']}'>";
+        
+        if ($sudah_suka) {
+            echo "<button type='submit' name='likes' value='batal' 
+                    style='border: none; background: none; cursor: pointer; font-size: 18px; color:red;'>
+                    💔 Unlike
+                  </button>";
+        } else {
+            echo "<button type='submit' name='likes' value='suka' 
+                    style='border: none; background: none; cursor: pointer; font-size: 18px; color:#444;'>
+                    ❤️ Like
+                  </button>";
+        }
+
+        echo "</form>";
     }
 
     $jumlah_suka = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM likes WHERE id_pakaian='$id_pakaian'"));
     echo "<p>Disukai oleh $jumlah_suka orang</p>";
-
-
     echo "</div>";
 }
+
 ?>
 </section>
 

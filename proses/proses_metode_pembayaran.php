@@ -38,9 +38,7 @@ $metode = $_POST['metode_pembayaran'];
 $snapToken = '';
 $status = 'menunggu';
 
-$query = mysqli_query($koneksi, "
-    SELECT t.*, dt.id_produk, p.nama_pakaian, p.harga
-    FROM transaksi t
+$query = mysqli_query($koneksi, "SELECT t.*, dt.id_produk, p.nama_pakaian, p.harga FROM transaksi t
     JOIN detail_transaksi dt ON t.id_transaksi = dt.id_transaksi
     JOIN pakaian p ON dt.id_produk = p.id_pakaian
     WHERE t.id_transaksi = '$id_transaksi'
@@ -91,12 +89,10 @@ if ($metode === 'midtrans') {
         ]
     ];
 
-//     echo "<pre>";
+// echo "<pre>";
 // print_r($params);
 // echo "</pre>";
 // exit;
-
-
 
     $snapToken = \Midtrans\Snap::getSnapToken($params);
     mysqli_query($koneksi, "UPDATE transaksi SET metode_pembayaran='midtrans', id_midtrans='$snapToken' WHERE id_transaksi='$id_transaksi'");
