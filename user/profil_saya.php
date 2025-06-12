@@ -31,6 +31,12 @@
         FROM reviews WHERE id_penjual = '$id_user'");
     $rating = mysqli_fetch_assoc($qRating);
 
+    // Fungsi tampilkan foto profil
+        function tampilkanFotoProfil($foto_profil, $path = '../upload/profil/', $default = 'default.jpg', $width = 150, $height = 150) {
+            $foto = (!empty($foto_profil) && file_exists($path . $foto_profil)) ? $foto_profil : $default;
+            echo "<img src=\"{$path}{$foto}\" alt=\"Foto Profil\" style=\"width:{$width}px; height:{$height}px; border-radius:50%; object-fit:cover;\">";
+        }
+
 ?>
 
 <body>
@@ -65,7 +71,7 @@
 
     <div class="profile-container">
     <div class="profile-header">
-        <img src="foto-penjual.jpg" alt="Foto Profil Penjual">
+        <?php tampilkanFotoProfil($data_user['ava']); ?>
         <div class="profile-info">
         <h2>Profil Saya</h2>
         <p><strong>Nama:</strong> <?= $data_user['nama'] ?></p>
@@ -75,7 +81,8 @@
         <?php
             echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
             echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
-        ?>
+            ?>
+            <a href="edit_profil.php" class="btn">Edit profile</a>
         </div>
     </div>
 
@@ -86,9 +93,9 @@
                 <div class="product-card">
                 <img src="../uploads/<?= $pakaian['path_foto'] ?>" width="100"><br>
                 <strong><?= $pakaian['nama_pakaian'] ?></strong><br>
-                Harga: Rp<?= number_format($pakaian['harga'], 0, ',', '.') ?><br>
-                <a href="edit_produk.php?id=<?= $pakaian['id_pakaian'] ?>">Edit</a> |
-                <a href="delete_produk.php?id_pakaian=<?= $pakaian['id_pakaian'] ?>" onclick="return confirm('Yakin?')">Hapus</a>
+                Harga: Rp<?= number_format($pakaian['harga'], 0, ',', '.') ?><br><br>
+                <a href="edit_produk.php?id=<?= $pakaian['id_pakaian'] ?>" class="btn">Edit</a>
+                <a href="delete_produk.php?id_pakaian=<?= $pakaian['id_pakaian'] ?>" onclick="return confirm('Yakin?')" class="btn">Hapus</a>
             </div>
         <?php } ?>
         </div>

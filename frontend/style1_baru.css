@@ -952,3 +952,50 @@ a {
     margin-bottom: 15px;
     border-radius: 8px;
 }
+
+/* edit pakaian user di profil saya */
+.form-edit-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 1000px;
+    background: #fefefe;
+    border-radius: 10px;
+}
+
+.form-edit-stacked label {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-edit-stacked input[type="text"],
+.form-edit-stacked input[type="number"],
+.form-edit-stacked textarea {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-edit-stacked textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-edit-stacked .btn {
+    align-self: flex-start;
+    background-color: #ff69b4;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 400px;
+    transition: background-color 0.3s;
+}
+
+.form-edit-stacked .btn:hover {
+    background-color: #d63384;
+}
