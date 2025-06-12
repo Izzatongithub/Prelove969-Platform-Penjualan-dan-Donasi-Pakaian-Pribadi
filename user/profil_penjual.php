@@ -124,7 +124,7 @@ if (!$qUlasan) {
 </div>
 
 </body>
-<footer>
+<!-- <footer>
     <div class="footer-container">
         <div class="footer-about">
             <h3>Tentang Kami</h3>
@@ -151,6 +151,6 @@ if (!$qUlasan) {
         </div>
     </div>
     <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
-</footer>
+</footer> -->
 
 </html>

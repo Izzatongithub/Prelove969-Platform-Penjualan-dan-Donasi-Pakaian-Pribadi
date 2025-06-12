@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preloved Shop</title>
     <link rel="stylesheet" href="../frontend/style1_baru.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="../frontend/script.js" defer></script>
 </head>
 
@@ -259,7 +260,7 @@
 
 </body>
 <footer>
-    <div class="footer-container">
+    <!-- <div class="footer-container">
         <div class="footer-about">
             <h3>Tentang Kami</h3>
             <p>Website ini adalah platform preloved yang membantu pengguna menjual dan mendonasikan pakaian bekas yang masih layak pakai.</p>
@@ -285,6 +286,6 @@
         </div>
     </div>
     <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
-</footer>
+</footer> -->
 
 </html>
