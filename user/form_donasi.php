@@ -50,33 +50,81 @@
 
     <div class="container-sm">
     <br><h2>Form donasi</h2><br>
+        
+        <?php if (isset($_SESSION['errors'])): ?>
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    <?php foreach ($_SESSION['errors'] as $error): ?>
+                        <li><?= htmlspecialchars($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            <?php unset($_SESSION['errors']); ?>
+        <?php endif; ?>
+
         <!-- Content here -->
         <form action="../proses/proses_donasi.php" method="post" enctype="multipart/form-data">
             <div class="mb-3">
-                <label for="formFileMultiple" class="form-label">Upload Foto:</label>
-                <input class="form-control" type="file" id="formFileMultiple" name="foto_produk[]" multiple>
+                <label for="foto_produk" class="form-label">Upload Foto Pakaian yang Akan Didonasikan:</label>
+                <input class="form-control" type="file" id="foto_produk" name="foto_produk[]" multiple accept="image/*">
+                <small class="text-muted">Upload foto yang jelas untuk memudahkan verifikasi</small>
             </div>
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Nama lengkap:</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1" name="nama" placeholder="Title">
+                <label for="nama" class="form-label">Nama lengkap:</label>
+                <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
             </div>
             <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">No-Telp</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1" name="no_telp" placeholder="No-Telp/Email">
+                <label for="no_telp" class="form-label">No. Telepon:</label>
+                <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="Masukkan nomor telepon aktif" required>
             </div>
             <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Metode</label>
-            <select class="form-select" aria-label="Default select example" name="metode_donasi" id="metode">
-                <option selected>Select category</option>
-                <option value='antar langsung'>Antar Langsung</option>
-                <option value='pickup'>Pick-up</option>
-            </select>
+                <label for="kategori" class="form-label">Kategori Pakaian:</label>
+                <select class="form-select" name="kategori[]" id="kategori" multiple required>
+                    <option value="Atasan">Atasan</option>
+                    <option value="Bawahan">Bawahan</option>
+                    <option value="Dress">Dress</option>
+                    <option value="Outerwear">Outerwear</option>
+                    <option value="Sepatu">Sepatu</option>
+                    <option value="Tas">Tas</option>
+                    <option value="Aksesoris">Aksesoris</option>
+                </select>
+                <small class="text-muted">Bisa pilih lebih dari satu kategori</small>
             </div>
             <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Alamat</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="alamat" placeholder="Alamat sesuai domisili"></textarea>
+                <label for="jumlah" class="form-label">Jumlah Item:</label>
+                <input type="number" class="form-control" id="jumlah" name="jumlah" min="1" required>
             </div>
-            <button type="submit" class="btn-primary">Submit</button>
+            <div class="mb-3">
+                <label for="kondisi" class="form-label">Kondisi Pakaian:</label>
+                <select class="form-select" name="kondisi" id="kondisi" required>
+                    <option value="">Pilih kondisi</option>
+                    <option value="Sangat Baik">Sangat Baik (Seperti Baru)</option>
+                    <option value="Baik">Baik (Pernah dipakai, tidak ada kerusakan)</option>
+                    <option value="Cukup Baik">Cukup Baik (Ada sedikit noda/kerusakan kecil)</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi:</label>
+                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Jelaskan detail pakaian yang akan didonasikan (ukuran, warna, dll)"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="metode" class="form-label">Metode Pengiriman:</label>
+                <select class="form-select" name="metode_donasi" id="metode" required>
+                    <option value="">Pilih metode</option>
+                    <option value='antar langsung'>Antar Langsung</option>
+                    <option value='pickup'>Pick-up</option>
+                </select>
+            </div>
+            <div class="mb-3" id="waktuContainer" style="display:none;">
+                <label for="waktu_pickup" class="form-label">Waktu Pickup yang Diinginkan:</label>
+                <input type="datetime-local" class="form-control" id="waktu_pickup" name="waktu_pickup">
+                <small class="text-muted">Pilih waktu yang sesuai dengan jadwal Anda</small>
+            </div>
+            <div class="mb-3">
+                <label for="alamat" class="form-label">Alamat Lengkap:</label>
+                <textarea class="form-control" id="alamat" rows="3" name="alamat" placeholder="Masukkan alamat lengkap (termasuk kode pos)" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Kirim Donasi</button>
         </form>
     </div>
 
@@ -108,6 +156,22 @@
             opt.textContent = item.ukuran;
             ukuranSelect.appendChild(opt);
         });
+    });
+
+    // Show/hide waktu pickup based on metode
+    const metodeSelect = document.getElementById('metode');
+    const waktuContainer = document.getElementById('waktuContainer');
+    const waktuPickup = document.getElementById('waktu_pickup');
+
+    metodeSelect.addEventListener('change', function() {
+        if (this.value === 'pickup') {
+            waktuContainer.style.display = 'block';
+            waktuPickup.required = true;
+        } else {
+            waktuContainer.style.display = 'none';
+            waktuPickup.required = false;
+            waktuPickup.value = ''; // Clear value when hidden
+        }
     });
 </script>
 </body>
