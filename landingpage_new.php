@@ -696,7 +696,7 @@ session_start();
                     <input type="tel" id="registerPhone" class="form-control" required>
                     <div class="form-error">Nomor telepon tidak valid</div>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Foto Profil</label>
                     <div class="file-input-group">
                         <label for="registerPhoto" class="file-input-label">
@@ -707,7 +707,7 @@ session_start();
                         <img src="" alt="Preview" class="preview-image">
                         <div class="form-error">Pilih foto profil</div>
                     </div>
-                </div>
+                </div> -->
                 <input type="hidden" id="registerDate" value="">
                 <button type="submit" class="submit-btn">Daftar</button>
                 <div class="modal-footer">
@@ -827,7 +827,7 @@ session_start();
             // Here you would typically make an AJAX call to your register endpoint
             console.log('Register attempt:', formData);
             // Simulate successful registration
-            window.location.href = 'dashboard.php';
+            window.location.href = '../user/index_user.php';
         }
 
         function validateEmail(email) {

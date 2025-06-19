@@ -13,7 +13,7 @@
     include "../config.php";
     session_start();
     if (!isset($_SESSION['username'])) {
-        header("Location: index.php?page=login");
+        header("Location: ../ui/homepage.php?page=login");
     }
 
     // Ambil data kategori

@@ -54,20 +54,18 @@
                                             <i class="fas fa-check-circle me-2"></i>Login berhasil! Mengarahkan ke dashboard...
                                         </div>
                                         
-                                        <form id="loginForm" novalidate>
-                                            <!-- Email -->
+                                        <form id="loginForm" action="../auth/login.php" method="POST">
                                             <div class="form-group">
-                                                <label for="loginEmail" class="form-label">Username</label>
+                                                <label for="loginUsername" class="form-label">Username</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text">
-                                                        <i class="fas fa-envelope"></i>
+                                                        <i class="fas fa-user"></i>
                                                     </span>
-                                                    <input type="email" class="form-control" id="loginEmail" name="email" 
-                                                           placeholder="masukkan email atau username" required>
+                                                    <input type="text" class="form-control" id="loginUsername" name="username" 
+                                                           placeholder="masukkan username" required>
                                                 </div>
-                                                <div class="error-message" id="loginEmailError"></div>
+                                                <div class="error-message" id="loginUsernameError"></div>
                                             </div>
-                                            
                                             <!-- Password -->
                                             <div class="form-group">
                                                 <label for="loginPassword" class="form-label">Password</label>
@@ -83,7 +81,6 @@
                                                 </div>
                                                 <div class="error-message" id="loginPasswordError"></div>
                                             </div>
-                                            
                                             <!-- Remember Me & Forgot Password -->
                                             <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <div class="form-check">
@@ -94,7 +91,6 @@
                                                 </div>
                                                 <a href="#" class="auth-link">Lupa Password?</a>
                                             </div>
-                                            
                                             <!-- Submit Button -->
                                             <button type="submit" class="btn btn-auth">
                                                 <i class="fas fa-sign-in-alt me-2"></i>Masuk
@@ -263,7 +259,7 @@
                                         <!-- Switch to Login -->
                                         <div class="text-center-auth">
                                             <p>Sudah punya akun? 
-                                                <a href="" class="auth-link" onclick="switchPage('login')">Masuk sekarang</a>
+                                                <a href="#" class="auth-link" onclick="switchPage('login')">Masuk sekarang</a>
                                             </p>
                                         </div>
                                     </div>
@@ -381,15 +377,15 @@
             let isValid = true;
             
             // Email validation
-            const email = document.getElementById('loginEmail').value.trim();
+            const email = document.getElementById('loginUsername').value.trim();
             if (!email) {
-                showError('loginEmail', 'Email atau username harus diisi');
+                showError('loginUsername', 'Username harus diisi');
                 isValid = false;
             } else if (email.includes('@') && !isValidEmail(email)) {
-                showError('loginEmail', 'Format email tidak valid');
+                showError('loginUsername', 'Format email tidak valid');
                 isValid = false;
             } else {
-                showSuccess('loginEmail');
+                showSuccess('loginUsername');
             }
             
             // Password validation
@@ -407,127 +403,118 @@
             return isValid;
         }
         
- // Register form validation
-function validateRegister() {
-    let isValid = true;
-    
-    // Name validation
-    const name = document.getElementById('registerName').value.trim();
-    if (!name) {
-        showError('registerName', 'Nama lengkap harus diisi');
-        isValid = false;
-    } else if (name.length < 2) {
-        showError('registerName', 'Nama minimal 2 karakter');
-        isValid = false;
-    } else {
-        showSuccess('registerName');
-    }
-    
-    // Email validation
-    const email = document.getElementById('registerEmail').value.trim();
-    if (!email) {
-        showError('registerEmail', 'Email harus diisi');
-        isValid = false;
-    } else if (!isValidEmail(email)) {
-        showError('registerEmail', 'Format email tidak valid');
-        isValid = false;
-    } else {
-        showSuccess('registerEmail');
-    }
-    
-    // Password validation
-    const password = document.getElementById('registerPassword').value;
-    if (!password) {
-        showError('registerPassword', 'Password harus diisi');
-        isValid = false;
-    } else if (password.length < 6) {
-        showError('registerPassword', 'Password minimal 6 karakter');
-        isValid = false;
-    } else {
-        showSuccess('registerPassword');
-    }
-    
-    // Confirm password validation
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    if (!confirmPassword) {
-        showError('confirmPassword', 'Konfirmasi password harus diisi');
-        isValid = false;
-    } else if (password !== confirmPassword) {
-        showError('confirmPassword', 'Password tidak cocok');
-        isValid = false;
-    } else {
-        showSuccess('confirmPassword');
-    }
-    
-    // Role validation
-    const roleSelected = document.querySelector('input[name="role"]:checked');
-    if (!roleSelected) {
-        showError('registerRole', 'Pilih peran Anda');
-        isValid = false;
-    } else {
-        document.getElementById('registerRoleError').style.display = 'none';
-    }
-    
-    // Terms validation
-    if (!document.getElementById('acceptTerms').checked) {
-        showError('acceptTerms', 'Anda harus menyetujui syarat dan ketentuan');
-        isValid = false;
-    } else {
-        document.getElementById('acceptTermsError').style.display = 'none';
-    }
-    
-    return isValid;
-}
+        // Register form validation
+        function validateRegister() {
+            let isValid = true;
+            
+            // Name validation
+            const name = document.getElementById('registerName').value.trim();
+            if (!name) {
+                showError('registerName', 'Nama lengkap harus diisi');
+                isValid = false;
+            } else if (name.length < 2) {
+                showError('registerName', 'Nama minimal 2 karakter');
+                isValid = false;
+            } else {
+                showSuccess('registerName');
+            }
+            
+            // Email validation
+            const email = document.getElementById('registerEmail').value.trim();
+            if (!email) {
+                showError('registerEmail', 'Email harus diisi');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showError('registerEmail', 'Format email tidak valid');
+                isValid = false;
+            } else {
+                showSuccess('registerEmail');
+            }
+            
+            // Password validation
+            const password = document.getElementById('registerPassword').value;
+            if (!password) {
+                showError('registerPassword', 'Password harus diisi');
+                isValid = false;
+            } else if (password.length < 6) {
+                showError('registerPassword', 'Password minimal 6 karakter');
+                isValid = false;
+            } else {
+                showSuccess('registerPassword');
+            }
+            
+            // Confirm password validation
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (!confirmPassword) {
+                showError('confirmPassword', 'Konfirmasi password harus diisi');
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                showError('confirmPassword', 'Password tidak cocok');
+                isValid = false;
+            } else {
+                showSuccess('confirmPassword');
+            }
+            
+            // Role validation
+            const roleSelected = document.querySelector('input[name="role"]:checked');
+            if (!roleSelected) {
+                showError('registerRole', 'Pilih peran Anda');
+                isValid = false;
+            } else {
+                document.getElementById('registerRoleError').style.display = 'none';
+            }
+            
+            // Terms validation
+            if (!document.getElementById('acceptTerms').checked) {
+                showError('acceptTerms', 'Anda harus menyetujui syarat dan ketentuan');
+                isValid = false;
+            } else {
+                document.getElementById('acceptTermsError').style.display = 'none';
+            }
+            
+            return isValid;
+        }
 
-// Form submission handlers
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (validateLogin()) {
-        // Simulate successful login
-        document.getElementById('loginSuccess').style.display = 'block';
-        setTimeout(() => {
-            // Redirect to dashboard in real implementation
-            alert('Login berhasil! Mengarahkan ke dashboard...');
-        }, 1500);
-    }
-});
+        // Form submission handlers
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (validateLogin()) {
+                // Simulate successful login
+                document.getElementById('loginSuccess').style.display = 'block';
+                setTimeout(() => {
+                    // Redirect to dashboard in real implementation
+                    alert('Login berhasil! Mengarahkan ke dashboard...');
+                }, 1500);
+            }
+        });
 
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (validateRegister()) {
-        // Simulate successful registration
-        document.getElementById('registerSuccess').style.display = 'block';
-        setTimeout(() => {
-            switchPage('login');
-        }, 2000);
-    }
-});
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (validateRegister()) {
+                // Simulate successful registration
+                document.getElementById('registerSuccess').style.display = 'block';
+                setTimeout(() => {
+                    switchPage('login');
+                }, 2000);
+            }
+        });
 
-// Fix the switchPage function
-function switchPage(page) {
-    const loginPage = document.getElementById('loginPage');
-    const registerPage = document.getElementById('registerPage');
-    
-    if (page === 'login' || page === 'loginPage') {
-        loginPage.classList.add('active');
-        registerPage.classList.remove('active');
-    } else if (page === 'register' || page === 'registerPage') {
-        registerPage.classList.add('active');
-        loginPage.classList.remove('active');
-    }
-    
-    // Clear forms when switching
-    clearForms();
-}
-
-// Fix the onclick handlers in HTML
-// Change the links to use the correct page identifiers
-// In your HTML, change:
-// <a href="registerPage" class="auth-link" onclick="switchPage('registerPage')">Daftar sekarang</a>
-// to:
-// <a href="#" class="auth-link" onclick="switchPage('register')">Daftar sekarang</a>
-
-// And change:
-// <a href="" class="auth-link" onclick="switchPage('login')">Masuk sekarang</a>
-// to:
-// <a href="#" class="auth-link" onclick="switchPage('login')">Masuk sekarang</a>
+        // Fix the switchPage function
+        function switchPage(page) {
+            const loginPage = document.getElementById('loginPage');
+            const registerPage = document.getElementById('registerPage');
+            
+            if (page === 'login' || page === 'loginPage') {
+                loginPage.classList.add('active');
+                registerPage.classList.remove('active');
+            } else if (page === 'register' || page === 'registerPage') {
+                registerPage.classList.add('active');
+                loginPage.classList.remove('active');
+            }
+            
+            // Clear forms when switching
+            clearForms();
+        }
+    </script>
+</body>
+</html>
