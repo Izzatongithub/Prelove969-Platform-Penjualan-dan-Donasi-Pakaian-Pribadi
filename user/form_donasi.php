@@ -127,7 +127,7 @@
         </form>
     </div>
 
-<script>
+<!-- <script>
     const ukuranData = <?= json_encode($ukuranData); ?>;
     const kategoriSelect = document.getElementById('kategori');
     const ukuranSelect = document.getElementById('ukuran');
@@ -137,13 +137,13 @@
         const kategoriNama = selectedOption.getAttribute('data');
 
         let tipeUkuran = 'pakaian'; // default
-        if (kategoriNama === 'Footwear') {
-            tipeUkuran = 'sepatu';
-        } else if (kategoriNama === 'Bottoms') {
-            tipeUkuran = 'celana';
-        } else if (kategoriNama === 'Bags & purses') {
-            tipeUkuran = 'lain';
-        }
+            if (kategoriNama === 'Footwear') {
+                tipeUkuran = 'sepatu';
+            } else if (kategoriNama === 'Bottoms') {
+                tipeUkuran = 'celana';
+            } else if (kategoriNama === 'Bags & purses') {
+                tipeUkuran = 'lain';
+            }
 
         // Kosongkan ukuran
         ukuranSelect.innerHTML = '<option value="">-- Pilih Ukuran --</option>';
@@ -172,7 +172,7 @@
             waktuPickup.value = ''; // Clear value when hidden
         }
     });
-</script>
+</script> -->
 </body>
 <!-- <footer>
     <div class="footer-container">

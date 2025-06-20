@@ -18,7 +18,7 @@ if ($cek > 0) {
 
     // Redirect sesuai level
     if ($data['level'] == 'admin') {
-        header("location: ../admin/admin.php");
+        header("location: ../staff/admin.php");
     } else {
         header("location: ../user/index_user.php");
     }

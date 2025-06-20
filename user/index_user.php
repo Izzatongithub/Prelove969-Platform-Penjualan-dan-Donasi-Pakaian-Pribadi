@@ -51,6 +51,7 @@
         <a href="pesanan_masuk.php">Pesanan masuk</a>
         <a href="profil_saya.php">Profil saya</a>
         <a href="wishlist.php">Wishlist</a>
+        <a href="riwayat_donasi.php">Riwayat Donasi</a>
     </div>
     
     <!-- Filter -->

@@ -15,6 +15,7 @@
             <tbody>
                 <?php
                 $queryUser = "SELECT * FROM user ORDER BY id_user DESC";
+                $queryAdmin = "SELECT * FROM user ORDER BY id_user DESC";
                 $resultUser = mysqli_query($koneksi, $queryUser);
                 if ($resultUser && mysqli_num_rows($resultUser) > 0) {
                     while ($user = mysqli_fetch_assoc($resultUser)) {

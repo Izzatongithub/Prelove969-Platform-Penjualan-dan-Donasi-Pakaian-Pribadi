@@ -1,4 +1,5 @@
 <?php
+include "../config.php";
 // Hapus header dan sidebar duplikat, gunakan include header dan sidebar utama
 include __DIR__ . '/../parts/header.php';
 include __DIR__ . '/../parts/sidebar.php';
@@ -17,7 +18,7 @@ $sql .= " ORDER BY tanggal_donasi DESC";
 $result = mysqli_query($koneksi, $sql);
 ?>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="../frontend/style_admin.css?v=<?=time()?>">
+<link rel="stylesheet" href="../../frontend/style_admin.css?v=<?=time()?>">
 <style>
 .status-badge {
     padding: 6px 12px;
