@@ -308,7 +308,7 @@
                                 <h5 class="modal-title">Proses Donasi</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
-                            <form action="../proses/proses_verif_donasi.php" method="post">
+                            <form action="../../proses/proses_verif_donasi.php" method="post">
                                 <div class="modal-body">
                                     <input type="hidden" name="id" value="<?= $row['id_donasi'] ?>">
                                     <input type="hidden" name="action" value="proses">
@@ -334,7 +334,7 @@
                                 <h5 class="modal-title">Selesaikan Donasi</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
-                            <form action="../proses/proses_verif_donasi.php" method="post">
+                            <form action="../../proses/proses_verif_donasi.php" method="post">
                                 <div class="modal-body">
                                     <input type="hidden" name="id" value="<?= $row['id_donasi'] ?>">
                                     <input type="hidden" name="action" value="selesai">
