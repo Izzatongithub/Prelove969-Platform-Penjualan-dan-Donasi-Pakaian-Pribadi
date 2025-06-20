@@ -12,7 +12,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../frontend/style_landingpage.css">
+    <link rel="stylesheet" href="../frontend/style_landingpage.css?v=<?=time()?>">
 </head>
 
 <body>
@@ -253,7 +253,6 @@
         </div>
     </footer>
 
-<<<<<<< HEAD
       <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
@@ -338,8 +337,6 @@
     </div>
 
 
-=======
->>>>>>> afc74a6ff246ec35fdc60591d7b09b45e429be09
     <!-- Bootstrap JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     
