@@ -1,12 +1,12 @@
 <?php
 include '../config.php';
 
-$username = trim($_POST['username']);
-$nama = trim($_POST['name']);
-$email = trim($_POST['email']);
-$password = md5(trim($_POST['password']));
-$alamat = trim($_POST['address']);
-$no_telp = trim($_POST['phone']);
+$username = $_POST['username'];
+$nama = $_POST['name'];
+$email = $_POST['email'];
+$password = md5($_POST['password']);
+$alamat = $_POST['address'];
+$no_telp = $_POST['phone'];
 
 $cek = mysqli_query($koneksi, "SELECT * FROM user WHERE username='$username' OR email='$email'");
 if(mysqli_num_rows($cek) > 0){

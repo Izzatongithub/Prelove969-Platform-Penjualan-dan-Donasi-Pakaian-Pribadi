@@ -16,6 +16,7 @@ if (!isset($_SESSION['id_user'])) {
     <title>Riwayat Donasi - Preloved Shop</title>
     <link rel="stylesheet" href="../frontend/style1_baru.css">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
