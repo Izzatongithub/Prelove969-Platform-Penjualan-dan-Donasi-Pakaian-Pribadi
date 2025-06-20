@@ -272,6 +272,9 @@
                 <button type="submit" class="btn btn-auth">
                     <i class="fas fa-sign-in-alt me-2"></i>Masuk
                 </button>
+                <div class="modal-footer" style="text-align:center !important; width:100%; display:block !important;">
+                    Belum punya akun? <a href="#" onclick="switchModal('loginModal', 'registerModal')">Daftar</a>
+                </div>
             </form>
         </div>
     </div>
@@ -326,7 +329,7 @@
                 </div> -->
                 <input type="hidden" id="registerDate" value="">
                 <button type="submit" class="submit-btn">Daftar</button>
-                <div class="modal-footer">
+                <div class="modal-footer" style="text-align:center !important; width:100%; display:block !important;">
                     Sudah punya akun? <a href="#" onclick="switchModal('registerModal', 'loginModal')">Masuk</a>
                 </div>
             </form>

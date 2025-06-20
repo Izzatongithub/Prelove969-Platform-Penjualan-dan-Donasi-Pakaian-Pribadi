@@ -504,6 +504,11 @@ body {
     font-weight: 600;
 }
 
+.modal-footer {
+    text-align: center;
+    width: 100%;
+}
+
 .form-group {
     margin-bottom: 20px;
 }
