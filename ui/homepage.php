@@ -46,10 +46,10 @@
                         <a class="nav-link" href="#contact">Kontak</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="openModal('loginModal'); return false;">Login</a>
+                        <a class="nav-link" href="../auth/login.php">Login</a>
                     </li>
                 </ul>
-                <a href="#" onclick="openModal('registerModal'); return false;" class="btn btn-custom-primary">Daftar</a>
+                <a href="../auth/register.php" class="btn btn-custom-primary">Daftar</a>
             </div>
         </div>
     </nav>
@@ -253,6 +253,7 @@
         </div>
     </footer>
 
+<<<<<<< HEAD
       <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
@@ -337,6 +338,8 @@
     </div>
 
 
+=======
+>>>>>>> afc74a6ff246ec35fdc60591d7b09b45e429be09
     <!-- Bootstrap JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     
@@ -405,164 +408,6 @@
         if (statsSection) {
             observer.observe(statsSection);
         }
-
-         // Modal functions
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
-        function switchModal(fromModalId, toModalId) {
-            closeModal(fromModalId);
-            setTimeout(() => openModal(toModalId), 300);
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                closeModal(event.target.id);
-            }
-        }
-
-        // Form validation and submission
-        function handleLogin(event) {
-            event.preventDefault();
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // Basic validation
-            if (!username.trim()) {
-                showError('loginUsername', 'Username harus diisi');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showError('loginPassword', 'Password minimal 6 karakter');
-                return;
-            }
-
-            // Here you would typically make an AJAX call to your login endpoint
-            console.log('Login attempt:', { username, password });
-            // Simulate successful login
-            window.location.href = '../user/index_user.php';
-        }
-
-        function handleRegister(event) {
-            event.preventDefault();
-            const username = document.getElementById('registerUsername').value;
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const address = document.getElementById('registerAddress').value;
-            // const phone = document.getElementById('registerPhone').value;
-            // const photo = document.getElementById('registerPhoto').files[0];
-            const registerDate = new Date().toISOString().split('T')[0];
-            
-            // Basic validation
-            if (!username.trim()) {
-                showError('registerUsername', 'Username harus diisi');
-                return;
-            }
-
-            if (!name.trim()) {
-                showError('registerName', 'Nama lengkap harus diisi');
-                return;
-            }
-
-            if (!validateEmail(email)) {
-                showError('registerEmail', 'Email tidak valid');
-                return;
-            }
-
-            if (password.length < 6) {
-                showError('registerPassword', 'Password minimal 6 karakter');
-                return;
-            }
-
-            if (!address.trim()) {
-                showError('registerAddress', 'Alamat harus diisi');
-                return;
-            }
-
-            if (!validatePhone(phone)) {
-                showError('registerPhone', 'Nomor telepon tidak valid');
-                return;
-            }
-
-            // if (!photo) {
-            //     showError('registerPhoto', 'Pilih foto profil');
-            //     return;
-            // }
-
-            // Create FormData object for file upload
-            const formData = new FormData();
-            formData.append('username', username);
-            formData.append('name', name);
-            formData.append('email', email);
-            formData.append('password', password);
-            formData.append('address', address);
-            formData.append('phone', phone);
-            // formData.append('photo', photo);
-            formData.append('register_date', registerDate);
-
-            // Here you would typically make an AJAX call to your register endpoint
-            console.log('Register attempt:', formData);
-            // Simulate successful registration
-            window.location.href = 'dashboard.php';
-        }
-
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-
-        function validatePhone(phone) {
-            const re = /^[0-9]{10,13}$/;
-            return re.test(phone.replace(/[-\s]/g, ''));
-        }
-
-        function showError(inputId, message) {
-            const input = document.getElementById(inputId);
-            const errorDiv = input.nextElementSibling;
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            input.classList.add('shake');
-            
-            setTimeout(() => {
-                input.classList.remove('shake');
-            }, 500);
-        }
-
-        // Add file input preview handler
-        // document.getElementById('registerPhoto').addEventListener('change', function(e) {
-        //     const file = e.target.files[0];
-        //     const fileName = document.querySelector('.file-name');
-        //     const preview = document.querySelector('.preview-image');
-        //     const labelText = document.querySelector('.label-text');
-
-        //     if (file) {
-        //         fileName.textContent = file.name;
-        //         labelText.textContent = 'Ganti Foto';
-                
-        //         const reader = new FileReader();
-        //         reader.onload = function(e) {
-        //             preview.src = e.target.result;
-        //             preview.style.display = 'block';
-        //         }
-        //         reader.readAsDataURL(file);
-        //     } else {
-        //         fileName.textContent = '';
-        //         labelText.textContent = 'Pilih Foto';
-        //         preview.style.display = 'none';
-        //     }
-        // });
     </script>
 
 </body>

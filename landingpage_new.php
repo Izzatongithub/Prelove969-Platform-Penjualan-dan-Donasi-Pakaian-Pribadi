@@ -749,21 +749,31 @@ session_start();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
-            // Basic validation
             if (!validateEmail(email)) {
                 showError('loginEmail', 'Email tidak valid');
                 return;
             }
-            
             if (password.length < 6) {
                 showError('loginPassword', 'Password minimal 6 karakter');
                 return;
             }
 
-            // Here you would typically make an AJAX call to your login endpoint
-            console.log('Login attempt:', { email, password });
-            // Simulate successful login
-            window.location.href = 'dashboard.php';
+            // Kirim ke backend
+            fetch('auth/login.php', {
+                method: 'POST',
+                body: new URLSearchParams({ email, password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = 'user/index_user.php';
+                } else {
+                    showError('loginPassword', 'Login gagal, email atau password salah');
+                }
+            })
+            .catch(() => {
+                showError('loginPassword', 'Terjadi kesalahan server');
+            });
         }
 
         function handleRegister(event) {

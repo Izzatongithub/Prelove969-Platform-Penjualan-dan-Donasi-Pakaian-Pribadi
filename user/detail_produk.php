@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preloved Shop</title>
     <link rel="stylesheet" href="../frontend/style1_baru.css">
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="../frontend/script.js" defer></script>
 </head>
 <?php
@@ -174,7 +175,7 @@
             document.getElementById("mainImage").src = src;
         }
     </script>
-<footer>
+<!-- <footer>
     <div class="footer-container">
         <div class="footer-about">
             <h3>Tentang Kami</h3>
@@ -201,5 +202,5 @@
         </div>
     </div>
     <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
-</footer>
+</footer> -->
 </html>

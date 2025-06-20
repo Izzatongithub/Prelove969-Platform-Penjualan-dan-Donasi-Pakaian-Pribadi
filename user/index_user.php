@@ -13,7 +13,7 @@
     include "../config.php";
     session_start();
     if (!isset($_SESSION['username'])) {
-        header("Location: ../ui/homepage.php?page=login");
+        header("Location: index.php?page=login");
     }
 
     // Ambil data kategori
@@ -259,7 +259,7 @@
 </section>
 
 </body>
-<footer>
+<!-- <footer> -->
     <!-- <div class="footer-container">
         <div class="footer-about">
             <h3>Tentang Kami</h3>
