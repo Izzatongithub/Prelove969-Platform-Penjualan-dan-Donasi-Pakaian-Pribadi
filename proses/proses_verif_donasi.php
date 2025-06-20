@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $action = $_GET['action'];
 
     if ($action === 'verifikasi') {
-        $query = "UPDATE donasi SET status_donasi = 'Terverifikasi', tanggal_verifikasi = NOW() WHERE id_donasi = '$id'";
+        $query = "UPDATE donasi_pakaian SET status_donasi = 'Terverifikasi', tanggal_verifikasi = NOW() WHERE id_donasi = '$id'";
         if (mysqli_query($koneksi, $query)) {
             $_SESSION['success'] = "Donasi berhasil diverifikasi.";
         } else {
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($action) {
         case 'tolak':
             $alasan = mysqli_real_escape_string($koneksi, $_POST['alasan']);
-            $query = "UPDATE donasi SET 
+            $query = "UPDATE donasi_pakaian SET 
                 status_donasi = 'Ditolak',
                 alasan_penolakan = '$alasan',
                 tanggal_update = NOW()
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case 'proses':
             $catatan = mysqli_real_escape_string($koneksi, $_POST['catatan']);
-            $query = "UPDATE donasi SET 
+            $query = "UPDATE donasi_pakaian SET 
                 status_donasi = 'Dalam Proses',
                 catatan_proses = '$catatan',
                 tanggal_proses = NOW()
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case 'selesai':
             $keterangan = mysqli_real_escape_string($koneksi, $_POST['keterangan']);
-            $query = "UPDATE donasi SET 
+            $query = "UPDATE donasi_pakaian SET 
                 status_donasi = 'Selesai',
                 keterangan_selesai = '$keterangan',
                 tanggal_selesai = NOW()
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         default:
             $_SESSION['error'] = "Aksi tidak valid.";
-            header("Location: ../staff/donasi.php");
+            header("Location: ../staff/pages/donasi.php");
             exit;
     }
 
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = "Gagal memperbarui status donasi: " . mysqli_error($koneksi);
     }
 
-    header("Location: ../staff/donasi.php");
+    header("Location: ../staff/pages/donasi.php");
     exit;
 }
 ?>
