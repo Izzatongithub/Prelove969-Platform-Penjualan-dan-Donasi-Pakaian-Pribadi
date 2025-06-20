@@ -41,8 +41,7 @@
             <a href="?gender=unisex">Unisex</a>
             <!-- <a href="#">Anak</a> -->
             <a href="form_donasi.php" class="donate">Donasi</a>
-            <a href="logout.php" class='btn'>Logout</a>
-            
+            <a href="logout.php" class='btn'>Logout</a>  
         </nav>
     </header>
     <div class="main-links">
@@ -55,64 +54,61 @@
     </div>
     
     <!-- Filter -->
+    <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span><br>
     <section class="filters">
-        <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span>
-    <select id="category-filter" class="filters-content">
-        <option value="">Category</option>
-        <?php while ($kat = mysqli_fetch_assoc($kategoriQuery)) : ?>
-            <option value="<?= $kat['kategori']; ?>"><?= $kat['kategori']; ?></option>
-        <?php endwhile; ?>
-    </select>
+        <select id="category-filter" class="filters-content">
+            <option value="">Category</option>
+                <?php while ($kat = mysqli_fetch_assoc($kategoriQuery)) : ?>
+                    <option value="<?= $kat['kategori']; ?>"><?= $kat['kategori']; ?></option>
+                <?php endwhile; ?>
+        </select>
+        <select id="size-filter">
+            <option value="">Size</option>
+        </select>
+    </section>
 
-    <select id="size-filter">
-        <option value="">Size</option>
-    </select>
-</section>
+    <script>
+        // Data ukuran dari PHP (diubah jadi JS array)
+        const ukuranData = <?= json_encode($ukuranArray); ?>;
+        const sizeSelect = document.getElementById('size-filter');
+        const categorySelect = document.getElementById('category-filter');
 
-<script>
-    // Data ukuran dari PHP (diubah jadi JS array)
-    const ukuranData = <?= json_encode($ukuranArray); ?>;
-
-    const sizeSelect = document.getElementById('size-filter');
-    const categorySelect = document.getElementById('category-filter');
-
-    // Fungsi untuk menentukan tipe berdasarkan kategori
-    function getTipeFromKategori(kategori) {
-        switch (kategori.toLowerCase()) {
-            case 'footwear': return 'sepatu';
-            case 'bottoms': return 'celana';
-            case 'bags&purses': return 'lain';
-            default: return 'pakaian';
-        }
-    }
-
-    
-    categorySelect.addEventListener('change', function () {
-        const kategori = this.value;
-        const tipe = getTipeFromKategori(kategori);
-
-        // Kosongkan dan isi ulang <select> ukuran
-        sizeSelect.innerHTML = '<option value="">Size</option>';
-        if (ukuranData[tipe]) {
-            ukuranData[tipe].forEach(ukuran => {
-                const opt = document.createElement('option');
-                opt.value = ukuran;
-                opt.textContent = ukuran;
-                sizeSelect.appendChild(opt);
-            });
+        // Fungsi untuk menentukan tipe berdasarkan kategori
+        function getTipeFromKategori(kategori) {
+            switch (kategori.toLowerCase()) {
+                case 'footwear': return 'sepatu';
+                case 'bottoms': return 'celana';
+                case 'bags&purses': return 'lain';
+                default: return 'pakaian';
+            }
         }
 
-        // Redirect jika hanya pilih kategori
-        const url = new URL(window.location.href);
-        url.searchParams.set('kategori', kategori);
-        url.searchParams.delete('ukuran'); // Reset ukuran
-        window.location.href = url.toString();
-    });
+        categorySelect.addEventListener('change', function () {
+            const kategori = this.value;
+            const tipe = getTipeFromKategori(kategori);
 
-    sizeSelect.addEventListener('change', function () {
-        const kategori = categorySelect.value;
-        const ukuran = this.value;
-        const genderParam = new URLSearchParams(window.location.search).get('gender');
+            // Kosongkan dan isi ulang <select> ukuran
+            sizeSelect.innerHTML = '<option value="">Size</option>';
+            if (ukuranData[tipe]) {
+                ukuranData[tipe].forEach(ukuran => {
+                    const opt = document.createElement('option');
+                    opt.value = ukuran;
+                    opt.textContent = ukuran;
+                    sizeSelect.appendChild(opt);
+                });
+            }
+
+            // Redirect jika hanya pilih kategori
+            const url = new URL(window.location.href);
+            url.searchParams.set('kategori', kategori);
+            url.searchParams.delete('ukuran'); // Reset ukuran
+            window.location.href = url.toString();
+        });
+
+        sizeSelect.addEventListener('change', function () {
+            const kategori = categorySelect.value;
+            const ukuran = this.value;
+            const genderParam = new URLSearchParams(window.location.search).get('gender');
         
         
         const url = new URL(window.location.href);

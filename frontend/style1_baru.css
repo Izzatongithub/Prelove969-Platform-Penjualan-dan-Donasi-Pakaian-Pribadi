@@ -14,7 +14,7 @@ display: flex;
 }    */
 
 .logo a {
-    color: red;
+    color: #8b0000  ;
     text-decoration: none; /* opsional: menghilangkan garis bawah */
 }
 
@@ -53,7 +53,7 @@ header {
 /* Search Container */
 .search-container {
     display: flex;
-    justify-content: center; /* ini untuk horizontal center */
+    justify-content: center;
     align-items: center;      /* opsional: untuk vertical align */
     margin: 20px auto;
     width: 100%;   
@@ -62,8 +62,8 @@ header {
 /* Search Input */
 .search {
     /* width: 500px; Atur panjang di sini, bisa px atau % */
-    width: 100%; /* Atur panjang di sini, bisa px atau % */
-    max-width: 500; /* Atur panjang di sini, bisa px atau % */
+    width: 500px; /* Atur panjang di sini, bisa px atau % */
+    /* max-width: 500px; Atur panjang di sini, bisa px atau % */
     padding: 10px 20px;
     border: 2px solid #ffb6c1;
     border-radius: 30px;

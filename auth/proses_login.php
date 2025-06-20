@@ -23,6 +23,6 @@ if ($cek > 0) {
         header("location: ../user/index_user.php");
     }
 } else {
-   echo "<script>alert('Login gagal!'); window.location='login.php?error=gagal';</script>";
+   echo "<script>alert('Login gagal!'); window.location='../index.php?error=gagal';</script>";
 }
 ?>
