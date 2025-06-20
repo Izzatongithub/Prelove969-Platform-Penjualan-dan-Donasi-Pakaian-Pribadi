@@ -1,254 +1,327 @@
-'<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preloved Shop</title>
-    <link rel="stylesheet" href="./frontend/style1_baru.css">
+    <title>Prelove969 - Platform Penjualan dan Donasi Pakaian Pribadi</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="./frontend/script.js" defer></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="frontend/style_landingpage.css">
 </head>
-
-<?php
-    include "config.php";
-
-    // Ambil data kategori
-    $kategoriQuery = mysqli_query($koneksi, "SELECT * FROM kategori_pakaian");
-    $ukuranQuery = mysqli_query($koneksi, "SELECT * FROM ukuran_pakaian");
-    $ukuranArray = [];
-    while ($row = mysqli_fetch_assoc($ukuranQuery)) {
-        $ukuranArray[$row['tipe_ukuran']][] = $row['ukuran'];
-    }
-
-?>
 
 <body>
 
-    <!-- Navbar -->
-    <header>
-        <div class="logo">PRELOVE969</div>
-        <input type="text" id="search" class="search" placeholder="Cari pakaian...">
-        <nav class="navbar">
-            <a href="?gender=wanita">Wanita</a>
-            <a href="?gender=pria">Pria</a>
-            <a href="?gender=unisex">Unisex</a>
-            <!-- <a href="#">Anak</a> -->
-            <a href="#" class="sale">Sale</a>
-            <a href="#" class="donate">Donasi</a>
-            <a href="#" id="loginBtn">Login</a>
-            <a href="#" id="registerBtn" class='btn'>Sign Up</a>
-        </nav>
-    </header>
-
-    <!-- Filter -->
- <section class="filters">
-    <select id="category-filter" class="filters-content">
-        <option value="">Category</option>
-        <?php while ($kat = mysqli_fetch_assoc($kategoriQuery)) : ?>
-            <option value="<?= $kat['kategori']; ?>"><?= $kat['kategori']; ?></option>
-        <?php endwhile; ?>
-    </select>
-
-    <select id="size-filter">
-        <option value="">Size</option>
-    </select>
-</section>
-
-<script>
-    // Data ukuran dari PHP (diubah jadi JS array)
-    const ukuranData = <?= json_encode($ukuranArray); ?>;
-
-    const sizeSelect = document.getElementById('size-filter');
-    const categorySelect = document.getElementById('category-filter');
-
-    // Fungsi untuk menentukan tipe berdasarkan kategori
-    function getTipeFromKategori(kategori) {
-        switch (kategori.toLowerCase()) {
-            case 'footwear': return 'sepatu';
-            case 'bottoms': return 'celana';
-            case 'bags&purses': return 'lain';
-            default: return 'pakaian';
-        }
-    }
-
-    
-categorySelect.addEventListener('change', function () {
-    const kategori = this.value;
-    const tipe = getTipeFromKategori(kategori);
-
-    // Kosongkan dan isi ulang <select> ukuran
-    sizeSelect.innerHTML = '<option value="">Size</option>';
-    if (ukuranData[tipe]) {
-        ukuranData[tipe].forEach(ukuran => {
-            const opt = document.createElement('option');
-            opt.value = ukuran;
-            opt.textContent = ukuran;
-            sizeSelect.appendChild(opt);
-        });
-    }
-
-    // Redirect jika hanya pilih kategori
-    const url = new URL(window.location.href);
-    url.searchParams.set('kategori', kategori);
-    url.searchParams.delete('ukuran'); // Reset ukuran
-    window.location.href = url.toString();
-});
-
-sizeSelect.addEventListener('change', function () {
-    const kategori = categorySelect.value;
-    const ukuran = this.value;
-    const genderParam = new URLSearchParams(window.location.search).get('gender');
-    
-    
-    const url = new URL(window.location.href);
-    if (kategori) url.searchParams.set('kategori', kategori);
-    if (ukuran) url.searchParams.set('ukuran', ukuran);
-    if (genderParam) url.searchParams.set('gender', genderParam);
-
-    window.location.href = url.toString();
-});
-
-// Set nilai dropdown sesuai URL
-window.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    const selectedKategori = params.get('kategori') || '';
-    const selectedUkuran = params.get('ukuran') || '';
-
-    if (selectedKategori) {
-        categorySelect.value = selectedKategori;
-        const tipe = getTipeFromKategori(selectedKategori);
-        sizeSelect.innerHTML = '<option value="">Size</option>';
-        if (ukuranData[tipe]) {
-            ukuranData[tipe].forEach(ukuran => {
-                const opt = document.createElement('option');
-                opt.value = ukuran;
-                opt.textContent = ukuran;
-                sizeSelect.appendChild(opt);
-            });
-        }
-    }
-
-    if (selectedUkuran) {
-        sizeSelect.value = selectedUkuran;
-    }
-});
-
-
-</script>
-
-
-    <!-- Daftar Produk -->
-<section class="products">
-    <?php
-        // Tangkap filter dari URL
-        $filterKategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
-        $filterUkuran   = isset($_GET['ukuran']) ? $_GET['ukuran'] : '';
-        $filterGender = isset($_GET['gender']) ? $_GET['gender'] : '';
-
-        // Query
-        $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto, p.tgl_upload 
-            FROM pakaian p
-            LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
-            LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
-            LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
-            LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian 
-            WHERE p.status_ketersediaan = 'tersedia'";
-
-        // Tambahkan filter jika ada
-        if (!empty($filterKategori)) {
-            $filterKategori = mysqli_real_escape_string($koneksi, $filterKategori);
-            $query .= " AND k.kategori = '$filterKategori'";
-        }
-        if (!empty($filterUkuran)) {
-            $filterUkuran = mysqli_real_escape_string($koneksi, $filterUkuran);
-            $query .= " AND u.ukuran = '$filterUkuran'";
-        }
-
-        if (!empty($filterGender)) {
-            $filterGender = mysqli_real_escape_string($koneksi, $filterGender);
-            $query .= " AND p.gender = '$filterGender'";
-        }
-
-        $query .= " ORDER BY p.id_pakaian DESC";
-
-        $result = mysqli_query($koneksi, $query);
-
-        if (!$result) {
-            die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
-        }
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<div class='product'>
-                <a href='user/detail_produk.php?id={$row['id_pakaian']}'>
-                    <img src='upload/{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
-                    <h3>{$row['nama_pakaian']}</h3>
-                    <p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
-                    <p> {$row['ukuran']}</p>
-                    <p> {$row['kondisi']}</p>
-                </a>
-                    </div>";
-        }
-    ?>
-</section>
-
-    <!-- Popup Login -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Selamat Datang!</h2>
-            <form action="./proses/proses-login.php" method="POST">
-                <input type="text" name="username" placeholder="Username" required size="200">
-                <input type="password" name="password" placeholder="Password" required><br><br>
-                <button type="submit" name="submit">Login</button><br><br>
-                <p>Belum punya akun? <a href='#' id="registerBtn">Signup</a></p>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Popup Registrasi -->
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Daftar Akun</h2>
-            <form action="./proses/proses-register.php" method="POST">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <input type="password" name="confirm_password" placeholder="Ulangi Password" required><br><br>
-                <button type="submit" name="submit">Daftar</button><br><br>
-                <p>Sudah punya akun? <a href="#" id="loginBtn">Login</a></p>
-            </form>
-        </div>
-    </div>
-
-</body>
-<footer>
-    <div class="footer-container">
-        <div class="footer-about">
-            <h3>Tentang Kami</h3>
-            <p>Website ini adalah platform preloved yang membantu pengguna menjual dan mendonasikan pakaian bekas yang masih layak pakai.</p>
-        </div>
-        <div class="footer-links">
-            <h3>Tautan Cepat</h3>
-            <ul>
-                <li><a href="#">Beranda</a></li>
-                <li><a href="#">Produk</a></li>
-                <li><a href="#">Donasi</a></li>
-                <li><a href="#">Kontak</a></li>
-            </ul>
-        </div>
-        <div class="footer-contact">
-            <h3>Kontak Kami</h3>
-            <p>Email: support@preloved.com</p>
-            <p>Telepon: +62 812 3456 7890</p>
-            <div class="social-icons">
-                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
-                <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
-                <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
+    <!-- Header / Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-heart me-2"></i>Prelove969
+            </a>
+            
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation Menu -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto me-4">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Fitur</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Testimoni</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Kontak</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="auth/login.php">Login</a>
+                    </li>
+                </ul>
+                <a href="auth/register.php" class="btn btn-custom-primary">Daftar</a>
             </div>
         </div>
-    </div>
-    <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
-</footer>
+    </nav>
 
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-2 order-lg-1">
+                    <h1 class="hero-title">
+                        Berikan <span style="color: var(--primary-color);">Hidup Kedua</span> untuk Pakaian Anda
+                    </h1>
+                    <p class="hero-subtitle">
+                        Platform terpercaya untuk menjual, membeli, dan mendonasikan pakaian preloved. 
+                        Wujudkan fashion berkelanjutan sambil membantu sesama.
+                    </p>
+                </div>
+                
+                <div class="col-lg-6 order-1 order-lg-2">
+                    <div class="hero-illustration">
+                        <div class="hero-circle">
+                            <i class="fas fa-tshirt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title">Fitur Utama Prelove969</h2>
+            <p class="section-subtitle">
+                Tiga cara mudah untuk berpartisipasi dalam gerakan fashion berkelanjutan
+            </p>
+            
+            <div class="row">
+                <!-- Feature 1: Jual -->
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card">
+                        <div class="feature-icon sell">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <h3 class="feature-title">Jual Pakaian Bekas</h3>
+                        <p class="feature-description">
+                            Ubah pakaian yang sudah tidak terpakai menjadi penghasilan tambahan. 
+                            Proses mudah, aman, dan menguntungkan.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Feature 2: Donasi -->
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card">
+                        <div class="feature-icon donate">
+                            <i class="fas fa-hand-holding-heart"></i>
+                        </div>
+                        <h3 class="feature-title">Donasi ke Lembaga Sosial</h3>
+                        <p class="feature-description">
+                            Berbagi kebaikan dengan mendonasikan pakaian layak pakai 
+                            ke lembaga sosial terpercaya.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Feature 3: Jelajahi -->
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card">
+                        <div class="feature-icon browse">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h3 class="feature-title">Jelajahi Koleksi Unik</h3>
+                        <p class="feature-description">
+                            Temukan pakaian preloved berkualitas dengan harga terjangkau. 
+                            Fashion unik yang ramah lingkungan.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Kata Mereka</h2>
+            <p class="section-subtitle">Pengalaman nyata pengguna Prelove969</p>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="testimonial-avatar" style="background: linear-gradient(45deg, var(--primary-color), #ff8fab);">
+                                S
+                            </div>
+                            <div class="ms-3">
+                                <div class="testimonial-name">Sari Nurhaliza</div>
+                                <div class="testimonial-role">Ibu Rumah Tangga</div>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">
+                            "Senang bisa membantu sesama melalui donasi pakaian. Prosesnya mudah dan transparan!"
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="card testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="testimonial-avatar" style="background: linear-gradient(45deg, var(--secondary-color), #7fcdcd);">
+                                R
+                            </div>
+                            <div class="ms-3">
+                                <div class="testimonial-name">Rina Maharani</div>
+                                <div class="testimonial-role">Mahasiswa</div>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">
+                            "Berhasil dapat outfit bagus dengan harga terjangkau. Kualitas pakaian juga masih sangat baik."
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="card testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="testimonial-avatar" style="background: linear-gradient(45deg, var(--accent-color), #ffed4e);">
+                                D
+                            </div>
+                            <div class="ms-3">
+                                <div class="testimonial-name">Doni Prakoso</div>
+                                <div class="testimonial-role">Karyawan</div>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">
+                            "Platform yang luar biasa! Bisa dapat penghasilan tambahan dari pakaian yang sudah tidak terpakai."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- Company Info -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="footer-logo">
+                        <i class="fas fa-heart me-2"></i>Prelove969
+                    </div>
+                    <p class="footer-description">
+                        Platform terpercaya untuk menjual, membeli, dan mendonasikan pakaian preloved. 
+                        Bersama menciptakan fashion berkelanjutan untuk masa depan yang lebih baik.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/1XzLJfgcLX/"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/fitrinufaa/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://x.com/abcdefghizat?t=I1bFvtcr13sZmiJkmFLiLg&s=08"><i class="fab fa-twitter"></i></a>
+                        <a href="https://wa.me//6285337235764"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="footer-title">Tautan Cepat</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="#">Cara Kerja</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Categories -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="footer-title">Kategori</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Pakaian Wanita</a></li>
+                        <li><a href="#">Pakaian Pria</a></li>
+                        <li><a href="#">Pakaian Anak</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="footer-title">Kontak</h5>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope me-2"></i> info@prelove969.com</p>
+                        <p><i class="fas fa-phone me-2"></i> +62 85-3372-35764</p>
+                        <p><i class="fas fa-map-marker-alt me-2"></i> Mataram, Indonesia</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Prelove969. Semua hak cipta dilindungi undang-undang.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Smooth scrolling untuk navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background change on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.backdropFilter = 'blur(10px)';
+            } else {
+                navbar.style.backgroundColor = 'white';
+                navbar.style.backdropFilter = 'none';
+            }
+        });
+
+        // Counter animation untuk stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.textContent.replace('+', ''));
+                let current = 0;
+                const increment = target / 100;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.ceil(current) + '+';
+                        setTimeout(updateCounter, 20);
+                    } else {
+                        counter.textContent = target + '+';
+                    }
+                };
+                
+                updateCounter();
+            });
+        }
+
+        // Trigger counter animation when stats section is visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) {
+            observer.observe(statsSection);
+        }
+    </script>
+
+</body>
 </html>

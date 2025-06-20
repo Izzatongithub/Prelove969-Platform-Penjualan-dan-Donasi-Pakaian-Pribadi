@@ -521,3 +521,71 @@ body {
 .register-link a:hover {
     text-decoration: underline;
 }
+
+/* Container untuk form register */
+.register-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 2rem;
+    background-color: #fff0f6;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* Form register */
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label */
+.register-form label {
+    text-align: left;
+    margin: 0.5rem 0 0.2rem;
+    font-weight: 500;
+    color: #ff66a3;
+}
+
+/* Input & textarea */
+.register-form input,
+.register-form textarea {
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Tombol Daftar */
+.btn-register {
+    background: linear-gradient(to right, #ff85a2, #ff66a3);
+    color: white;
+    padding: 0.7rem;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-register:hover {
+    background: linear-gradient(to right, #ff66a3, #ff85a2);
+}
+
+/* Link ke login */
+.login-link {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.login-link a {
+    color: #8e44ad;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
