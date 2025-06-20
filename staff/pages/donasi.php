@@ -167,82 +167,134 @@ $result = mysqli_query($koneksi, $sql);
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Detail Donasi</h5>
+                                <h5 class="modal-title fs-4">Detail Donasi</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="detail-section">
-                                    <h6>Informasi Donasi</h6>
-                                    <div class="detail-info">
-                                        <div class="detail-label">Nama</div>
-                                        <div class="detail-value"><?= htmlspecialchars($row['nama']) ?></div>
-                                    </div>
-                                    <div class="detail-info">
-                                        <div class="detail-label">Username</div>
-                                        <div class="detail-value"><?= htmlspecialchars($row['username']) ?></div>
-                                    </div>
-                                    <div class="detail-info">
-                                        <div class="detail-label">No. Telepon</div>
-                                        <div class="detail-value"><?= htmlspecialchars($row['no_telp']) ?></div>
-                                    </div>
-                                    <div class="detail-info">
-                                        <div class="detail-label">Alamat</div>
-                                        <div class="detail-value"><?= htmlspecialchars($row['alamat']) ?></div>
-                                    </div>
-                                    <div class="detail-info">
-                                        <div class="detail-label">Kategori</div>
-                                        <div class="detail-value"><?= $row['kategori'] ?></div>
-                                    </div>
-                                    <div class="detail-info">
-                                        <div class="detail-label">Jumlah Item</div>
-                                        <div class="detail-value"><?= $row['jumlah_item'] ?> item</div>
-                                    </div>
-                                    <div class="detail-info">
-                                        <div class="detail-label">Kondisi</div>
-                                        <div class="detail-value"><?= $row['kondisi'] ?></div>
-                                    </div>
-                                    <div class="detail-info">
-                                        <div class="detail-label">Deskripsi</div>
-                                        <div class="detail-value"><?= nl2br(htmlspecialchars($row['deskripsi'])) ?></div>
-                                    </div>
-                                    <div class="detail-info">
-                                        <div class="detail-label">Metode</div>
-                                        <div class="detail-value"><?= $row['metode_donasi'] ?></div>
-                                    </div>
-                                    <div class="detail-info">
-                                        <div class="detail-label">Status</div>
-                                        <div class="detail-value">
-                                            <span class="status-badge <?= $status_class ?>"><?= $row['status_donasi'] ?></span>
-                                        </div>
-                                    </div>
-                                    <?php if (!empty($row['foto'])): ?>
-                                        <div class="detail-info">
-                                            <div class="detail-label">Foto Donasi</div>
-                                            <div class="detail-value">
-                                                <?php foreach (explode(',', $row['foto']) as $foto): if (!empty($foto)): ?>
-                                                    <img src="../upload/<?= $foto ?>" alt="Foto Donasi" class="foto-donasi">
-                                                <?php endif; endforeach; ?>
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="detail-section">
+                                            <h6>Informasi Donatur</h6>
+                                            <div class="detail-info">
+                                                <span class="detail-label">Nama</span>
+                                                <span class="detail-value"><?= htmlspecialchars($row['nama']) ?></span>
+                                            </div>
+                                            <div class="detail-info">
+                                                <span class="detail-label">Username</span>
+                                                <span class="detail-value"><?= htmlspecialchars($row['username']) ?></span>
+                                            </div>
+                                            <div class="detail-info">
+                                                <span class="detail-label">No. Telepon</span>
+                                                <span class="detail-value"><?= htmlspecialchars($row['no_telp']) ?></span>
+                                            </div>
+                                            <div class="detail-info">
+                                                <span class="detail-label">Alamat</span>
+                                                <span class="detail-value"><?= htmlspecialchars($row['alamat']) ?></span>
                                             </div>
                                         </div>
-                                    <?php endif; ?>
-                                    <?php if (!empty($row['alasan_penolakan'])): ?>
-                                        <div class="detail-info">
-                                            <div class="detail-label">Alasan Penolakan</div>
-                                            <div class="detail-value"><?= nl2br(htmlspecialchars($row['alasan_penolakan'])) ?></div>
+
+                                        <div class="detail-section">
+                                            <h6>Detail Pakaian</h6>
+                                            <div class="detail-info">
+                                                <span class="detail-label">Kategori</span>
+                                                <span class="detail-value"><?= $row['kategori'] ?></span>
+                                            </div>
+                                            <div class="detail-info">
+                                                <span class="detail-label">Jumlah Item</span>
+                                                <span class="detail-value"><?= $row['jumlah_item'] ?> item</span>
+                                            </div>
+                                            <div class="detail-info">
+                                                <span class="detail-label">Kondisi</span>
+                                                <span class="detail-value"><?= $row['kondisi'] ?></span>
+                                            </div>
+                                            <div class="detail-info">
+                                                <span class="detail-label">Deskripsi</span>
+                                                <span class="detail-value"><?= nl2br(htmlspecialchars($row['deskripsi'])) ?></span>
+                                            </div>
                                         </div>
-                                    <?php endif; ?>
-                                    <?php if (!empty($row['catatan_proses'])): ?>
-                                        <div class="detail-info">
-                                            <div class="detail-label">Catatan Proses</div>
-                                            <div class="detail-value"><?= nl2br(htmlspecialchars($row['catatan_proses'])) ?></div>
+
+                                        <div class="detail-section">
+                                            <h6>Informasi Pengiriman</h6>
+                                            <div class="detail-info">
+                                                <span class="detail-label">Metode</span>
+                                                <span class="detail-value"><?= $row['metode_donasi'] ?></span>
+                                            </div>
+                                            <?php if ($row['waktu_pickup']): ?>
+                                            <div class="detail-info">
+                                                <span class="detail-label">Waktu Pickup</span>
+                                                <span class="detail-value"><?= date('d/m/Y H:i', strtotime($row['waktu_pickup'])) ?></span>
+                                            </div>
+                                            <?php endif; ?>
+                                            <div class="detail-info">
+                                                <span class="detail-label">Status</span>
+                                                <span class="detail-value">
+                                                    <?php
+                                                    $status_class = '';
+                                                    switch ($row['status_donasi']) {
+                                                        case 'Menunggu Verifikasi':
+                                                            $status_class = 'status-menunggu';
+                                                            break;
+                                                        case 'Terverifikasi':
+                                                            $status_class = 'status-terverifikasi';
+                                                            break;
+                                                        case 'Dalam Proses':
+                                                            $status_class = 'status-proses';
+                                                            break;
+                                                        case 'Selesai':
+                                                            $status_class = 'status-selesai';
+                                                            break;
+                                                        case 'Ditolak':
+                                                            $status_class = 'status-ditolak';
+                                                            break;
+                                                    }
+                                                    ?>
+                                                    <span class="status-badge <?= $status_class ?>"><?= $row['status_donasi'] ?></span>
+                                                </span>
+                                            </div>
                                         </div>
-                                    <?php endif; ?>
-                                    <?php if (!empty($row['keterangan_selesai'])): ?>
-                                        <div class="detail-info">
-                                            <div class="detail-label">Keterangan Selesai</div>
-                                            <div class="detail-value"><?= nl2br(htmlspecialchars($row['keterangan_selesai'])) ?></div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="detail-section">
+                                            <h6>Foto Donasi</h6>
+                                            <?php
+                                            $fotos = explode(',', $row['foto']);
+                                            foreach ($fotos as $foto):
+                                                if (!empty($foto)):
+                                            ?>
+                                                <img src="../upload/<?= $foto ?>" alt="Foto Donasi" class="foto-donasi">
+                                            <?php
+                                                endif;
+                                            endforeach;
+                                            ?>
                                         </div>
-                                    <?php endif; ?>
+
+                                        <?php if (!empty($row['alasan_penolakan'])): ?>
+                                        <div class="detail-section">
+                                            <h6 class="text-danger">Alasan Penolakan</h6>
+                                            <div class="detail-info">
+                                                <span class="detail-value"><?= nl2br(htmlspecialchars($row['alasan_penolakan'])) ?></span>
+                                            </div>
+                                        </div>
+                                        <?php endif; ?>
+
+                                        <?php if (!empty($row['catatan_proses'])): ?>
+                                        <div class="detail-section">
+                                            <h6 class="text-primary">Catatan Proses</h6>
+                                            <div class="detail-info">
+                                                <span class="detail-value"><?= nl2br(htmlspecialchars($row['catatan_proses'])) ?></span>
+                                            </div>
+                                        </div>
+                                        <?php endif; ?>
+
+                                        <?php if (!empty($row['keterangan_selesai'])): ?>
+                                        <div class="detail-section">
+                                            <h6 class="text-success">Keterangan Selesai</h6>
+                                            <div class="detail-info">
+                                                <span class="detail-value"><?= nl2br(htmlspecialchars($row['keterangan_selesai'])) ?></span>
+                                            </div>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -251,6 +303,7 @@ $result = mysqli_query($koneksi, $sql);
                         </div>
                     </div>
                 </div>
+
                 <!-- Modal Verifikasi -->
                 <div class="modal fade" id="verifikasiModal<?= $row['id_donasi'] ?>" tabindex="-1">
                     <div class="modal-dialog">
@@ -269,6 +322,7 @@ $result = mysqli_query($koneksi, $sql);
                         </div>
                     </div>
                 </div>
+
                 <!-- Modal Tolak -->
                 <div class="modal fade" id="tolakModal<?= $row['id_donasi'] ?>" tabindex="-1">
                     <div class="modal-dialog">
@@ -294,6 +348,7 @@ $result = mysqli_query($koneksi, $sql);
                         </div>
                     </div>
                 </div>
+
                 <!-- Modal Proses -->
                 <div class="modal fade" id="prosesModal<?= $row['id_donasi'] ?>" tabindex="-1">
                     <div class="modal-dialog">
@@ -319,6 +374,7 @@ $result = mysqli_query($koneksi, $sql);
                         </div>
                     </div>
                 </div>
+
                 <!-- Modal Selesai -->
                 <div class="modal fade" id="selesaiModal<?= $row['id_donasi'] ?>" tabindex="-1">
                     <div class="modal-dialog">
@@ -343,7 +399,7 @@ $result = mysqli_query($koneksi, $sql);
                             </form>
                         </div>
                     </div>
-                </div>
+
                 <?php endwhile; ?>
             </tbody>
         </table>

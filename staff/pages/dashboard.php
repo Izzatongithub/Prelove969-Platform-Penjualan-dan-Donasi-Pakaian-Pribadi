@@ -1,11 +1,15 @@
 <?php
 // Statistik dan grafik
+// Total Penjualan
 $q = mysqli_query($koneksi, "SELECT SUM(total) as total FROM transaksi WHERE status='selesai'");
 $total_penjualan = ($q && ($row = mysqli_fetch_assoc($q))) ? $row['total'] ?: 0 : 0;
-$q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM transaksi WHERE status IN ('pending','diproses','dikirim')");
+// Pesanan Baru (pending saja)
+$q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM transaksi WHERE status='pending'");
 $total_pesanan = ($q && ($row = mysqli_fetch_assoc($q))) ? $row['total'] ?: 0 : 0;
-$q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pakaian WHERE status_ketersediaan='tersedia'");
+// Total Produk tersedia (hanya produk yang status_ketersediaan='tersedia', sama seperti halaman produk)
+$q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pakaian ");
 $total_produk = ($q && ($row = mysqli_fetch_assoc($q))) ? $row['total'] ?: 0 : 0;
+// Total Pengguna (role user saja, sama seperti halaman pengguna)
 $q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM user");
 $total_pengguna = ($q && ($row = mysqli_fetch_assoc($q))) ? $row['total'] ?: 0 : 0;
 $chart_labels = [];

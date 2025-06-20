@@ -34,6 +34,9 @@
             </thead>
             <tbody>
                 <?php
+                $page = isset($_GET['p']) ? max(1, intval($_GET['p'])) : 1;
+                $limit = 10;
+                $offset = ($page - 1) * $limit;
                 $where = [];
                 if (!empty($_GET['search_produk'])) {
                     $search = mysqli_real_escape_string($koneksi, $_GET['search_produk']);
@@ -44,6 +47,7 @@
                     $where[] = "k.kategori = '$filterKat'";
                 }
                 $whereSql = $where ? "WHERE " . implode(" AND ", $where) : "";
+                // Query untuk data produk (LIMIT)
                 $query = "SELECT p.id_pakaian, p.nama_pakaian, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto
                     FROM pakaian p
                     LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
@@ -51,8 +55,14 @@
                     LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
                     LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian
                     $whereSql
-                    ORDER BY p.id_pakaian DESC";
+                    ORDER BY p.id_pakaian DESC
+                    LIMIT $limit OFFSET $offset";
                 $result = mysqli_query($koneksi, $query);
+                // Query untuk total data
+                $totalQ = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pakaian p LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori $whereSql");
+                $totalRow = mysqli_fetch_assoc($totalQ);
+                $totalData = $totalRow ? intval($totalRow['total']) : 0;
+                $hasMore = ($offset + $limit) < $totalData;
                 if (!$result) {
                     echo "<tr><td colspan='8'>Query error: " . mysqli_error($koneksi) . "</td></tr>";
                 } elseif (mysqli_num_rows($result) > 0) {
@@ -82,6 +92,16 @@
                 ?>
             </tbody>
         </table>
+        <?php if ($hasMore || $page > 1): ?>
+            <div style="text-align:center;margin:18px 0;display:flex;justify-content:center;gap:10px;">
+                <?php if ($page > 1): ?>
+                    <a href="?page=produk<?= isset($_GET['search_produk']) ? '&search_produk=' . urlencode($_GET['search_produk']) : '' ?><?= isset($_GET['filter_kategori']) ? '&filter_kategori=' . urlencode($_GET['filter_kategori']) : '' ?>&p=<?= $page-1 ?>" class="pagination-btn">Previous</a>
+                <?php endif; ?>
+                <?php if ($hasMore): ?>
+                    <a href="?page=produk<?= isset($_GET['search_produk']) ? '&search_produk=' . urlencode($_GET['search_produk']) : '' ?><?= isset($_GET['filter_kategori']) ? '&filter_kategori=' . urlencode($_GET['filter_kategori']) : '' ?>&p=<?= $page+1 ?>" class="pagination-btn">See More</a>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -150,6 +170,33 @@
         </form>
     </div>
 </div>
+
+<style>
+.pagination-btn {
+    display: inline-block;
+    padding: 8px 22px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    background: #f4f6fa;
+    color: #222 !important;
+    margin: 0 2px;
+    transition: background 0.18s, color 0.18s;
+    box-shadow: 0 1px 3px rgba(44,62,80,0.07);
+    cursor: pointer;
+    text-decoration: none;
+}
+.pagination-btn:hover, .pagination-btn.active {
+    background: #2d6cdf;
+    color: #fff !important;
+}
+.pagination-btn:disabled {
+    background: #e9ecef;
+    color: #aaa !important;
+    cursor: not-allowed;
+}
+</style>
 
 <script>
 // Popup hapus produk
