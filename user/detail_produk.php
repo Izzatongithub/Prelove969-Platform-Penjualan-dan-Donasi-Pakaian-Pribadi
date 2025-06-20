@@ -11,18 +11,16 @@
 <?php
     session_start();
     include "../config.php";
+
     $id = $_GET['id'];
 
     $query = "SELECT p.*, k.kategori, u.ukuran, c.kondisi, us.nama AS nama_penjual, p.tgl_upload
-        FROM pakaian p
-        LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
+        FROM pakaian p LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
         LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
         LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
-        LEFT JOIN user us ON p.id_user = us.id_user
-        WHERE p.id_pakaian = $id";
-
-
+        LEFT JOIN user us ON p.id_user = us.id_user WHERE p.id_pakaian = $id";
     $data = mysqli_fetch_assoc(mysqli_query($koneksi, $query));
+
     // Ambil semua foto produk
     $fotos = mysqli_query($koneksi, "SELECT * FROM foto_produk WHERE id_pakaian = $id ORDER BY urutan ASC");
     // Ambil semua data ke dalam array
@@ -33,7 +31,6 @@
 
     // Ambil gambar pertama sebagai gambar utama
     $gambar_utama = $all_fotos[0]['path_foto'];
-
     $id_penjual = $data['id_user']; // ambil dari produk
     $qRating = mysqli_query($koneksi, "SELECT AVG(rating) AS rata_rata, COUNT(*) AS total FROM reviews WHERE id_penjual = '$id_penjual'");
     $rating = mysqli_fetch_assoc($qRating);
@@ -50,25 +47,25 @@
 
     //waktu upload pakaian
     function waktuUpload($waktu) {
-            $sekarang = time(); // waktu saat ini (timestamp)
-            $waktuUpload = strtotime($waktu); // ubah waktu dari database ke timestamp
-            $selisih = $sekarang - $waktuUpload; // hitung selisih waktu (detik)
+        $sekarang = time(); // waktu saat ini (timestamp)
+        $waktuUpload = strtotime($waktu); // ubah waktu dari database ke timestamp
+        $selisih = $sekarang - $waktuUpload; // hitung selisih waktu (detik)
 
-            if ($selisih < 60) {
-                return 'Baru saja';
-            } elseif ($selisih < 3600) {
-                $menit = floor($selisih / 60);
-                return "$menit menit yang lalu";
-            } elseif ($selisih < 86400) {
-                $jam = floor($selisih / 3600);
-                return "$jam jam yang lalu";
-            } elseif ($selisih < 604800) {
-                $hari = floor($selisih / 86400);
-                return "$hari hari yang lalu";
-            } else {
-                return date("d M Y", $waktuUpload); // jika lebih dari 7 hari, tampilkan tanggal
-            }
+        if ($selisih < 60) {
+            return 'Baru saja';
+        } elseif ($selisih < 3600) {
+            $menit = floor($selisih / 60);
+            return "$menit menit yang lalu";
+        } elseif ($selisih < 86400) {
+            $jam = floor($selisih / 3600);
+            return "$jam jam yang lalu";
+        } elseif ($selisih < 604800) {
+            $hari = floor($selisih / 86400);
+            return "$hari hari yang lalu";
+        } else {
+            return date("d M Y", $waktuUpload); // jika lebih dari 7 hari, tampilkan tanggal
         }
+    }
 
 ?>
 <body>
@@ -101,18 +98,14 @@
         <span><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, <?= htmlspecialchars($_SESSION['username']) ?></h3></span>
     <?php endif; ?>
 
-
-    <!-- Daftar Produk -->
-    <!-- Galeri Foto -->
 <div class="detail-box">
-    <!-- Kolom kiri: gambar utama dan thumbnail -->
     <div class="image-section">
-        <!-- Gambar utama -->
         <?php
             // Ambil gambar pertama sebagai default main image
             mysqli_data_seek($fotos, 0);
             $firstImg = mysqli_fetch_assoc($fotos);
         ?>
+        
         <img id="mainImage" src="../upload/<?= $firstImg['path_foto'] ?>" alt="Gambar Utama" class="main-image">
 
         <!-- Thumbnail di bawah gambar utama -->
@@ -142,15 +135,14 @@
         <?php 
             if ($rating && $rating['total'] > 0): ?>
                 <div class='rating'>
-                    <p>
-                        Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
-                        (<?= number_format($rating['rata_rata'], 1) ?>/5)
-                        <!-- Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
-                        (<?= number_format($rating['rata_rata'], 1) ?>/5 dari <?= $rating['total'] ?> ulasan) -->
+                    <p>Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
+                    (<?= number_format($rating['rata_rata'], 1) ?>/5)
+                    <!-- Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
+                    (<?= number_format($rating['rata_rata'], 1) ?>/5 dari <?= $rating['total'] ?> ulasan) -->
                     </p>
-        <?php else: ?>
+            <?php else: ?>
                 <p>☆☆☆☆☆</p>
-        <?php endif; ?>
+            <?php endif; ?>
                 <div class="detail-buttons">
                     <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>" class='btn'>Lihat profile</a>
                     <!-- <a href="profil_saya.php" class='btn'>Massage</a> -->
@@ -158,7 +150,7 @@
                 <div class="detail-buttons">
                     <?php if (isset($_SESSION['id_user'])): ?>
                         <hr><br>
-                        <!-- <br><a href="checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Beli Sekarang</a> -->
+                        <br><a href="checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Beli Sekarang</a>
                         <a href="keranjang.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Keranjang</a>
                     <?php else: ?>
                         <p><em>Silakan login untuk membeli atau menambahkan ke keranjang.</em></p>
@@ -167,7 +159,6 @@
             </div>
         </div>
     </div>
-
 </section>
 </body>
     <script>

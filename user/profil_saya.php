@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preloved Shop</title>
     <link rel="stylesheet" href="../frontend/style1_baru.css">
- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="../frontend/script.js" defer></script>
 </head>
 
@@ -17,27 +17,25 @@
     }
 
     $id_user = $_SESSION['id_user'];
+
     // Ambil data user
     $query_user = mysqli_query($koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $data_user = mysqli_fetch_assoc($query_user);
 
     // Ambil daftar pakaian yang diunggah user
     $query_produk = mysqli_query($koneksi, "SELECT p.*, f.path_foto FROM pakaian p
-        LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f 
-        ON p.id_pakaian = f.id_pakaian
-        WHERE p.id_user = '$id_user'
-    ");
+        LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian
+        WHERE p.id_user = '$id_user'");
 
     $qRating = mysqli_query($koneksi, "SELECT AVG(rating) AS rata_rata, COUNT(*) AS total
         FROM reviews WHERE id_penjual = '$id_user'");
     $rating = mysqli_fetch_assoc($qRating);
 
     // Fungsi tampilkan foto profil
-        function tampilkanFotoProfil($foto_profil, $path = '../upload/profil/', $default = 'default.jpg', $width = 150, $height = 150) {
-            $foto = (!empty($foto_profil) && file_exists($path . $foto_profil)) ? $foto_profil : $default;
-            echo "<img src=\"{$path}{$foto}\" alt=\"Foto Profil\" style=\"width:{$width}px; height:{$height}px; border-radius:50%; object-fit:cover;\">";
-        }
-
+    function tampilkanFotoProfil($foto_profil, $path = '../upload/profil/', $default = 'default.jpg', $width = 150, $height = 150) {
+        $foto = (!empty($foto_profil) && file_exists($path . $foto_profil)) ? $foto_profil : $default;
+        echo "<img src=\"{$path}{$foto}\" alt=\"Foto Profil\" style=\"width:{$width}px; height:{$height}px; border-radius:50%; object-fit:cover;\">";
+    }
 ?>
 
 <body>
@@ -64,46 +62,49 @@
             <a href="" class="donate">Donasi</a>
             <a href="#" id="registerBtn" class='btn'>Logout</a>
         </nav>
-        <div class="main-links">
-        </div>
+        <!-- <div class="main-links">
+        </div> -->
         <!-- <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
     </header>
 </section>
 
     <div class="profile-container">
-    <div class="profile-header">
-        <?php tampilkanFotoProfil($data_user['ava']); ?>
-        <div class="profile-info">
-        <h2>Profil Saya</h2>
-        <p><strong>Nama:</strong> <?= $data_user['nama'] ?></p>
-        <p><strong>Email:</strong> <?= $data_user['email'] ?></p>
-        <p><strong>No HP:</strong> <?= $data_user['no_telp'] ?></p>
-        <p><strong>Alamat:</strong> <?= $data_user['alamat'] ?></p>
-        <?php
-            echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
-            echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
-            ?>
-            <a href="edit_profil.php" class="btn">Edit profile</a>
+        <div class="profile-header">
+            <?php tampilkanFotoProfil($data_user['ava']); ?>
+                <div class="profile-info">
+                    <h2>Profil Saya</h2>
+                    <p><strong>Nama:</strong> <?= $data_user['nama'] ?></p>
+                    <p><strong>Email:</strong> <?= $data_user['email'] ?></p>
+                    <p><strong>No HP:</strong> <?= $data_user['no_telp'] ?></p>
+                    <p><strong>Alamat:</strong> <?= $data_user['alamat'] ?></p>
+                    <?php
+                        echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
+                        echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
+                    ?>
+                    <a href="edit_profil.php" class="btn">Edit profile</a>
+                </div>
+        </div>
+        <div class="uploaded-products-container">
+            <h3>Produk yang Diunggah</h3><br>
+            <div class="uploaded-products-grid">
+                <?php if (mysqli_num_rows($query_produk) > 0) { ?>
+                    <?php while ($pakaian = mysqli_fetch_assoc($query_produk)) { ?>
+                        <div class="product-card">
+                            <img src="../uploads/<?= $pakaian['path_foto'] ?>" width="100"><br>
+                            <strong><?= $pakaian['nama_pakaian'] ?></strong><br>
+                            Harga: Rp<?= number_format($pakaian['harga'], 0, ',', '.') ?><br><br>
+                            <a href="edit_produk.php?id=<?= $pakaian['id_pakaian'] ?>" class="btn">Edit</a>
+                            <a href="delete_produk.php?id_pakaian=<?= $pakaian['id_pakaian'] ?>" onclick="return confirm('Yakin?')" class="btn">Hapus</a>
+                        </div>
+                    <?php } ?>
+                <?php } else { ?>
+                    <p style=" color: #888; font-style: italic;">Belum ada produk yang diunggah.</p>
+                <?php } ?>
+            </div>  
         </div>
     </div>
-
-    <div class="uploaded-products-container">
-        <h3>Produk yang Diunggah</h3><br>
-        <div class="uploaded-products-grid">
-            <?php while ($pakaian = mysqli_fetch_assoc($query_produk)) { ?>
-                <div class="product-card">
-                <img src="../uploads/<?= $pakaian['path_foto'] ?>" width="100"><br>
-                <strong><?= $pakaian['nama_pakaian'] ?></strong><br>
-                Harga: Rp<?= number_format($pakaian['harga'], 0, ',', '.') ?><br><br>
-                <a href="edit_produk.php?id=<?= $pakaian['id_pakaian'] ?>" class="btn">Edit</a>
-                <a href="delete_produk.php?id_pakaian=<?= $pakaian['id_pakaian'] ?>" onclick="return confirm('Yakin?')" class="btn">Hapus</a>
-            </div>
-        <?php } ?>
-        </div>
-    </div>
-</div>
-
 </body>
+
 <!-- <footer>
     <div class="footer-container">
         <div class="footer-about">

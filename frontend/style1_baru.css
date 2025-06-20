@@ -839,13 +839,23 @@ a {
 
 /* Informasi produk */
 .pesanan-info {
-    flex: 1;
+        flex: 1;
     min-width: 200px;
+    background-color: #fff0f5; /* baby pink lembut */
+    padding: 16px;
+    margin: 12px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    transition: transform 0.2s ease;
 }
 
 .pesanan-info p {
     margin: 3px 0;
     font-size: 16px;
+    /* margin: 8px 0; */
+    /* font-size: 14px; */
+    color: #444;
 }
 
 .pesanan-info a {
@@ -855,6 +865,15 @@ a {
 
 .pesanan-info a:hover {
     text-decoration: underline;
+}
+
+.pesanan-info p strong {
+    color: #000;
+}
+
+.pesanan-status {
+    font-weight: bold;
+    margin-top: 12px;
 }
 
 /* Status pesanan */

@@ -29,16 +29,17 @@
 
     // id_penjual dari $_GET['id_user'] atau $_SESSION['id_user']
     $id_penjual = $_GET['id_user'];
+
+    //query untuk rating
     $qRating = mysqli_query($koneksi, "SELECT AVG(rating) AS rata_rata, COUNT(*) AS total
-            FROM reviews WHERE id_penjual = '$id_penjual'");
+        FROM reviews WHERE id_penjual = '$id_penjual'");
     $rating = mysqli_fetch_assoc($qRating);
 
+    //query untuk review produk
     $qUlasan = mysqli_query($koneksi, "SELECT r.*, u.nama AS nama_pembeli, GROUP_CONCAT(p.nama_pakaian SEPARATOR ', ') AS nama_pakaian 
-    FROM reviews r LEFT JOIN user u ON r.id_pembeli = u.id_user
-    LEFT JOIN transaksi t ON r.id_transaksi = t.id_transaksi
-    LEFT JOIN detail_transaksi dt ON dt.id_transaksi = t.id_transaksi
-    LEFT JOIN pakaian p ON dt.id_produk = p.id_pakaian
-    WHERE r.id_penjual = '$id_user' GROUP BY r.id_reviews");
+        FROM reviews r LEFT JOIN user u ON r.id_pembeli = u.id_user LEFT JOIN transaksi t ON r.id_transaksi = t.id_transaksi
+        LEFT JOIN detail_transaksi dt ON dt.id_transaksi = t.id_transaksi LEFT JOIN pakaian p ON dt.id_produk = p.id_pakaian
+        WHERE r.id_penjual = '$id_user' GROUP BY r.id_reviews");
 
     if (!$qUlasan) {
         die("Query error: " . mysqli_error($koneksi));
@@ -88,7 +89,7 @@
         </div>
 
         <div class="uploaded-products-container">
-        <h3>Produk yang Diunggah</h3><br>
+            <h3>Produk yang Diunggah</h3><br>
             <div class="uploaded-products-grid">
                 <?php while ($produk = mysqli_fetch_assoc($qProduk)) : ?>
                     <div class="product-card">
@@ -108,7 +109,6 @@
                 <?php while ($row = mysqli_fetch_assoc($qUlasan)) : ?>
                     <div class="review-card">
                         <!-- <p><strong>Pembeli  :</strong>  -->
-                        
                         <?php
                         if (isset($row['nama_pembeli'])) {
                             echo '<p><strong>Pembeli  :</strong> ' . htmlspecialchars($row['nama_pembeli']) . '</p>';

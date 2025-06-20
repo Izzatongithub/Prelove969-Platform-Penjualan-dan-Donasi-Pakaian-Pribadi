@@ -19,21 +19,12 @@
     $id_user = $_SESSION['id_user'];
 
     // Ambil transaksi milik user
-    $query = "SELECT t.id_transaksi, t.kode_invoice, t.tgl_transaksi, t.status_transaksi,
-        p.nama_pakaian, p.harga, f.path_foto,
-        u.id_user AS id_penjual, u.nama AS nama_penjual
-    FROM transaksi t
-    JOIN detail_transaksi dt ON t.id_transaksi = dt.id_transaksi
-    JOIN pakaian p ON dt.id_produk = p.id_pakaian
-    LEFT JOIN (
-        SELECT * FROM foto_produk WHERE urutan = 1
-    ) f ON p.id_pakaian = f.id_pakaian
-    JOIN user u ON p.id_user = u.id_user
-    WHERE t.id_user = '$id_user'
-    ORDER BY t.tgl_transaksi DESC";
+    $query = "SELECT t.id_transaksi, t.kode_invoice, t.tgl_transaksi, t.status_transaksi, p.nama_pakaian, p.harga, f.path_foto, 
+        u.id_user AS id_penjual, u.nama AS nama_penjual FROM transaksi t JOIN detail_transaksi dt ON t.id_transaksi = dt.id_transaksi
+        JOIN pakaian p ON dt.id_produk = p.id_pakaian LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian
+        JOIN user u ON p.id_user = u.id_user WHERE t.id_user = '$id_user' ORDER BY t.tgl_transaksi DESC";
 
     $result = mysqli_query($koneksi, $query);
-
 ?>
 
 <body>
@@ -60,56 +51,54 @@
             <a href="#" class="donate">Donasi</a>
             <a href="#" id="registerBtn" class='btn'>Logout</a>
         </nav>
-        <div class="main-links">
-        </div>
+        <!-- <div class="main-links">
+        </div> -->
         <!-- <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
     </header>
 
-<h2 align='center'>Pesanan Saya</h2>
-    <!-- <div class="profile-container"> -->
-        <!-- <div class="profile-header">
-            <img src="foto-penjual.jpg" alt="Foto Profil Penjual">
-            <div class="profile-info">
-                <h3><?= htmlspecialchars($dataUser['nama']) ?></h3>
-                <p><?= htmlspecialchars($dataUser['email']) ?></p>
-                <?php
-                    echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
-                    echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
-                ?>
-            </div>
-        </div> -->
+    <h2 align='center'>Pesanan Saya</h2>
+        <!-- <div class="profile-container"> -->
+            <!-- <div class="profile-header">
+                <img src="foto-penjual.jpg" alt="Foto Profil Penjual">
+                <div class="profile-info">
+                    <h3><?= htmlspecialchars($dataUser['nama']) ?></h3>
+                    <p><?= htmlspecialchars($dataUser['email']) ?></p>
+                    <?php
+                        echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
+                        echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
+                    ?>
+                </div>
+            </div> -->
 
-        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <div class="pesanan-container">
             <div class="pesanan-gambar">
                 <img src="<?= $row['path_foto']; ?>" alt="<?= $row['nama_pakaian']; ?>">
             </div>
                 <div class="pesanan-info">
-                    <p><strong>Invoice:</strong> <?= $row['kode_invoice']; ?></p>
-                    <p><strong>Produk:</strong> <?= $row['nama_pakaian']; ?></p>
-                    <p><strong>Harga:</strong> Rp<?= number_format($row['harga'], 0, ',', '.'); ?></p>
-                    <p><strong>Tanggal:</strong> <?= $row['tgl_transaksi']; ?></p>
-                    <p><strong>Shop:</strong>
-                    <a href="profil_penjual.php?id_user=<?= $row['id_penjual'] ?>">
-                        <?= htmlspecialchars($row['nama_penjual']) ?>
-                    </a>
-                </p>
-                <p class="pesanan-status <?= $row['status_transaksi'] === 'dikirim' ? 'status-dikirim' : '' ?>">
-                    <strong>Status:</strong> <?= ucfirst($row['status_transaksi']); ?>
-                </p>
+                    <p><strong>Invoice  :</strong> <?= $row['kode_invoice']; ?></p>
+                    <p><strong>Produk   :</strong> <?= $row['nama_pakaian']; ?></p>
+                    <p><strong>Harga    :</strong> Rp<?= number_format($row['harga'], 0, ',', '.'); ?></p>
+                    <p><strong>Tanggal  :</strong> <?= $row['tgl_transaksi']; ?></p>
+                    <p><strong>Shop     :</strong>
+                        <a href="profil_penjual.php?id_user=<?= $row['id_penjual'] ?>">
+                            <?= htmlspecialchars($row['nama_penjual']) ?>
+                        </a>
+                    </p>
+                    <p class="pesanan-status <?= $row['status_transaksi'] === 'dikirim' ? 'status-dikirim' : '' ?>">
+                        <strong>Status:</strong> <?= ucfirst($row['status_transaksi']); ?>
+                    </p>
                 
-                <?php if ($row['status_transaksi'] === 'dikirim') { ?>
-                    <form method="POST" action="form_rating.php">
-                        <input type="hidden" name="id_transaksi" value="<?= $row['id_transaksi']; ?>">
-                        <button type="submit" class="pesanan-button">Konfirmasi & Beri Rating</button>
-                    </form>
+                    <?php if ($row['status_transaksi'] === 'dikirim') { ?>
+                        <form method="POST" action="form_rating.php">
+                            <input type="hidden" name="id_transaksi" value="<?= $row['id_transaksi']; ?>">
+                            <button type="submit" class="pesanan-button">Konfirmasi & Beri Rating</button>
+                        </form>
                     <?php } ?>
+                </div>
             </div>
         </div>
-    </div>
-<?php } ?>
-
-
+    <?php } ?>
 </body>
 <!-- <footer>
     <div class="footer-container">

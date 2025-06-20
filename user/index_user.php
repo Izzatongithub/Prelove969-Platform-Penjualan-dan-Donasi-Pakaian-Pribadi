@@ -109,150 +109,144 @@
             const kategori = categorySelect.value;
             const ukuran = this.value;
             const genderParam = new URLSearchParams(window.location.search).get('gender');
-        
-        
-        const url = new URL(window.location.href);
-        if (kategori) url.searchParams.set('kategori', kategori);
-        if (ukuran) url.searchParams.set('ukuran', ukuran);
-        if (genderParam) url.searchParams.set('gender', genderParam);
+            const url = new URL(window.location.href);
 
-        window.location.href = url.toString();
-    });
+            if (kategori) url.searchParams.set('kategori', kategori);
+            if (ukuran) url.searchParams.set('ukuran', ukuran);
+            if (genderParam) url.searchParams.set('gender', genderParam);
 
-    // Set nilai dropdown sesuai URL
-    window.addEventListener('DOMContentLoaded', () => {
-        const params = new URLSearchParams(window.location.search);
-        const selectedKategori = params.get('kategori') || '';
-        const selectedUkuran = params.get('ukuran') || '';
+            window.location.href = url.toString();
+        });
 
-        if (selectedKategori) {
-            categorySelect.value = selectedKategori;
-            const tipe = getTipeFromKategori(selectedKategori);
-            sizeSelect.innerHTML = '<option value="">Size</option>';
-            if (ukuranData[tipe]) {
-                ukuranData[tipe].forEach(ukuran => {
-                    const opt = document.createElement('option');
-                    opt.value = ukuran;
-                    opt.textContent = ukuran;
-                    sizeSelect.appendChild(opt);
-                });
+        // Set nilai dropdown sesuai URL
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const selectedKategori = params.get('kategori') || '';
+            const selectedUkuran = params.get('ukuran') || '';
+
+            if (selectedKategori) {
+                categorySelect.value = selectedKategori;
+                const tipe = getTipeFromKategori(selectedKategori);
+                sizeSelect.innerHTML = '<option value="">Size</option>';
+                if (ukuranData[tipe]) {
+                    ukuranData[tipe].forEach(ukuran => {
+                        const opt = document.createElement('option');
+                        opt.value = ukuran;
+                        opt.textContent = ukuran;
+                        sizeSelect.appendChild(opt);
+                    });
+                }
             }
-        }
-
-        if (selectedUkuran) {
-            sizeSelect.value = selectedUkuran;
-        }
-    });
+            if (selectedUkuran) {
+                sizeSelect.value = selectedUkuran;
+            }
+        });
 </script>
 
     <!-- Daftar Produk -->
     <section class="products">
-    <?php
+        <?php
 
-        // Tangkap filter dari URL
-        $filterKategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
-        $filterUkuran   = isset($_GET['ukuran']) ? $_GET['ukuran'] : '';
-        $filterGender = isset($_GET['gender']) ? $_GET['gender'] : '';
+            // Tangkap filter dari URL
+            $filterKategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
+            $filterUkuran   = isset($_GET['ukuran']) ? $_GET['ukuran'] : '';
+            $filterGender = isset($_GET['gender']) ? $_GET['gender'] : '';
 
-         $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto, p.tgl_upload 
-            FROM pakaian p
-            LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
-            LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
-            LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
-            LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian 
-            WHERE p.status_ketersediaan = 'tersedia'";
+            $query = "SELECT p.id_pakaian, p.nama_pakaian, p.deskripsi, p.harga, k.kategori, u.ukuran, c.kondisi, f.path_foto, p.tgl_upload 
+                FROM pakaian p LEFT JOIN kategori_pakaian k ON p.id_kategori = k.id_kategori
+                LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
+                LEFT JOIN kondisi_pakaian c ON p.id_kondisi = c.id_kondisi
+                LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian 
+                WHERE p.status_ketersediaan = 'tersedia'";
 
-        // Tambahkan filter jika ada
-        if (!empty($filterKategori)) {
-            $filterKategori = mysqli_real_escape_string($koneksi, $filterKategori);
-            $query .= " AND k.kategori = '$filterKategori'";
-        }
-        if (!empty($filterUkuran)) {
-            $filterUkuran = mysqli_real_escape_string($koneksi, $filterUkuran);
-            $query .= " AND u.ukuran = '$filterUkuran'";
-        }
+            // Tambahkan filter jika ada
+            if (!empty($filterKategori)) {
+                $filterKategori = mysqli_real_escape_string($koneksi, $filterKategori);
+                $query .= " AND k.kategori = '$filterKategori'";
+            }
+            if (!empty($filterUkuran)) {
+                $filterUkuran = mysqli_real_escape_string($koneksi, $filterUkuran);
+                $query .= " AND u.ukuran = '$filterUkuran'";
+            }
 
-        if (!empty($filterGender)) {
-            $filterGender = mysqli_real_escape_string($koneksi, $filterGender);
-            $query .= " AND p.gender = '$filterGender'";
-        }
+            if (!empty($filterGender)) {
+                $filterGender = mysqli_real_escape_string($koneksi, $filterGender);
+                $query .= " AND p.gender = '$filterGender'";
+            }
 
-        $query .= " ORDER BY p.id_pakaian DESC";
+            $query .= " ORDER BY p.id_pakaian DESC";
+            $result = mysqli_query($koneksi, $query);
 
-        $result = mysqli_query($koneksi, $query);
+            if (!$result) {
+                die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
+            }
 
-        if (!$result) {
-            die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
-        }
-
-        $result = mysqli_query($koneksi, $query);
-
-        if (!$result) {
-            die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
-        }
+            // $result = mysqli_query($koneksi, $query);
+            if (!$result) {
+                die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
+            }
 
             function waktuUpload($waktu) {
-            $sekarang = time(); // waktu saat ini (timestamp)
-            $waktuUpload = strtotime($waktu); // ubah waktu dari database ke timestamp
-            $selisih = $sekarang - $waktuUpload; // hitung selisih waktu (detik)
+                $sekarang = time(); // waktu saat ini (timestamp)
+                $waktuUpload = strtotime($waktu); // ubah waktu dari database ke timestamp
+                $selisih = $sekarang - $waktuUpload; // hitung selisih waktu (detik)
 
-            if ($selisih < 60) {
-                return 'Baru saja';
-            } elseif ($selisih < 3600) {
-                $menit = floor($selisih / 60);
-                return "$menit menit yang lalu";
-            } elseif ($selisih < 86400) {
-                $jam = floor($selisih / 3600);
-                return "$jam jam yang lalu";
-            } elseif ($selisih < 604800) {
-                $hari = floor($selisih / 86400);
-                return "$hari hari yang lalu";
-            } else {
-                return date("d M Y", $waktuUpload); // jika lebih dari 7 hari, tampilkan tanggal
+                if ($selisih < 60) {
+                    return 'Baru saja';
+                } elseif ($selisih < 3600) {
+                    $menit = floor($selisih / 60);
+                    return "$menit menit yang lalu";
+                } elseif ($selisih < 86400) {
+                    $jam = floor($selisih / 3600);
+                    return "$jam jam yang lalu";
+                } elseif ($selisih < 604800) {
+                    $hari = floor($selisih / 86400);
+                    return "$hari hari yang lalu";
+                } else {
+                    return date("d M Y", $waktuUpload); // jika lebih dari 7 hari, tampilkan tanggal
+                }
             }
-        }
+            
+            //menampilkan produk detail 
+            while ($row = mysqli_fetch_assoc($result)) {
+                $id_user = $_SESSION['id_user'];
+                $id_pakaian = $row['id_pakaian'];
+                $cek = mysqli_query($koneksi, "SELECT * FROM likes WHERE id_user = '$id_user' AND id_pakaian = '$id_pakaian'");
+                $sudah_suka = mysqli_num_rows($cek) > 0;
 
-        while ($row = mysqli_fetch_assoc($result)) {
-    $id_user = $_SESSION['id_user'];
-    $id_pakaian = $row['id_pakaian'];
-    $cek = mysqli_query($koneksi, "SELECT * FROM likes WHERE id_user = '$id_user' AND id_pakaian = '$id_pakaian'");
-    $sudah_suka = mysqli_num_rows($cek) > 0;
+                echo "<div class='product'>
+                        <a href='detail_produk.php?id={$row['id_pakaian']}'>
+                            <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
+                            <h3>{$row['nama_pakaian']}</h3>
+                            <p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
+                            <p>{$row['ukuran']}</p>
+                            <p><em>Diunggah " . waktuUpload($row['tgl_upload']) . "</em></p>
+                        </a>";
 
-    echo "<div class='product'>
-            <a href='detail_produk.php?id={$row['id_pakaian']}'>
-                <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
-                <h3>{$row['nama_pakaian']}</h3>
-                <p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
-                <p>{$row['ukuran']}</p>
-                <p><em>Diunggah " . waktuUpload($row['tgl_upload']) . "</em></p>
-            </a>";
+                if (isset($_SESSION['id_user'])) {
+                    echo "<form method='POST' action='../proses/proses_likes.php' style='display:inline; margin-top: 5px;'>";
+                    echo "<input type='hidden' name='id_pakaian' value='{$row['id_pakaian']}'>";
+            
+                if ($sudah_suka) {
+                    echo "<button type='submit' name='likes' value='batal' 
+                            style='border: none; background: none; cursor: pointer; font-size: 18px; color:red;'>
+                            💔 Unlike
+                        </button>";
+                } else {
+                    echo "<button type='submit' name='likes' value='suka' 
+                            style='border: none; background: none; cursor: pointer; font-size: 18px; color:#444;'>
+                            ❤️ Like
+                        </button>";
+                }
+                echo "</form>";
+            }
 
-    if (isset($_SESSION['id_user'])) {
-        echo "<form method='POST' action='../proses/proses_likes.php' style='display:inline; margin-top: 5px;'>";
-        echo "<input type='hidden' name='id_pakaian' value='{$row['id_pakaian']}'>";
-        
-        if ($sudah_suka) {
-            echo "<button type='submit' name='likes' value='batal' 
-                    style='border: none; background: none; cursor: pointer; font-size: 18px; color:red;'>
-                    💔 Unlike
-                  </button>";
-        } else {
-            echo "<button type='submit' name='likes' value='suka' 
-                    style='border: none; background: none; cursor: pointer; font-size: 18px; color:#444;'>
-                    ❤️ Like
-                  </button>";
-        }
-
-        echo "</form>";
-    }
-
-    $jumlah_suka = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM likes WHERE id_pakaian='$id_pakaian'"));
-    echo "<p>Disukai oleh $jumlah_suka orang</p>";
-    echo "</div>";
-}
-
-?>
-</section>
+                $jumlah_suka = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM likes WHERE id_pakaian='$id_pakaian'"));
+                echo "<p>Disukai oleh $jumlah_suka orang</p>";
+                echo "</div>";
+            }
+        ?>
+    </section>
 
 </body>
 <!-- <footer> -->

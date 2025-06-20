@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preloved Shop</title>
     <link rel="stylesheet" href="../frontend/style1_baru.css">
-     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="../frontend/script.js" defer></script>
 </head>
 <?php
@@ -19,6 +19,7 @@
     }
 
     $id_user = $_SESSION['id_user'];
+
     // Ambil keranjang user
     $query_keranjang = mysqli_query($koneksi, "SELECT * FROM keranjang WHERE id_user = '$id_user'");
     if (mysqli_num_rows($query_keranjang) == 0) {
@@ -41,10 +42,10 @@
     }
 
     // Tampilkan isi keranjang
-    $query = "SELECT p.id_pakaian, p.nama_pakaian, p.harga, u.ukuran, f.path_foto FROM keranjang_detail kd
-          JOIN pakaian p ON kd.id_produk = p.id_pakaian LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
-          LEFT JOIN (SELECT id_pakaian, MIN(path_foto) AS path_foto FROM foto_produk GROUP BY id_pakaian) f ON p.id_pakaian = f.id_pakaian
-          WHERE kd.id_keranjang = '$id_keranjang'";
+    $query ="SELECT p.id_pakaian, p.nama_pakaian, p.harga, u.ukuran, f.path_foto FROM keranjang_detail kd
+        JOIN pakaian p ON kd.id_produk = p.id_pakaian LEFT JOIN ukuran_pakaian u ON p.id_ukuran = u.id_ukuran
+        LEFT JOIN (SELECT id_pakaian, MIN(path_foto) AS path_foto FROM foto_produk GROUP BY id_pakaian) f ON p.id_pakaian = f.id_pakaian
+        WHERE kd.id_keranjang = '$id_keranjang'";
 
         $result = mysqli_query($koneksi, $query);
         $total = 0;
@@ -77,8 +78,7 @@
             <a href="#" class="donate">Donasi</a>
             <a href="#" id="registerBtn" class='btn'>Logout</a>
         </nav>
-        <div class="main-links">
-        </div>
+        <!-- <div class="main-links"> -->
         <!-- <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
     </header>
     <?php
@@ -98,7 +98,7 @@
             }
         echo "</div>";
         echo "<div class='cart-total'>";
-        echo "<hr>";
+        echo "<hr><br>";
             echo "<h3>Total: Rp " . number_format($total, 0, ',', '.') . "</h3>";
             echo "<a href='checkout.php?id_keranjang=$id_keranjang' class='btn'>Checkout</a>";
         echo "</div>";

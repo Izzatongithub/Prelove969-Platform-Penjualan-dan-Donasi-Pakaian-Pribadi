@@ -17,7 +17,6 @@
     if (!isset($_SESSION['username'])) {
         header("Location: index.php?page=login");
     }
-
 ?>
 
 <body>
@@ -44,14 +43,13 @@
             <a href="#" class="donate">Donasi</a>
             <a href="#" id="registerBtn" class='btn'>Logout</a>
         </nav>
-        <div class="main-links">
-        </div>
+        <!-- <div class="main-links">
+        </div> -->
         <!-- <span> <?php echo"<h5>Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
     </header>
 
     <div class="container-sm">
-    <br><h2>Form donasi</h2><br>
-        
+        <br><h2>Form donasi</h2><br>  
         <?php if (isset($_SESSION['errors'])): ?>
             <div class="alert alert-danger">
                 <ul class="mb-0">
