@@ -17,18 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update active class in sidebar navigation
         navItems.forEach(item => {
             item.classList.remove('active');
-            // Check if it's a direct target or a submenu item
             if (item.dataset.target === targetId) {
                 item.classList.add('active');
             }
-            // Check if the target is within a submenu
-            const submenuItems = item.querySelectorAll('.submenu li');
-            submenuItems.forEach(subItem => {
-                if (subItem.dataset.target === targetId) {
-                    item.classList.add('active'); // Activate parent menu
-                    item.classList.add('open'); // Open parent submenu
-                }
-            });
         });
     }
 
@@ -45,35 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
-    });
-
-    // Event listeners for submenu items
-    document.querySelectorAll('.submenu li').forEach(subItem => {
-        const targetId = subItem.dataset.target;
-        if (targetId) {
-            subItem.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation(); // Prevent parent nav-item from also toggling
-                showSection(targetId);
-                // Close sidebar on mobile after clicking
-                if (window.innerWidth <= 992) {
-                    adminSidebar.classList.remove('open');
-                }
-            });
-        }
-    });
-
-    // Toggle submenu visibility
-    document.querySelectorAll('.sidebar-nav .has-submenu > a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const parentItem = this.closest('.has-submenu');
-            parentItem.classList.toggle('open');
-            const submenu = parentItem.querySelector('.submenu');
-            if (submenu) {
-                submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
-            }
-        });
     });
 
     // Sidebar toggle for mobile
@@ -146,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function showSection(targetId) {
     const contentSections = document.querySelectorAll('.content-section');
     const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
-    
     contentSections.forEach(section => {
         section.classList.remove('active');
     });
@@ -154,23 +115,10 @@ function showSection(targetId) {
     if (activeSection) {
         activeSection.classList.add('active');
     }
-
-    // Update active class in sidebar navigation
     navItems.forEach(item => {
         item.classList.remove('active');
-        // Check if it's a direct target or a submenu item
         if (item.dataset.target === targetId) {
             item.classList.add('active');
         }
-        // Check if the target is within a submenu
-        const submenuItems = item.querySelectorAll('.submenu li');
-        submenuItems.forEach(subItem => {
-            if (subItem.dataset.target === targetId) {
-                item.classList.add('active'); // Activate parent menu
-                item.classList.add('open'); // Open parent submenu
-                const submenu = item.querySelector('.submenu'); // Ensure submenu is visible
-                if (submenu) submenu.style.display = 'block';
-            }
-        });
     });
 }

@@ -220,7 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aksi_donasi']) && iss
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Preloved Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../frontend/style_admin.css"> 
+    <link rel="stylesheet" href="../frontend/style_admin.css?v=<?=time()?>"> 
 </head>
 <body>
     <?php if (isset($_GET['msg']) && $_GET['msg'] === 'hapus_produk_sukses'): ?>
@@ -306,7 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aksi_donasi']) && iss
         <header class="admin-header">
             <div class="header-left">
                 <button id="toggleSidebar" class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
-                <div class="logo">PRELOVE969</div>
+                <div class="logo">Prelove969</div>
             </div>
             <div class="header-right">
                 <div class="admin-profile">
@@ -330,15 +330,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aksi_donasi']) && iss
                     <li class="nav-item" data-target="reviews-content">
                         <a href="#"><i class="fas fa-comments"></i> Ulasan</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="donasi_masuk.php"><i class="fas fa-hand-holding-heart"></i> Donasi</a>
+                    </li>
+                    
                     <li class="nav-item" data-target="reports-content">
                         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
                     </li>
-                    <li class="nav-item has-submenu">
-                        <a href="#"><i class="fas fa-cog"></i> Pengaturan <i class="fas fa-chevron-down submenu-icon"></i></a>
-                        <ul class="submenu">
-                            <li data-target="general-settings-content"><a href="#">Umum</a></li>
-                            <li data-target="payment-settings-content"><a href="#">Donasi</a></li>
-                        </ul>
+                    
+                    <li class="nav-item" data-target="general-settings-content">
+                        <a href="#"><i class="fas fa-cog"></i> Pengaturan</a>
                     </li>
                 </ul>
             </nav>
@@ -587,7 +589,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aksi_donasi']) && iss
             </section>
 
             <section id="reports-content" class="content-section">
-                <h2>Laporan & Analitik</h2>
+                <h2>Laporan</h2>
                 <div class="report-section">
                     <h3>Laporan Penjualan</h3>
                     <form method="post" action="export_laporan_penjualan.php" style="margin-bottom:15px;display:inline;">
