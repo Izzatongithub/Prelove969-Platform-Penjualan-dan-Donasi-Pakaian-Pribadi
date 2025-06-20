@@ -3,11 +3,10 @@
     <title>Admin</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../frontend/style_admin.css?v=<?=time()?>">
-    <!-- <link rel="stylesheet" href="../../frontend/style_admin.css?v=<?=time()?>"> -->
 </head>
 
 <?php
-    include "../../config.php";
+    include_once dirname(__DIR__, 2) . '/config.php';
 
     $status_filter = isset($_GET['status']) ? $_GET['status'] : '';
     $search = isset($_GET['search']) ? $_GET['search'] : '';
