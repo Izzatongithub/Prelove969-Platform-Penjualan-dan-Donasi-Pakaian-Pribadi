@@ -93,6 +93,5 @@ while ($row = mysqli_fetch_assoc($queryDetail)) {
         };
     </script>
     
-    <!-- Footer can be included here -->
 </body>
 </html>

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../frontend/style1_baru.css">
     <script src="../frontend/script.js" defer></script>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="SB-Mid-client-YNYtads1Nffj3p6l"></script>

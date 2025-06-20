@@ -21,6 +21,7 @@ $query = mysqli_query($koneksi, "SELECT * FROM transaksi WHERE id_user = '$id_us
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat Transaksi - PRELOVE969</title>
     <link rel="stylesheet" href="../frontend/style1.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Include Midtrans JS library -->
     <script type="text/javascript"
             src="https://app.sandbox.midtrans.com/snap/snap.js"

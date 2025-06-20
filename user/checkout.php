@@ -6,6 +6,7 @@
     <title>Preloved Shop</title>
     <link rel="stylesheet" href="../frontend/style1_baru.css">
     <script src="../frontend/script.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -107,7 +108,7 @@
             echo "</div>"; // close cart-container
         ?>
 </body>
-<footer>
+<!-- <footer>
     <div class="footer-container">
         <div class="footer-about">
             <h3>Tentang Kami</h3>
@@ -134,6 +135,6 @@
         </div>
     </div>
     <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
-</footer>
+</footer> -->
 
 </html>
