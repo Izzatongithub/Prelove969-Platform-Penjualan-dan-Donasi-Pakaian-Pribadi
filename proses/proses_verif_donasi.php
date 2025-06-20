@@ -4,7 +4,7 @@ session_start();
 
 // Cek apakah user adalah admin
 if (!isset($_SESSION['level']) || $_SESSION['level'] !== 'admin') {
-    header("Location: ../user/login.php");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     }
 
-    header("Location: ../staff/pages/donasi.php");
+    header("Location: ../admin.php?page=donasi&msg=sukses");
     exit;
 }
 
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         default:
             $_SESSION['error'] = "Aksi tidak valid.";
-            header("Location: ../staff/pages/donasi.php");
+            header("Location: ../admin.php?page=donasi&msg=gagal");
             exit;
     }
 
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = "Gagal memperbarui status donasi: " . mysqli_error($koneksi);
     }
 
-    header("Location: ../staff/pages/donasi.php");
+    header("Location: ../admin.php?page=donasi&msg=sukses");
     exit;
 }
 ?>
