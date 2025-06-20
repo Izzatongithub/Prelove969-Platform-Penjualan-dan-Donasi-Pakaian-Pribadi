@@ -243,6 +243,12 @@ h2 {
     overflow-x: auto;
 }
 
+/* Buat ruang kosong agar tabel tidak nabrak sidebar */
+.main-content {
+    margin-left: 250px; /* Ubah ini sesuai lebar sidebar kamu */
+    padding: 20px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
