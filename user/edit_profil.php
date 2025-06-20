@@ -20,7 +20,7 @@ $data_user = mysqli_fetch_assoc($q);
     <meta charset="UTF-8">
     <title>Profil Saya</title>
     <link rel="stylesheet" href="../frontend/style1_baru.css">
-     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="profile-container">
@@ -38,26 +38,31 @@ $data_user = mysqli_fetch_assoc($q);
         <hr><br>
 
         <h3>Edit Profil</h3>
-        <form action="../proses/proses_edit_profil.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="id_user" value="<?= $data_user['id_user'] ?>">
+    <form action="../proses/proses_edit_profil.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="id_user" value="<?= $id_user ?>">
+        <div class="profile-form-group">
+            <label for="nama">Nama Lengkap</label>
+            <input type="text" id="nama" name="nama" value="<?= htmlspecialchars($data_user['nama']) ?>" required>
+        </div>
+        <div class="profile-form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="<?= htmlspecialchars($data_user['email']) ?>" required>
+        </div>
+        <div class="profile-form-group">
+            <label for="alamat">Alamat</label>
+            <textarea id="alamat" name="alamat"><?= htmlspecialchars($data_user['alamat']) ?></textarea>
+        </div>
+        <div class="profile-form-group">
+            <label for="no_hp">No. HP</label>
+            <input type="text" id="no_hp" name="no_telp" value="<?= htmlspecialchars($data_user['no_telp']) ?>">
+        </div>
+        <div class="profile-form-group">
+            <label for="fileInput">Ganti Foto Profil:</label>
+            <input type="file" name="ava" accept="image/*" class="input-file" id="fileInput"><br>
+        </div>
 
-            <label>Nama:</label><br>
-            <input type="text" name="nama" value="<?= htmlspecialchars($data_user['nama']) ?>" required><br><br>
-
-            <label>Email:</label><br>
-            <input type="email" name="email" value="<?= htmlspecialchars($data_user['email']) ?>" required><br><br>
-
-            <label>No Telepon:</label><br>
-            <input type="text" name="no_telp" value="<?= htmlspecialchars($data_user['no_telp']) ?>" required><br><br>
-
-            <label>Alamat:</label><br>
-            <textarea name="alamat" rows="3" required><?= htmlspecialchars($data_user['alamat']) ?></textarea><br><br>
-
-            <label>Ganti Foto Profil:</label><br>
-            <input type="file" name="ava" accept="image/*"><br><br>
-
-            <button type="submit">Simpan Perubahan</button>
-        </form>
+        <button type="submit" class="btn-save-profile">Simpan Perubahan</button>
+    </form>
     </div>
 </body>
 </html>

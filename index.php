@@ -12,7 +12,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../frontend/style_landingpage.css?v=<?=time()?>">
+    <link rel="stylesheet" href="frontend/style_landingpage.css?v=<?=time()?>">
 </head>
 
 <body>
@@ -258,7 +258,7 @@
         <div class="modal-content">
             <button class="close-modal" method="POST" onclick="closeModal('loginModal')">&times;</button>
             <h2 class="modal-title">Masuk ke Preloved</h2>
-            <form id="loginForm" action="../auth/login.php" method="POST">
+            <form id="loginForm" action="auth/proses_login.php" method="POST">
                 <div class="form-group">
                     <label for="loginUsername" class="form-label">Username</label>
                     <input type="text" class="form-control" id="loginUsername" name="username" placeholder="masukkan username" required>
@@ -284,7 +284,7 @@
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal('registerModal')">&times;</button>
             <h2 class="modal-title">Daftar Akun Baru</h2>
-            <form id="registerForm" action="../auth/register.php" method="POST" enctype="multipart/form-data">
+            <form id="registerForm" action="auth/proses_register.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="registerUsername">Username</label>
                     <input type="text" id="registerUsername" name="username" class="form-control" required>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preloved Shop</title>
     <link rel="stylesheet" href="../frontend/style1_baru.css">
-     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="../frontend/script.js" defer></script>
 </head>
 
@@ -24,25 +24,25 @@
 
     // Ambil pakaian yang diunggah user ini
     $qProduk = mysqli_query($koneksi, "SELECT p.*, f.path_foto FROM pakaian p
-        LEFT JOIN (
-            SELECT id_pakaian, MIN(path_foto) AS path_foto FROM foto_produk GROUP BY id_pakaian
-        ) f ON p.id_pakaian = f.id_pakaian
+        LEFT JOIN (SELECT id_pakaian, MIN(path_foto) AS path_foto FROM foto_produk GROUP BY id_pakaian) f ON p.id_pakaian = f.id_pakaian
         WHERE p.id_user = '$id_user' AND p.status_ketersediaan = 'tersedia'");
 
     // id_penjual dari $_GET['id_user'] atau $_SESSION['id_user']
     $id_penjual = $_GET['id_user'];
     $qRating = mysqli_query($koneksi, "SELECT AVG(rating) AS rata_rata, COUNT(*) AS total
-        FROM reviews WHERE id_penjual = '$id_penjual'");
+            FROM reviews WHERE id_penjual = '$id_penjual'");
     $rating = mysqli_fetch_assoc($qRating);
 
-    $qUlasan = mysqli_query($koneksi, "SELECT r.*, u.nama AS nama_pembeli FROM reviews r
-            LEFT JOIN user u ON r.id_pembeli = u.id_user
-            WHERE r.id_penjual = '$id_user'");
+    $qUlasan = mysqli_query($koneksi, "SELECT r.*, u.nama AS nama_pembeli, GROUP_CONCAT(p.nama_pakaian SEPARATOR ', ') AS nama_pakaian 
+    FROM reviews r LEFT JOIN user u ON r.id_pembeli = u.id_user
+    LEFT JOIN transaksi t ON r.id_transaksi = t.id_transaksi
+    LEFT JOIN detail_transaksi dt ON dt.id_transaksi = t.id_transaksi
+    LEFT JOIN pakaian p ON dt.id_produk = p.id_pakaian
+    WHERE r.id_penjual = '$id_user' GROUP BY r.id_reviews");
 
-if (!$qUlasan) {
-    die("Query error: " . mysqli_error($koneksi));
-}
-
+    if (!$qUlasan) {
+        die("Query error: " . mysqli_error($koneksi));
+    }
 
 ?>
 
@@ -63,66 +63,77 @@ if (!$qUlasan) {
             <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
                 <a href="logout.php" class="btn">Logout</a>
             <?php endif; ?>
-            
         </nav>
     </header>
-    <div class="main-links">
-        <a href="jual_pakaian.php">Jual</a>
-        <a href="keranjang.php">Keranjang</a>
-        <a href="pesananku.php">Pesanan saya</a>
-        <a href="pesanan_masuk.php">Pesanan masuk</a>
-        <a href="profil_saya.php">Profil saya</a>
-        <a href="wishlist.php">Wishlist</a>
-    </div>
-    <!-- <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
-</section>
-
-    <div class="profile-container">
-    <div class="profile-header">
-        <img src="foto-penjual.jpg" alt="Foto Profil Penjual">
-        <div class="profile-info">
-        <h3><?= htmlspecialchars($dataUser['nama']) ?></h3>
-        <p><?= htmlspecialchars($dataUser['email']) ?></p>
-        <?php
-            echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
-            echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
-        ?>
+        <div class="main-links">
+            <a href="jual_pakaian.php">Jual</a>
+            <a href="keranjang.php">Keranjang</a>
+            <a href="pesananku.php">Pesanan saya</a>
+            <a href="pesanan_masuk.php">Pesanan masuk</a>
+            <a href="profil_saya.php">Profil saya</a>
+            <a href="wishlist.php">Wishlist</a>
         </div>
-    </div>
-
-    <div class="uploaded-products-container">
-        <h3>Produk yang Diunggah</h3><br>
-        <div class="uploaded-products-grid">
-            <?php while ($produk = mysqli_fetch_assoc($qProduk)) : ?>
-            <div class="product-card">
-                <a href="detail_produk.php?id=<?= $produk['id_pakaian'] ?>">
-                <img src="../uploads/<?= $produk['path_foto'] ?>" alt="<?= htmlspecialchars($produk['nama_pakaian']) ?>">
-                <h3><?= htmlspecialchars($produk['nama_pakaian']) ?></h3>
-                <p>Rp <?= number_format($produk['harga'], 0, ',', '.') ?></p>
-                </a>
+    <!-- <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="foto-penjual.jpg" alt="Foto Profil Penjual">
+            <div class="profile-info">
+                <h3><?= htmlspecialchars($dataUser['nama']) ?></h3>
+                <p><?= htmlspecialchars($dataUser['email']) ?></p>
+                <?php
+                    echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
+                    echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
+                ?>
             </div>
-            <?php endwhile; ?>
+        </div>
+
+        <div class="uploaded-products-container">
+        <h3>Produk yang Diunggah</h3><br>
+            <div class="uploaded-products-grid">
+                <?php while ($produk = mysqli_fetch_assoc($qProduk)) : ?>
+                    <div class="product-card">
+                        <a href="detail_produk.php?id=<?= $produk['id_pakaian'] ?>">
+                        <img src="../uploads/<?= $produk['path_foto'] ?>" alt="<?= htmlspecialchars($produk['nama_pakaian']) ?>">
+                        <h3><?= htmlspecialchars($produk['nama_pakaian']) ?></h3>
+                        <p>Rp <?= number_format($produk['harga'], 0, ',', '.') ?></p>
+                        </a>
+                    </div>
+                <?php endwhile; ?>
+            </div>
         </div>
 
         <div class="review-section">
-        <h3>Ulasan Pembeli</h3><br>
-        <?php if (mysqli_num_rows($qUlasan) > 0): ?>
-    <?php while ($row = mysqli_fetch_assoc($qUlasan)) : ?>
-        <div class="review-card">
-            <p><strong>Pembeli:</strong> <?= htmlspecialchars($row['nama_pembeli'] ?? 'Tidak diketahui') ?></p>
-            <p><strong>Barang:</strong> <?= htmlspecialchars($row['nama_pakaian'] ?? 'Tidak tersedia') ?></p>
-            <p><strong>Rating:</strong> <?= $row['rating'] ?>/5</p>
-            <p><strong>Ulasan:</strong> <?= htmlspecialchars($row['ulasan']) ?></p>
-            <hr>
+            <h3>Ulasan Pembeli</h3><br>
+            <?php if (mysqli_num_rows($qUlasan) > 0): ?>
+                <?php while ($row = mysqli_fetch_assoc($qUlasan)) : ?>
+                    <div class="review-card">
+                        <!-- <p><strong>Pembeli  :</strong>  -->
+                        
+                        <?php
+                        if (isset($row['nama_pembeli'])) {
+                            echo '<p><strong>Pembeli  :</strong> ' . htmlspecialchars($row['nama_pembeli']) . '</p>';
+                        } else {
+                            echo '<p><strong>Pembeli  :</strong> Tidak diketahui</p>';
+                        }     
+                        ?></p>
+                        
+                        <!-- <p><strong>Barang   :</strong> -->
+                        <?php
+                        if (isset($row['nama_pakaian'])) {
+                            echo '<p><strong>Barang   :</strong> ' . htmlspecialchars($row['nama_pakaian']) . '</p>';
+                        } else {
+                            echo '<p><strong>Barang   :</strong> Tidak tersedia</p>';
+                        }
+                        ?></p>
+                        <p><strong>Rating   :</strong> <?= $row['rating'] ?>/5</p>
+                        <p><strong>Ulasan   :</strong> <?= htmlspecialchars($row['ulasan']) ?></p>      
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>Belum ada ulasan untuk penjual ini.</p>
+            <?php endif; ?>
         </div>
-    <?php endwhile; ?>
-<?php else: ?>
-    <p>Belum ada ulasan untuk penjual ini.</p>
-<?php endif; ?>
     </div>
-
-    </div>
-</div>
 
 </body>
 <!-- <footer>
@@ -153,5 +164,4 @@ if (!$qUlasan) {
     </div>
     <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
 </footer> -->
-
 </html>
