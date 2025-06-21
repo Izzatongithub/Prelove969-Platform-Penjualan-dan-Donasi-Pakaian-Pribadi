@@ -22,8 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     }
 
-    header("Location: ../admin.php?page=donasi&msg=sukses");
+    // header("Location: ../admin.php?page=donasi&msg=sukses");
+    // exit;
+    header("Location: ../staff/admin.php?page=donasi&msg=sukses");
     exit;
+
 }
 
 // Handle POST requests (tolak, proses, selesai)
@@ -61,8 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         default:
             $_SESSION['error'] = "Aksi tidak valid.";
-            header("Location: ../admin.php?page=donasi&msg=gagal");
-            exit;
+            // header("Location: ../admin.php?page=donasi&msg=gagal");
+            // exit;
+            header("Location: ../staff/admin.php?page=donasi&msg=sukses");
+exit;
     }
 
     if (mysqli_query($koneksi, $query)) {
@@ -71,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = "Gagal memperbarui status donasi: " . mysqli_error($koneksi);
     }
 
-    header("Location: ../admin.php?page=donasi&msg=sukses");
+    header("Location: ../staff/admin.php?page=donasi&msg=sukses");
     exit;
 }
 ?>

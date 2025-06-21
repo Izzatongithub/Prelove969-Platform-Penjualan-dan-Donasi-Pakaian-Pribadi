@@ -12,7 +12,7 @@
                 <a href="admin.php?page=pengguna"><i class="fas fa-users"></i> Pengguna</a>
             </li>
             <li class="nav-item <?= ($active_page == 'ulasan') ? 'active' : '' ?>">
-                <a href="admin.php?page=ulasan"><i class="fas fa-comments"></i> Ulasan</a>
+                <a href="admin.php?page=ulasan"><i class="fas fa-comments"></i> Toko</a>
             </li>
             <li class="nav-item <?= ($active_page == 'donasi') ? 'active' : '' ?>">
                 <a href="admin.php?page=donasi"><i class="fas fa-hand-holding-heart"></i> Donasi</a>

@@ -1,62 +1,122 @@
 <section id="reviews-content" class="content-section active">
-    <h2>Manajemen Ulasan</h2>
+    <?php
+    include "../config.php";
+
+    // Pastikan hanya admin
+    if (!isset($_SESSION['level']) || $_SESSION['level'] != 'admin') {
+        header("Location: ../index.php");
+        exit;
+    }
+
+    // Ambil parameter dari URL
+    $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+    $filter = isset($_GET['filter']) && $_GET['filter'] === 'asc' ? 'asc' : 'desc';
+    $page = isset($_GET['p']) ? max(1, intval($_GET['p'])) : 1;
+    $limit = 10;
+    $offset = ($page - 1) * $limit;
+
+    // Hitung total penjual
+$qCount = "
+    SELECT COUNT(*) as total FROM (
+        SELECT u.id_user
+        FROM user u
+        LEFT JOIN pakaian p ON u.id_user = p.id_user
+        WHERE p.id_pakaian IS NOT NULL";
+
+if ($search !== '') {
+    $qCount .= " AND u.nama LIKE '%" . mysqli_real_escape_string($koneksi, $search) . "%'";
+}
+
+$qCount .= " GROUP BY u.id_user ) as penjual";
+
+$resCount = mysqli_query($koneksi, $qCount);
+$totalData = mysqli_fetch_assoc($resCount)['total'];
+$totalPage = ceil($totalData / $limit);
+
+
+    // Ambil data penjual
+$qPenjual = "
+    SELECT u.id_user, u.nama, u.username, u.email,
+           COUNT(p.id_pakaian) AS total_produk,
+           ROUND(AVG(r.rating), 1) AS rata_rating
+    FROM user u
+    LEFT JOIN pakaian p ON u.id_user = p.id_user
+    LEFT JOIN reviews r ON u.id_user = r.id_penjual
+    WHERE p.id_pakaian IS NOT NULL";
+if ($search !== '') {
+    $qPenjual .= " AND u.nama LIKE '%" . mysqli_real_escape_string($koneksi, $search) . "%'";
+}
+$qPenjual .= "
+    GROUP BY u.id_user
+    ORDER BY rata_rating $filter
+    LIMIT $limit OFFSET $offset";
+
+    $res = mysqli_query($koneksi, $qPenjual);
+    ?>
+
+    <h2>Daftar Penjual</h2>
+
+    <div class="search-filter-bar" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+        <form method="get" style="flex: 1;">
+            <input type="hidden" name="page" value="ulasan">
+            <input type="text" name="search" placeholder="Cari nama..." value="<?= htmlspecialchars($search) ?>">
+            <input type="hidden" name="filter" value="<?= $filter ?>">
+            <button type="submit">Cari</button>
+        </form>
+        <form method="get">
+            <input type="hidden" name="page" value="ulasan">
+            <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+            <select name="filter" onchange="this.form.submit()">
+                <option value="desc" <?= $filter === 'desc' ? 'selected' : '' ?>>Rating Tertinggi</option>
+                <option value="asc" <?= $filter === 'asc' ? 'selected' : '' ?>>Rating Terendah</option>
+            </select>
+        </form>
+    </div>
+
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th>ID Ulasan</th>
-                    <th>Produk</th>
-                    <th>Pengguna</th>
+                    <th>ID User</th>
+                    <th>Nama</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Total Produk</th>
                     <th>Rating</th>
-                    <th>Ulasan</th>
-                    <th>Tanggal</th>
-                    <th>Status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <?php
-                $q = "SELECT u.id_ulasan, p.nama_pakaian, us.username, u.rating, u.isi_ulasan, u.tanggal, u.status
-                    FROM ulasan u
-                    LEFT JOIN pakaian p ON u.id_pakaian = p.id_pakaian
-                    LEFT JOIN user us ON u.id_user = us.id_user
-                    ORDER BY u.tanggal DESC";
-                $res = mysqli_query($koneksi, $q);
-                if ($res && mysqli_num_rows($res) > 0) {
-                    while ($row = mysqli_fetch_assoc($res)) {
-                        $stars = str_repeat('<i class="fas fa-star text-warning"></i> ', intval($row['rating']));
-                        $status = $row['status'] == 'disetujui'
-                            ? "<span class='status-active'>Disetujui</span>"
-                            : "<span class='status-pending'>Menunggu</span>";
-                ?>
+                <?php if ($res && mysqli_num_rows($res) > 0): ?>
+                    <?php while ($row = mysqli_fetch_assoc($res)): ?>
                         <tr>
-                            <td><?= $row['id_ulasan'] ?></td>
-                            <td><?= $row['nama_pakaian'] ?></td>
-                            <td><?= $row['username'] ?></td>
-                            <td><?= $stars . $row['rating'] ?></td>
-                            <td>"<?= $row['isi_ulasan'] ?>"</td>
-                            <td><?= $row['tanggal'] ?></td>
-                            <td><?= $status ?></td>
+                            <td><?= $row['id_user'] ?></td>
+                            <td><?= htmlspecialchars($row['nama']) ?></td>
+                            <td><?= htmlspecialchars($row['username']) ?></td>
+                            <td><?= htmlspecialchars($row['email']) ?></td>
+                            <td><?= $row['total_produk'] ?></td>
+                            <td><?= $row['rata_rating'] !== null ? $row['rata_rating'] . '/5' : '-' ?></td>
                             <td>
-                                <form action='' method='POST' style='display:inline;' class='form-hapus-ulasan'>
-                                    <input type='hidden' name='hapus_ulasan_id' value='<?= $row['id_ulasan'] ?>'>
-                                    <button type='submit' class='btn btn-sm btn-delete'><i class='fas fa-trash-alt'></i> Hapus</button>
-                                </form>
-                                <?php if ($row['status'] != 'disetujui'): ?>
-                                <form action='' method='POST' style='display:inline;' class='form-approve-ulasan'>
-                                    <input type='hidden' name='approve_ulasan_id' value='<?= $row['id_ulasan'] ?>'>
-                                    <button type='submit' class='btn btn-sm btn-approve'><i class='fas fa-check'></i> Setujui</button>
-                                </form>
-                                <?php endif; ?>
+                                <a href="../user/profil_penjual.php?id_user=<?= $row['id_user'] ?>" class="btn btn-sm btn-detail">
+                                    <i class="fas fa-eye"></i> Lihat Profil
+                                </a>
                             </td>
                         </tr>
-                <?php
-                    }
-                } else {
-                ?>
-                    <tr><td colspan='8' style='text-align:center;color:#888;'>Belum ada ulasan di database.</td></tr>
-                <?php } ?>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr><td colspan="7" style="text-align:center;">Data tidak ditemukan.</td></tr>
+                <?php endif; ?>
             </tbody>
         </table>
+    </div>
+
+    <div class="pagination" style="margin-top: 10px; text-align: center;">
+        <?php for ($i = 1; $i <= $totalPage; $i++): ?>
+            <a href="admin.php?page=ulasan&search=<?= urlencode($search) ?>&filter=<?= $filter ?>&p=<?= $i ?>"
+               class="<?= $i == $page ? 'active' : '' ?>"
+               style="margin: 0 3px; padding: 5px 10px; <?= $i == $page ? 'background-color:#ff69b4;color:#fff;' : 'background:#eee;color:#000;' ?>">
+                <?= $i ?>
+            </a>
+        <?php endfor; ?>
     </div>
 </section>
