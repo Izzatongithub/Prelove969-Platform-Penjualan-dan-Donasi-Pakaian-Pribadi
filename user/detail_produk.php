@@ -73,34 +73,46 @@
 ?>
 <body>
     <!-- Navbar -->
-    <header>
+        <header>
         <div class="header-top">
-            <div class="logo">PRELOVE969</div>
+            <div class="logo">
+                <a href='index_user.php'>
+                    <i class="fas fa-heart me-2"></i>Prelove969</a>
+            </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
         <nav class="navbar">
-            <a href="?gender=wanita">Wanita</a>
-            <a href="?gender=pria">Pria</a>
-            <a href="?gender=unisex">Unisex</a>
-            <a href="#" class="sale">Sale</a>
-            <a href="#" class="donate">Donasi</a>
-            <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
-                <a href="logout.php" class="btn-primary">Logout</a>
-            <?php endif; ?>
-        </nav>
+            <!-- <a href="#">Anak</a> -->
+            <a href="form_donasi.php" class="donate">
+                <i class="fa-solid fa-hand-holding-heart fa-2x"></i>
+            </a>
+            <a href="wishlist.php">
+                <i class="fa-regular fa-heart fa-2x"></i>
+            </a>
+            <a href="keranjang.php">
+                &nbsp;<i class="fa-solid fa-bag-shopping fa-2x"></i>
+            </a>
+            <a href='profil_saya.php'>
+                &nbsp;<i class="fa-regular fa-circle-user fa-2x"></i></a>
+                <!-- <a href="logout.php" class='btn-primary'>Logout</a>   -->
+            </nav>
     </header>
         <div class="main-links">
             <a href="jual_pakaian.php">Jual</a>
-            <a href="keranjang.php">Keranjang</a>
             <a href="pesananku.php">Pesanan saya</a>
             <a href="pesanan_masuk.php">Pesanan masuk</a>
-            <a href="profil_saya.php">Profil saya</a>
-            <a href="wishlist.php">Wishlist</a>
+            <a href="riwayat_donasi.php">Riwayat Donasi</a>
+            <!-- <a href="keranjang.php">Keranjang</a> -->
+            <!-- <a href="profil_saya.php">Profil saya</a> -->
+            <!-- <a href="wishlist.php">Wishlist</a> -->
+            <!-- <a href="?gender=wanita">Wanita</a>
+            <a href="?gender=pria">Pria</a>
+            <a href="?gender=unisex">Unisex</a> -->
         </div>
 
-    <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
-        <!-- <span><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, <?= htmlspecialchars($_SESSION['username']) ?></h3></span> -->
-    <?php endif; ?>
+    <!-- <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
+        <span><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, <?= htmlspecialchars($_SESSION['username']) ?></h3></span>
+    <?php endif; ?> -->
 
 <div class="detail-box">
     <div class="image-section">
@@ -131,7 +143,7 @@
         <p><?= nl2br($data['deskripsi']); ?></p>
         <p>Diunggah <?= waktuUpload($data['tgl_upload']) ?></p>
         <hr>
-        <p><strong>Penjual:</strong>
+        <p><strong>Penjual :</strong>
             <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>" style="color: #d63384;text-decoration: none;">
                 <?= htmlspecialchars($data['nama_penjual']) ?>
             </a>
@@ -139,7 +151,7 @@
         <?php 
             if ($rating && $rating['total'] > 0): ?>
                 <div class='rating'>
-                    <p>Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
+                    <p>Rating : <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
                     (<?= number_format($rating['rata_rata'], 1) ?>/5)
                     <!-- Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
                     (<?= number_format($rating['rata_rata'], 1) ?>/5 dari <?= $rating['total'] ?> ulasan) -->
