@@ -73,7 +73,7 @@
 ?>
 <body>
     <!-- Navbar -->
-    <header>
+        <header>
         <div class="header-top">
             <div class="logo">
                 <a href='index_user.php'>
@@ -81,6 +81,7 @@
             </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
+<<<<<<< HEAD
         <!-- <nav class="navbar">
             <a href="?gender=wanita">Wanita</a>
             <a href="?gender=pria">Pria</a>
@@ -91,6 +92,8 @@
                 <a href="logout.php" class="btn-primary">Logout</a>
             <?php endif; ?>
         </nav> -->
+=======
+>>>>>>> 64d397b5b325620d44fe7131583a8feaa3119904
         <nav class="navbar">
             <!-- <a href="#">Anak</a> -->
             <a href="form_donasi.php" class="donate">
@@ -104,21 +107,29 @@
             </a>
             <a href='profil_saya.php'>
                 &nbsp;<i class="fa-regular fa-circle-user fa-2x"></i></a>
+<<<<<<< HEAD
                 <!-- <a href="logout.php" class='btn-primary'>Logout</a>    -->
+=======
+                <!-- <a href="logout.php" class='btn-primary'>Logout</a>   -->
+>>>>>>> 64d397b5b325620d44fe7131583a8feaa3119904
             </nav>
     </header>
         <div class="main-links">
             <a href="jual_pakaian.php">Jual</a>
-            <a href="keranjang.php">Keranjang</a>
             <a href="pesananku.php">Pesanan saya</a>
             <a href="pesanan_masuk.php">Pesanan masuk</a>
-            <a href="profil_saya.php">Profil saya</a>
-            <a href="wishlist.php">Wishlist</a>
+            <a href="riwayat_donasi.php">Riwayat Donasi</a>
+            <!-- <a href="keranjang.php">Keranjang</a> -->
+            <!-- <a href="profil_saya.php">Profil saya</a> -->
+            <!-- <a href="wishlist.php">Wishlist</a> -->
+            <!-- <a href="?gender=wanita">Wanita</a>
+            <a href="?gender=pria">Pria</a>
+            <a href="?gender=unisex">Unisex</a> -->
         </div>
 
-    <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
-        <!-- <span><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, <?= htmlspecialchars($_SESSION['username']) ?></h3></span> -->
-    <?php endif; ?>
+    <!-- <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
+        <span><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, <?= htmlspecialchars($_SESSION['username']) ?></h3></span>
+    <?php endif; ?> -->
 
 <div class="detail-box">
     <div class="image-section">
@@ -149,7 +160,7 @@
         <p><?= nl2br($data['deskripsi']); ?></p>
         <p>Diunggah <?= waktuUpload($data['tgl_upload']) ?></p>
         <hr>
-        <p><strong>Penjual:</strong>
+        <p><strong>Penjual :</strong>
             <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>" style="color: #d63384;text-decoration: none;">
                 <?= htmlspecialchars($data['nama_penjual']) ?>
             </a>
@@ -157,7 +168,7 @@
         <?php 
             if ($rating && $rating['total'] > 0): ?>
                 <div class='rating'>
-                    <p>Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
+                    <p>Rating : <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
                     (<?= number_format($rating['rata_rata'], 1) ?>/5)
                     <!-- Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
                     (<?= number_format($rating['rata_rata'], 1) ?>/5 dari <?= $rating['total'] ?> ulasan) -->

@@ -42,7 +42,7 @@
 
 <body>
     <!-- Navbar -->
-        <header>
+    <header>
         <div class="header-top">
             <div class="logo">
                 <a href='index_user.php'>
@@ -65,7 +65,7 @@
                 &nbsp;<i class="fa-regular fa-circle-user fa-2x"></i></a>
                 <!-- <a href="logout.php" class='btn-primary'>Logout</a>   -->
             </nav>
-        </header>
+    </header>
         <div class="main-links">
             <a href="jual_pakaian.php">Jual</a>
             <a href="pesananku.php">Pesanan saya</a>
@@ -77,7 +77,7 @@
             <!-- <a href="?gender=wanita">Wanita</a>
             <a href="?gender=pria">Pria</a>
             <a href="?gender=unisex">Unisex</a> -->
-    </div>
+        </div>
 
     <!-- <span> <?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
 </section>
@@ -97,7 +97,7 @@
                     ?>
                     <div style="display: flex; gap: 10px;">
                         <a href="edit_profil.php" class="btn">Edit profile</a> 
-                        <a href="#" id="registerBtn" class="btn">Logout</a>
+                        <a href="logout.php" class="btn">Logout</a>
                     </div>
                 </div>
         </div>
