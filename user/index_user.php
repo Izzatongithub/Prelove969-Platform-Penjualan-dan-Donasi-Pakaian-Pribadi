@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <title>Preloved Shop</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preloved Shop</title>
-    <link rel="stylesheet" href="../frontend/style1_baru.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../frontend/style1_baru.css">
     <script src="../frontend/script.js" defer></script>
 </head>
 
@@ -31,7 +35,8 @@
     <header>
         <div class="header-top">
             <div class="logo">
-                <a href='index_user.php'>PRELOVE969</a>
+                <a href='index_user.php'>
+                    <i class="fas fa-heart me-2"></i>Prelove969</a>
             </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
@@ -41,7 +46,7 @@
             <a href="?gender=unisex">Unisex</a>
             <!-- <a href="#">Anak</a> -->
             <a href="form_donasi.php" class="donate">Donasi</a>
-            <a href="logout.php" class='btn'>Logout</a>  
+            <a href="logout.php" class='btn-primary'>Logout</a>  
         </nav>
     </header>
     <div class="main-links">
@@ -54,8 +59,9 @@
         <a href="riwayat_donasi.php">Riwayat Donasi</a>
     </div>
     
+    <!-- <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span><br> -->
+    
     <!-- Filter -->
-    <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span><br>
     <section class="filters">
         <select id="category-filter" class="filters-content">
             <option value="">Category</option>
@@ -183,9 +189,9 @@
             }
 
             // $result = mysqli_query($koneksi, $query);
-            if (!$result) {
-                die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
-            }
+            // if (!$result) {
+            //     die("Query error: " . mysqli_error($koneksi)); // Tampilkan penyebab pasti
+            // }
 
             function waktuUpload($waktu) {
                 $sekarang = time(); // waktu saat ini (timestamp)
@@ -216,35 +222,35 @@
                 $sudah_suka = mysqli_num_rows($cek) > 0;
 
                 echo "<div class='product'>
-                        <a href='detail_produk.php?id={$row['id_pakaian']}'>
-                            <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
-                            <h3>{$row['nama_pakaian']}</h3>
-                            <p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
-                            <p>{$row['ukuran']}</p>
-                            <p><em>Diunggah " . waktuUpload($row['tgl_upload']) . "</em></p>
-                        </a>";
+                    <a href='detail_produk.php?id={$row['id_pakaian']}'>
+                        <img src='{$row['path_foto']}' alt='{$row['nama_pakaian']}' width='200'>
+                    </a>";
+                echo "<div class='product-header'>
+                        <h3 style='margin: 0;'>{$row['nama_pakaian']}</h3>";
 
                 if (isset($_SESSION['id_user'])) {
-                    echo "<form method='POST' action='../proses/proses_likes.php' style='display:inline; margin-top: 5px;'>";
-                    echo "<input type='hidden' name='id_pakaian' value='{$row['id_pakaian']}'>";
-            
-                if ($sudah_suka) {
-                    echo "<button type='submit' name='likes' value='batal' 
-                            style='border: none; background: none; cursor: pointer; font-size: 18px; color:red;'>
-                            💔 Unlike
-                        </button>";
-                } else {
-                    echo "<button type='submit' name='likes' value='suka' 
-                            style='border: none; background: none; cursor: pointer; font-size: 18px; color:#444;'>
-                            ❤️ Like
-                        </button>";
+                    echo "<form method='POST' action='../proses/proses_likes.php' style='margin: 0;'>
+                            <input type='hidden' name='id_pakaian' value='{$row['id_pakaian']}'>";
+                    if ($sudah_suka) {
+                        echo"<button type='submit' name='likes' value='batal' style='border: none; background: none; cursor: pointer; font-size: 18px; color:red;'>
+                                <i class='fa-solid fa-heart'></i>
+                            </button>";
+                    } else {
+                        echo"<button type='submit' name='likes' value='suka' style='border: none; background: none; cursor: pointer; font-size: 18px; color:#444;'>
+                                <i class='fa-regular fa-heart'></i>
+                            </button>";
+                    }
+                    echo "</form>";
                 }
-                echo "</form>";
-            }
-
+                
+                echo "</div>"; // penutup product-header
+                echo "<p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>
+                <p>{$row['ukuran']}</p>
+                <p><em>Diunggah " . waktuUpload($row['tgl_upload']) . "</em></p>";
+                
                 $jumlah_suka = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM likes WHERE id_pakaian='$id_pakaian'"));
-                echo "<p>Disukai oleh $jumlah_suka orang</p>";
-                echo "</div>";
+                echo "<p>Disukai oleh $jumlah_suka orang</p>
+                </div>";
             }
         ?>
     </section>

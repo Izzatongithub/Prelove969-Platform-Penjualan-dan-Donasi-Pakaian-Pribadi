@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preloved Shop</title>
     <link rel="stylesheet" href="../frontend/style1_baru.css">
-     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- font style -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="../frontend/script.js" defer></script>
 </head>
 <?php
@@ -82,7 +85,7 @@
             <a href="#" class="sale">Sale</a>
             <a href="#" class="donate">Donasi</a>
             <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
-                <a href="logout.php" class="btn">Logout</a>
+                <a href="logout.php" class="btn-primary">Logout</a>
             <?php endif; ?>
         </nav>
     </header>
@@ -94,8 +97,9 @@
             <a href="profil_saya.php">Profil saya</a>
             <a href="wishlist.php">Wishlist</a>
         </div>
+
     <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
-        <span><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, <?= htmlspecialchars($_SESSION['username']) ?></h3></span>
+        <!-- <span><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, <?= htmlspecialchars($_SESSION['username']) ?></h3></span> -->
     <?php endif; ?>
 
 <div class="detail-box">
@@ -128,7 +132,7 @@
         <p>Diunggah <?= waktuUpload($data['tgl_upload']) ?></p>
         <hr>
         <p><strong>Penjual:</strong>
-            <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>">
+            <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>" style="color: #d63384;text-decoration: none;">
                 <?= htmlspecialchars($data['nama_penjual']) ?>
             </a>
         </p>
@@ -141,15 +145,21 @@
                     (<?= number_format($rating['rata_rata'], 1) ?>/5 dari <?= $rating['total'] ?> ulasan) -->
                     </p>
             <?php else: ?>
-                <p>☆☆☆☆☆</p>
+                <div class="rating">
+                <?php
+                    for ($i = 0; $i < 5; $i++) {
+                        echo '<i class="fa-regular fa-star"></i>';
+                    }    
+                ?>
+                </div>
             <?php endif; ?>
                 <div class="detail-buttons">
-                    <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>" class='btn'>Lihat profile</a>
+                    <!-- <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>" class='btn'>Lihat profile</a> -->
                     <!-- <a href="profil_saya.php" class='btn'>Massage</a> -->
                 </div>
                 <div class="detail-buttons">
                     <?php if (isset($_SESSION['id_user'])): ?>
-                        <hr><br>
+                        <hr>
                         <br><a href="checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Beli Sekarang</a>
                         <a href="keranjang.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Keranjang</a>
                     <?php else: ?>
