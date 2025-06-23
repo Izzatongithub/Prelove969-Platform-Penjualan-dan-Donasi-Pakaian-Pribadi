@@ -27,7 +27,6 @@
     while ($row = mysqli_fetch_assoc($ukuranQuery)) {
         $ukuranArray[$row['tipe_ukuran']][] = $row['ukuran'];
     }
-
 ?>
 
 <body>
@@ -41,22 +40,32 @@
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
         <nav class="navbar">
-            <a href="?gender=wanita">Wanita</a>
-            <a href="?gender=pria">Pria</a>
-            <a href="?gender=unisex">Unisex</a>
             <!-- <a href="#">Anak</a> -->
-            <a href="form_donasi.php" class="donate">Donasi</a>
-            <a href="logout.php" class='btn-primary'>Logout</a>  
-        </nav>
-    </header>
-    <div class="main-links">
-        <a href="jual_pakaian.php">Jual</a>
-        <a href="keranjang.php">Keranjang</a>
-        <a href="pesananku.php">Pesanan saya</a>
-        <a href="pesanan_masuk.php">Pesanan masuk</a>
-        <a href="profil_saya.php">Profil saya</a>
-        <a href="wishlist.php">Wishlist</a>
-        <a href="riwayat_donasi.php">Riwayat Donasi</a>
+            <a href="form_donasi.php" class="donate">
+                <i class="fa-solid fa-hand-holding-heart fa-2x"></i>
+            </a>
+            <a href="wishlist.php">
+                <i class="fa-regular fa-heart fa-2x"></i>
+            </a>
+            <a href="keranjang.php">
+                &nbsp;<i class="fa-solid fa-bag-shopping fa-2x"></i>
+            </a>
+            <a href='profil_saya.php'>
+                &nbsp;<i class="fa-regular fa-circle-user fa-2x"></i></a>
+                <!-- <a href="logout.php" class='btn-primary'>Logout</a>   -->
+            </nav>
+        </header>
+        <div class="main-links">
+            <a href="jual_pakaian.php">Jual</a>
+            <a href="pesananku.php">Pesanan saya</a>
+            <a href="pesanan_masuk.php">Pesanan masuk</a>
+            <a href="riwayat_donasi.php">Riwayat Donasi</a>
+            <!-- <a href="keranjang.php">Keranjang</a> -->
+            <!-- <a href="profil_saya.php">Profil saya</a> -->
+            <!-- <a href="wishlist.php">Wishlist</a> -->
+            <!-- <a href="?gender=wanita">Wanita</a>
+            <a href="?gender=pria">Pria</a>
+            <a href="?gender=unisex">Unisex</a> -->
     </div>
     
     <!-- <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span><br> -->
@@ -72,7 +81,54 @@
         <select id="size-filter">
             <option value="">Size</option>
         </select>
+        <!-- <label for="gender-filter">Filter Gender:</label> -->
+        <?php $gender = isset($_GET['gender']) ? $_GET['gender'] : ''; ?>
+
+        <select id="gender-filter" name="gender">
+            <option value="">Gender</option>
+
+            <option value="pria"
+                <?php
+                if ($gender === 'pria') {
+                    echo 'selected';
+                }
+                ?>
+            >Pria</option>
+
+            <option value="wanita"
+                <?php
+                if ($gender === 'wanita') {
+                    echo 'selected';
+                }
+                ?>
+            >Wanita</option>
+
+            <option value="unisex"
+                <?php
+                if ($gender === 'unisex') {
+                    echo 'selected';
+                }
+                ?>
+            >Unisex</option>
+        </select>
+
     </section>
+
+    <script>
+        document.getElementById('gender-filter').addEventListener('change', function () {
+            const selectedGender = this.value;
+            const urlParams = new URLSearchParams(window.location.search);
+
+            if (selectedGender) {
+                urlParams.set('gender', selectedGender);
+            } else {
+                urlParams.delete('gender');
+            }
+
+            // Redirect ke URL baru dengan parameter yang diperbarui
+            window.location.search = urlParams.toString();
+        });
+    </script>
 
     <script>
         // Data ukuran dari PHP (diubah jadi JS array)
@@ -110,6 +166,14 @@
             url.searchParams.set('kategori', kategori);
             url.searchParams.delete('ukuran'); // Reset ukuran
             window.location.href = url.toString();
+        });
+
+        document.getElementById("gender-filter").addEventListener("change", function() {
+            const selectedGender = this.value;
+            
+            // Lakukan aksi filter produk berdasarkan gender
+            // Misalnya: reload halaman atau fetch data baru
+            console.log("Filter berdasarkan gender:", selectedGender);
         });
 
         sizeSelect.addEventListener('change', function () {

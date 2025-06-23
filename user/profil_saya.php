@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preloved Shop</title>
-    <link rel="stylesheet" href="../frontend/style1_baru.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../frontend/style1_baru.css">
     <script src="../frontend/script.js" defer></script>
 </head>
 
@@ -24,11 +28,9 @@
 
     // Ambil daftar pakaian yang diunggah user
     $query_produk = mysqli_query($koneksi, "SELECT p.*, f.path_foto FROM pakaian p
-        LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian
-        WHERE p.id_user = '$id_user'");
+            LEFT JOIN (SELECT * FROM foto_produk WHERE urutan = 1) f ON p.id_pakaian = f.id_pakaian WHERE p.id_user = '$id_user'");
 
-    $qRating = mysqli_query($koneksi, "SELECT AVG(rating) AS rata_rata, COUNT(*) AS total
-        FROM reviews WHERE id_penjual = '$id_user'");
+    $qRating = mysqli_query($koneksi, "SELECT AVG(rating) AS rata_rata, COUNT(*) AS total FROM reviews WHERE id_penjual = '$id_user'");
     $rating = mysqli_fetch_assoc($qRating);
 
     // Fungsi tampilkan foto profil
@@ -43,7 +45,8 @@
     <header>
         <div class="header-top">
             <div class="logo">
-                <a href='index_user.php'>PRELOVE969</a>
+                <a href='index_user.php'>
+                    <i class="fas fa-heart me-2"></i>Prelove969</a>
             </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
@@ -59,8 +62,7 @@
             <a href="pesanan_masuk.php">Pesanan masuk</a>
             <a href="profil_saya.php">Profil saya</a>
             <a href="wishlist.php">Wishlist</a>
-            <a href="" class="donate">Donasi</a>
-            <a href="#" id="registerBtn" class='btn'>Logout</a>
+            <a href="form_donasi.php" class="donate">Donasi</a>
         </nav>
         <!-- <div class="main-links">
         </div> -->
@@ -73,15 +75,18 @@
             <?php tampilkanFotoProfil($data_user['ava']); ?>
                 <div class="profile-info">
                     <h2>Profil Saya</h2>
-                    <p><strong>Nama:</strong> <?= $data_user['nama'] ?></p>
-                    <p><strong>Email:</strong> <?= $data_user['email'] ?></p>
-                    <p><strong>No HP:</strong> <?= $data_user['no_telp'] ?></p>
-                    <p><strong>Alamat:</strong> <?= $data_user['alamat'] ?></p>
+                    <p><strong class="label">Nama</strong>: <?= $data_user['nama'] ?></p>
+                    <p><strong class="label">Email</strong>: <?= $data_user['email'] ?></p>
+                    <p><strong class="label">No HP</strong>: <?= $data_user['no_telp'] ?></p>
+                    <p><strong class="label">Alamat</strong>: <?= $data_user['alamat'] ?></p>
                     <?php
-                        echo "<p>Rating: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
-                        echo "<p>Total Ulasan: " . $rating['total'] . "</p>";
+                        echo "<p><strong class='label'>Rating</strong>: " . number_format($rating['rata_rata'], 1) . " / 5</p>";
+                        echo "<p><strong class='label'>Total Ulasan</strong>: " . $rating['total'] . "</p>";
                     ?>
-                    <a href="edit_profil.php" class="btn">Edit profile</a>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="edit_profil.php" class="btn">Edit profile</a> 
+                        <a href="#" id="registerBtn" class="btn">Logout</a>
+                    </div>
                 </div>
         </div>
         <div class="uploaded-products-container">

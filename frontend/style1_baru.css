@@ -1,6 +1,6 @@
 /* Custom CSS Variables untuk Warna */
 :root {
-    --primary-color: #ff6b9d;
+    --primary-color: #ff6b9d !important;
     --secondary-color: #a8e6cf;
     --accent-color: #ffd93d;
     --light-pink: #ffe4e8;
@@ -763,13 +763,13 @@ a {
 .profile-info {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 2px;
 }
 
 .profile-info h2 {
-    margin: 0;
+    margin-bottom: 8px;
     font-size: 24px;
-    color: #8b0000;
+    /* color: #8b0000; */
 }
 
 .profile-info p {
@@ -882,7 +882,7 @@ a {
 
 /* Informasi produk */
 .pesanan-info {
-        flex: 1;
+    flex: 1;
     min-width: 200px;
     background-color: #fff0f5; /* baby pink lembut */
     padding: 16px;

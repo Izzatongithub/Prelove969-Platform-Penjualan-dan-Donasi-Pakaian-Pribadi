@@ -49,7 +49,6 @@
     while ($row = mysqli_fetch_assoc($ukuran_bagspurses)) {
         $ukuranData['lain'][] = $row;
     }
-
 ?>
 
 <body>
