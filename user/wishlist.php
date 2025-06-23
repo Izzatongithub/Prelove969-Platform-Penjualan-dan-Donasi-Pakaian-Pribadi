@@ -42,68 +42,80 @@
 ?>
 <body>
     <!-- Navbar -->
-    <header>
+   <header>
         <div class="header-top">
             <div class="logo">
                 <a href='index_user.php'>
-                <i class="fas fa-heart me-2"></i>Prelove969</a>
+                    <i class="fas fa-heart me-2"></i>Prelove969</a>
             </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
         <nav class="navbar">
-            <!-- <a href="?gender=wanita">Wanita</a>
-            <a href="?gender=pria">Pria</a>
-            <a href="?gender=unisex">Unisex</a>
-            <a href="#" class="sale">Sale</a> -->
+            <!-- <a href="#">Anak</a> -->
+            <a href="form_donasi.php" class="donate">
+                <i class="fa-solid fa-hand-holding-heart fa-2x"></i>
+            </a>
+            <a href="wishlist.php">
+                <i class="fa-regular fa-heart fa-2x"></i>
+            </a>
+            <a href="keranjang.php">
+                &nbsp;<i class="fa-solid fa-bag-shopping fa-2x"></i>
+            </a>
+            <a href='profil_saya.php'>
+                &nbsp;<i class="fa-regular fa-circle-user fa-2x"></i></a>
+                <!-- <a href="logout.php" class='btn-primary'>Logout</a>   -->
+            </nav>
+        </header>
+        <div class="main-links">
             <a href="jual_pakaian.php">Jual</a>
-            <a href="keranjang.php">Keranjang</a>
             <a href="pesananku.php">Pesanan saya</a>
             <a href="pesanan_masuk.php">Pesanan masuk</a>
-            <a href="profil_saya.php">Profil saya</a>
-            <a href="wishlist.php">Wishlist</a>
-            <a href="form_donasi.php" class="donate">Donasi</a>
-            <a href="#" id="registerBtn" class='btn'>Logout</a>
-        </nav>
-        <div class="main-links">
-        </div>
+            <a href="riwayat_donasi.php">Riwayat Donasi</a>
+            <!-- <a href="keranjang.php">Keranjang</a> -->
+            <!-- <a href="profil_saya.php">Profil saya</a> -->
+            <!-- <a href="wishlist.php">Wishlist</a> -->
+            <!-- <a href="?gender=wanita">Wanita</a>
+            <a href="?gender=pria">Pria</a>
+            <a href="?gender=unisex">Unisex</a> -->
+    </div>
+  
     <!-- <span><?php echo"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, " . $_SESSION['username'] . "</h3>"; ?></span> -->
-    </header>
     <?php
-echo "<div class='cart-container'>";
-echo "<h2 class='cart-title'>Wishlist Saya</h2>";
-echo "<div class='cart-wrapper'>";
+        echo "<div class='cart-container'>";
+        echo "<h2 class='cart-title'>Wishlist Saya</h2>";
+        echo "<div class='cart-wrapper'>";
 
-$total = 0;
+        $total = 0;
 
-if (mysqli_num_rows($result) > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $total += $row['harga'];
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $total += $row['harga'];
 
-        echo "<div class='cart-item'>";
-        echo "<img src='../uploads/{$row['path_foto']}' alt='{$row['nama_pakaian']}'>";
-        echo "<div class='cart-info'>";
-        echo "<h4>{$row['nama_pakaian']}</h4>";
-        echo "<p>Ukuran: {$row['ukuran']}</p>";
-        echo "<p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>";
+                echo "<div class='cart-item'>";
+                echo "<img src='../uploads/{$row['path_foto']}' alt='{$row['nama_pakaian']}'>";
+                echo "<div class='cart-info'>";
+                echo "<h4>{$row['nama_pakaian']}</h4>";
+                echo "<p>Ukuran: {$row['ukuran']}</p>";
+                echo "<p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>";
 
-        // Tombol Hapus dari wishlist
-        echo "<form method='POST' action='../proses/proses_hapus_wishlist.php'>";
-        echo "<input type='hidden' name='id_pakaian' value='{$row['id_pakaian']}'>";
-        echo "<input type='hidden' name='likes' value='batal'>";
-        echo "<button type='submit' class='btn'>Hapus</button>";
-        echo "</form>";
+                // Tombol Hapus dari wishlist
+                echo "<form method='POST' action='../proses/proses_hapus_wishlist.php'>";
+                echo "<input type='hidden' name='id_pakaian' value='{$row['id_pakaian']}'>";
+                echo "<input type='hidden' name='likes' value='batal'>";
+                echo "<button type='submit' class='btn'>Hapus</button>";
+                echo "</form>";
 
-        echo "</div></div>"; // close cart-info & cart-item
-    }
+                echo "</div></div>"; // close cart-info & cart-item
+            }
 
-    echo "</div>"; // close cart-wrapper
+            echo "</div>"; // close cart-wrapper
 
-} else {
-    echo "<p class='empty-msg'>Belum ada produk di wishlist Anda.</p>";
-    echo "</div>"; // close cart-wrapper
-}
+        } else {
+            echo "<p class='empty-msg'>Belum ada produk di wishlist Anda.</p>";
+            echo "</div>"; // close cart-wrapper
+        }
 
-echo "</div>"; // close cart-container
+        echo "</div>"; // close cart-container
 ?>
 
 </body>
