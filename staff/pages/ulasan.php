@@ -3,10 +3,10 @@
     include "../config.php";
 
     // Pastikan hanya admin
-    if (!isset($_SESSION['level']) || $_SESSION['level'] != 'admin') {
-        header("Location: ../index.php");
-        exit;
-    }
+    // if (!isset($_SESSION['level']) || $_SESSION['level'] != 'admin') {
+    //     header("Location: ../index.php");
+    //     exit;
+    // }
 
     // Ambil parameter dari URL
     $search = isset($_GET['search']) ? trim($_GET['search']) : '';

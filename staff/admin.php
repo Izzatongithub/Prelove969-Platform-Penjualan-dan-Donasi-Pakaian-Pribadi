@@ -74,9 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_pengaturan_umu
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aksi_donasi']) && isset($_POST['id_donasi'])) {
     $id_donasi = intval($_POST['id_donasi']);
     $aksi = $_POST['aksi_donasi'];
-    $status_baru = ($aksi === 'terima') ? 'diterima' : 'ditolak';
-    
-    mysqli_query($koneksi, "UPDATE donasi SET status='$status_baru' WHERE id_donasi=$id_donasi");
+    if ($aksi === 'terima') {
+        $status_baru = 'Terverifikasi';
+        $query = "UPDATE donasi_pakaian SET status_donasi='$status_baru', tanggal_verifikasi=NOW() WHERE id_donasi=$id_donasi";
+    } else {
+        $status_baru = 'Ditolak';
+        $alasan = isset($_POST['alasan']) ? mysqli_real_escape_string($koneksi, $_POST['alasan']) : '';
+        $query = "UPDATE donasi_pakaian SET status_donasi='$status_baru', alasan_penolakan='$alasan' WHERE id_donasi=$id_donasi";
+    }
+    mysqli_query($koneksi, $query);
     header("Location: admin.php?page=donasi&msg=update_sukses");
     exit;
 }
