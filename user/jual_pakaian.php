@@ -97,7 +97,7 @@
         <form action="../proses/proses_upload_foto.php" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="formFileMultiple" class="form-label">Upload Foto Produk:</label>
-                <input class="form-control" type="file" id="formFileMultiple" name="foto_produk[]" multiple>
+                <input class="form-control" type="file" id="formFileMultiple" name="foto_produk" multiple>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Nama Produk:</label>

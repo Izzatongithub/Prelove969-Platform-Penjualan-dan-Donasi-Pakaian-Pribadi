@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         echo "Produk dan semua foto berhasil diunggah!";
-        header("location: ../user/jual_pakaian  .php");
+        header("location: ../user/jual_pakaian.php");
     } else {
         // echo "Gagal menyimpan produk.";
          echo "Error: " . mysqli_error($koneksi);

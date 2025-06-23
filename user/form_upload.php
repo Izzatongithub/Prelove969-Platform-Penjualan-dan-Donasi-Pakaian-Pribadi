@@ -118,14 +118,11 @@
     </select><br>
 
     <label for="status">Gender:</label>
-<select name="gender" id="status">
-  <option value="pria">Pria</option>
-  <option value="wanita">Wanita</option>
-  <option value="unisex">Unisex</option>
-</select>
-
-
-
+    <select name="gender" id="status">
+        <option value="pria">Pria</option>
+        <option value="wanita">Wanita</option>
+        <option value="unisex">Unisex</option>
+    </select>1
     <input type="submit" name="submit" value="Simpan Produk">
 </form>
 
