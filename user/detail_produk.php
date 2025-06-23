@@ -81,7 +81,6 @@
             </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
-<<<<<<< HEAD
         <!-- <nav class="navbar">
             <a href="?gender=wanita">Wanita</a>
             <a href="?gender=pria">Pria</a>
@@ -92,8 +91,6 @@
                 <a href="logout.php" class="btn-primary">Logout</a>
             <?php endif; ?>
         </nav> -->
-=======
->>>>>>> 64d397b5b325620d44fe7131583a8feaa3119904
         <nav class="navbar">
             <!-- <a href="#">Anak</a> -->
             <a href="form_donasi.php" class="donate">
@@ -107,11 +104,7 @@
             </a>
             <a href='profil_saya.php'>
                 &nbsp;<i class="fa-regular fa-circle-user fa-2x"></i></a>
-<<<<<<< HEAD
                 <!-- <a href="logout.php" class='btn-primary'>Logout</a>    -->
-=======
-                <!-- <a href="logout.php" class='btn-primary'>Logout</a>   -->
->>>>>>> 64d397b5b325620d44fe7131583a8feaa3119904
             </nav>
     </header>
         <div class="main-links">
