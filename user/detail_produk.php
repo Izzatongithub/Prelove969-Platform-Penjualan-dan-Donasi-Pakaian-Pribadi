@@ -75,10 +75,13 @@
     <!-- Navbar -->
     <header>
         <div class="header-top">
-            <div class="logo">PRELOVE969</div>
+            <div class="logo">
+                <a href='index_user.php'>
+                    <i class="fas fa-heart me-2"></i>Prelove969</a>
+            </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
-        <nav class="navbar">
+        <!-- <nav class="navbar">
             <a href="?gender=wanita">Wanita</a>
             <a href="?gender=pria">Pria</a>
             <a href="?gender=unisex">Unisex</a>
@@ -87,7 +90,22 @@
             <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
                 <a href="logout.php" class="btn-primary">Logout</a>
             <?php endif; ?>
-        </nav>
+        </nav> -->
+        <nav class="navbar">
+            <!-- <a href="#">Anak</a> -->
+            <a href="form_donasi.php" class="donate">
+                <i class="fa-solid fa-hand-holding-heart fa-2x"></i>
+            </a>
+            <a href="wishlist.php">
+                <i class="fa-regular fa-heart fa-2x"></i>
+            </a>
+            <a href="keranjang.php">
+                &nbsp;<i class="fa-solid fa-bag-shopping fa-2x"></i>
+            </a>
+            <a href='profil_saya.php'>
+                &nbsp;<i class="fa-regular fa-circle-user fa-2x"></i></a>
+                <!-- <a href="logout.php" class='btn-primary'>Logout</a>    -->
+            </nav>
     </header>
         <div class="main-links">
             <a href="jual_pakaian.php">Jual</a>
