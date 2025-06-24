@@ -283,6 +283,45 @@ $status_warna = [
                         <?php endif; ?>
                     </div>
                 </div>
+
+                <!-- Informasi Penerima (Panti Asuhan) -->
+                <div class="bagian">
+                    <div class="judul">Informasi Penerima (Panti Asuhan)</div>
+                    <div class="isi">
+                        <?php
+                        $panti_info = [];
+                        if (!empty($donasi['id_panti'])) {
+                            $id_pantis = explode(',', $donasi['id_panti']);
+                            $id_pantis = array_filter($id_pantis, function($v) { return trim($v) !== ''; });
+                            if (count($id_pantis) > 0) {
+                                $id_in = implode(',', array_map('intval', $id_pantis));
+                                $q_panti = mysqli_query($koneksi, "SELECT * FROM panti_asuhan WHERE id_panti IN ($id_in)");
+                                if ($q_panti) {
+                                    while ($panti = mysqli_fetch_assoc($q_panti)) {
+                                        $panti_info[] = $panti;
+                                    }
+                                }
+                            }
+                        }
+                        ?>
+                        <?php if (!empty($panti_info)): ?>
+                            <?php foreach ($panti_info as $panti): ?>
+                                <div class="baris">
+                                    <div class="label">Nama Panti</div>
+                                    <div class="nilai"><?= htmlspecialchars($panti['nama_panti']) ?></div>
+                                </div>
+                                <div class="baris">
+                                    <div class="label">Alamat</div>
+                                    <div class="nilai"><?= htmlspecialchars($panti['alamat']) ?></div>
+                                </div>
+                                <hr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="text-muted">Belum ada panti asuhan penerima.</div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <!-- END Informasi Penerima -->
             </div>
 
             <div class="side-content">
@@ -350,4 +389,4 @@ $status_warna = [
         </div>
     </div>
 </body>
-</html> 
+</html>

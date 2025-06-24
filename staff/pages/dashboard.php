@@ -37,7 +37,7 @@ $recent_activities = array_slice($recent_activities, 0, 10);
 <section class="content-section active">
     <h2>Dashboard Overview</h2>
     <div class="dashboard-grid">
-        <div class="card sales-card">
+        <!-- <div class="card sales-card">
             <h3>Total Penjualan</h3>
             <p class="card-value">Rp <?= number_format($total_penjualan, 0, ',', '.') ?></p>
         </div>
@@ -45,7 +45,7 @@ $recent_activities = array_slice($recent_activities, 0, 10);
             <h3>Pesanan Baru</h3>
             <p class="card-value"><?= $total_pesanan ?></p>
             <span class="card-trend">Perlu Diproses</span>
-        </div>
+        </div> -->
         <div class="card products-card">
             <h3>Total Produk</h3>
             <p class="card-value"><?= $total_produk ?></p>
@@ -55,7 +55,7 @@ $recent_activities = array_slice($recent_activities, 0, 10);
             <p class="card-value"><?= $total_pengguna ?></p>
         </div>
     </div>
-    <div class="dashboard-charts">
+    <!-- <div class="dashboard-charts">
         <h3>Grafik Penjualan Bulanan</h3>
         <canvas id="monthlySalesChart"></canvas>
         <script>
@@ -90,7 +90,7 @@ $recent_activities = array_slice($recent_activities, 0, 10);
             }
         });
         </script>
-    </div>
+    </div> -->
     <div class="recent-activities">
         <h3>Aktivitas Terbaru</h3>
         <ul>
