@@ -56,25 +56,26 @@ $qPenjual .= "
 
     <h2>Daftar Penjual</h2>
 
-    <div class="search-filter-bar" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-        <form method="get" style="flex: 1;">
-            <input type="hidden" name="page" value="ulasan">
-            <input type="text" name="search" placeholder="Cari nama..." value="<?= htmlspecialchars($search) ?>">
-            <input type="hidden" name="filter" value="<?= $filter ?>">
-            <button type="submit">Cari</button>
-        </form>
-        <form method="get">
+<div class="action-bar">
+    <form method="get" class="search-filter" style="flex:1;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <input type="hidden" name="page" value="ulasan">
+        <input type="text" name="search" class="form-control" placeholder="Cari nama..." value="<?= htmlspecialchars($search) ?>" style="max-width:220px;">
+        <button type="submit" class="btn btn-primary">Cari</button>
+    </form>
+    <div class="filter-kanan">
+        <form method="get" style="margin:0;">
             <input type="hidden" name="page" value="ulasan">
             <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
-            <select name="filter" onchange="this.form.submit()">
+            <select name="filter" class="form-select" onchange="this.form.submit()" style="max-width:180px;">
                 <option value="desc" <?= $filter === 'desc' ? 'selected' : '' ?>>Rating Tertinggi</option>
                 <option value="asc" <?= $filter === 'asc' ? 'selected' : '' ?>>Rating Terendah</option>
             </select>
         </form>
     </div>
+</div>
 
     <div class="table-container">
-        <table>
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ID User</th>
@@ -110,13 +111,124 @@ $qPenjual .= "
         </table>
     </div>
 
-    <div class="pagination" style="margin-top: 10px; text-align: center;">
+    <!-- <div class="pagination mt-3 text-center">
         <?php for ($i = 1; $i <= $totalPage; $i++): ?>
             <a href="admin.php?page=ulasan&search=<?= urlencode($search) ?>&filter=<?= $filter ?>&p=<?= $i ?>"
-               class="<?= $i == $page ? 'active' : '' ?>"
-               style="margin: 0 3px; padding: 5px 10px; <?= $i == $page ? 'background-color:#ff69b4;color:#fff;' : 'background:#eee;color:#000;' ?>">
+               class="btn btn-sm <?= $i == $page ? 'btn-primary' : 'btn-outline-secondary' ?> mx-1 <?= $i == $page ? 'active' : '' ?>">
                 <?= $i ?>
             </a>
         <?php endfor; ?>
-    </div>
+    </div> -->
+
+    <style>
+    .action-bar {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .filter-kanan {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: auto;
+        min-width: 180px;
+        /* Tambahkan agar mirip dengan search-filter */
+        width: 100%;
+        max-width: 220px;
+    }
+    .filter-kanan .form-select {
+        border-radius: 5px;
+        font-size: 15px;
+        width: 100%;
+        min-width: 180px;
+        /* Tambahan agar konsisten */
+        padding: 6px 12px;
+        background: #fff;
+        border: 1px solid #ced4da;
+    }
+    .filter-kanan form {
+        width: 100%;
+    }
+    .search-filter {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+        max-width: 600px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .search-filter .form-control {
+        border-radius: 5px;
+        font-size: 15px;
+    }
+    .search-filter .form-select {
+        border-radius: 5px;
+        font-size: 15px;
+    }
+    .search-filter .btn-primary {
+        border-radius: 5px;
+        font-size: 15px;
+        min-width: 70px;
+    }
+    .search-filter [name="filter"] {
+        min-width: 180px;
+        margin-left: auto;
+    }
+
+    /* Style untuk tombol aksi lihat profil */
+    .btn-detail {
+        background-color: #ff6b9d;
+        color: #fff !important;
+        border-radius: 5px;
+        padding: 4px 12px;
+        font-size: 14px;
+        transition: background 0.2s, color 0.2s;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        text-decoration: none;
+    }
+    .btn-detail:hover, .btn-detail:focus {
+        background-color: #e05585;
+        color: #fff !important;
+        text-decoration: none;
+    }
+    .btn-detail i {
+        margin-right: 4px;
+    }
+    @media (max-width: 600px) {
+        .action-bar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .filter-kanan {
+            margin-left: 0;
+            width: 100%;
+            max-width: 100%;
+            margin-top: 10px;
+        }
+        .filter-kanan .form-select {
+            width: 100%;
+            max-width: 100%;
+        }
+        .search-filter {
+            flex-direction: column;
+            gap: 10px;
+            max-width: 100%;
+        }
+        .search-filter .form-control,
+        .search-filter .form-select,
+        .search-filter .btn-primary {
+            width: 100%;
+            max-width: 100%;
+        }
+        .search-filter [name="filter"] {
+            margin-left: 0;
+            width: 100%;
+        }
+    }
+    </style>
 </section>

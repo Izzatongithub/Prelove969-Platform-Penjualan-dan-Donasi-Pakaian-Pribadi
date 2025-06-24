@@ -61,12 +61,29 @@
         </span>
     </div>
 </div>
+<script>
+// Notif hanya tampil 0.5 detik
+setTimeout(function() {
+    var notification = document.getElementById('notification');
+    if (notification) {
+        notification.style.transition = "opacity 0.3s";
+        notification.style.opacity = 0;
+        setTimeout(function() {
+            notification.style.display = 'none';
+            // Hapus parameter 'msg' dari URL tanpa reload
+            var url = new URL(window.location.href);
+            url.searchParams.delete('msg');
+            window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
+        }, 300);
+    }
+}, 1000);
+</script>
 <?php endif; ?>
 
 <header class="admin-header">
     <div class="header-left">
         <button id="toggleSidebar" class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
-        <div class="logo">Prelove969</div>
+        <div class="logo"><i class="fas fa-heart me-2"></i> Prelove969</div>
     </div>
     <div class="header-right">
         <div class="admin-profile">
@@ -110,3 +127,5 @@ popupLogout.addEventListener('click', function(e) {
     if (e.target === popupLogout) popupLogout.classList.remove('show');
 });
 </script>
+</body>
+</html>

@@ -46,9 +46,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case 'proses':
             $catatan = mysqli_real_escape_string($koneksi, $_POST['catatan']);
+            // Ambil id_panti (multiple select)
+            $id_panti = isset($_POST['id_panti']) ? $_POST['id_panti'] : [];
+            if (is_array($id_panti)) {
+                $id_panti_str = implode(',', array_map('intval', $id_panti));
+            } else {
+                $id_panti_str = intval($id_panti);
+            }
             $query = "UPDATE donasi_pakaian SET 
                 status_donasi = 'Dalam Proses',
                 catatan_proses = '$catatan',
+                id_panti = '$id_panti_str',
                 tanggal_proses = NOW()
                 WHERE id_donasi = '$id'";
             break;

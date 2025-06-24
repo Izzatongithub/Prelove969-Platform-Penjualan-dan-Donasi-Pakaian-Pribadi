@@ -17,9 +17,9 @@
             <li class="nav-item <?= ($active_page == 'donasi') ? 'active' : '' ?>">
                 <a href="admin.php?page=donasi"><i class="fas fa-hand-holding-heart"></i> Donasi</a>
             </li>
-            <li class="nav-item <?= ($active_page == 'laporan') ? 'active' : '' ?>">
+            <!-- <li class="nav-item <?= ($active_page == 'laporan') ? 'active' : '' ?>">
                 <a href="admin.php?page=laporan"><i class="fas fa-chart-line"></i> Laporan</a>
-            </li>
+            </li> -->
             <li class="nav-item <?= ($active_page == 'pengaturan') ? 'active' : '' ?>">
                 <a href="admin.php?page=pengaturan"><i class="fas fa-cog"></i> Pengaturan</a>
             </li>
