@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preloved Shop</title>
-    <link rel="stylesheet" href="../frontend/style1_baru.css">
     <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- font style -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../frontend/style1_baru.css">
     <script src="../frontend/script.js" defer></script>
 </head>
 <?php
@@ -43,7 +43,7 @@
         $stars = round($rating); // pembulatan ke atas/bawah
         $output = '';
         for ($i = 1; $i <= 5; $i++) {
-            $output .= $i <= $stars ? '★' : '☆';
+            $output .= $i <= $stars ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>';
         }
         return $output;
     }
@@ -77,7 +77,7 @@
         <div class="header-top">
             <div class="logo">
                 <a href='index_user.php'>
-                    <i class="fas fa-heart me-2"></i>Prelove969</a>
+                    <i class="fas fa-heart me-2"></i> Prelove969</a>
             </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
@@ -92,7 +92,6 @@
             <?php endif; ?>
         </nav> -->
         <nav class="navbar">
-            <!-- <a href="#">Anak</a> -->
             <a href="form_donasi.php" class="donate">
                 <i class="fa-solid fa-hand-holding-heart fa-2x"></i>
             </a>
@@ -104,7 +103,10 @@
             </a>
             <a href='profil_saya.php'>
                 &nbsp;<i class="fa-regular fa-circle-user fa-2x"></i></a>
+<<<<<<< HEAD
+=======
                 <!-- <a href="logout.php" class='btn-primary'>Logout</a>    -->
+>>>>>>> 097f3d365a0bc5c93ad4fa47a57a9e175b23add8
             </nav>
     </header>
         <div class="main-links">
@@ -112,12 +114,7 @@
             <a href="pesananku.php">Pesanan saya</a>
             <a href="pesanan_masuk.php">Pesanan masuk</a>
             <a href="riwayat_donasi.php">Riwayat Donasi</a>
-            <!-- <a href="keranjang.php">Keranjang</a> -->
-            <!-- <a href="profil_saya.php">Profil saya</a> -->
-            <!-- <a href="wishlist.php">Wishlist</a> -->
-            <!-- <a href="?gender=wanita">Wanita</a>
-            <a href="?gender=pria">Pria</a>
-            <a href="?gender=unisex">Unisex</a> -->
+            
         </div>
 
     <!-- <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
@@ -149,7 +146,7 @@
     <div class="detail-info">
         <h2><?= $data['nama_pakaian']; ?></h2>
         <p><?= $data['ukuran'] . " | " . $data['kondisi']; ?></p>
-        <p>Rp <?= number_format($data['harga'], 0, ',', '.'); ?></p>
+        <p><strong><?= 'Rp ' . number_format($data['harga'], 0, ',', '.') ?></strong></p>
         <p><?= nl2br($data['deskripsi']); ?></p>
         <p>Diunggah <?= waktuUpload($data['tgl_upload']) ?></p>
         <hr>
@@ -158,34 +155,32 @@
                 <?= htmlspecialchars($data['nama_penjual']) ?>
             </a>
         </p>
-        <?php 
-            if ($rating && $rating['total'] > 0): ?>
-                <div class='rating'>
-                    <p>Rating : <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
-                    (<?= number_format($rating['rata_rata'], 1) ?>/5)
-                    <!-- Rating: <span class="rating-stars"><?= tampilkanBintang($rating['rata_rata']) ?></span> 
-                    (<?= number_format($rating['rata_rata'], 1) ?>/5 dari <?= $rating['total'] ?> ulasan) -->
-                    </p>
-            <?php else: ?>
-                <div class="rating">
-                <?php
-                    for ($i = 0; $i < 5; $i++) {
-                        echo '<i class="fa-regular fa-star"></i>';
-                    }    
-                ?>
-                </div>
-            <?php endif; ?>
+        <div class='rating'>
+                <span>Rating :</span>
+                <span class="rating-stars">
+                    <?php 
+                        if ($rating && $rating['total'] > 0) {
+                            echo tampilkanBintang($rating['rata_rata']);
+                        } else {
+                            for ($i = 0; $i < 5; $i++) {
+                                echo '<i class="fa-regular fa-star"></i>';
+                            }
+                        }
+                    ?>
+                </span>
+                <span>(<?= $rating && $rating['total'] > 0 ? number_format($rating['rata_rata'], 1) : '0.0' ?>/5)</span>
+            </div>
+                <!-- <div class="detail-buttons">
+                    <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>" class='btn'>Lihat profile</a>
+                    <a href="profil_saya.php" class='btn'>Massage</a>
+                </div> -->
                 <div class="detail-buttons">
-                    <!-- <a href="profil_penjual.php?id_user=<?= $data['id_user'] ?>" class='btn'>Lihat profile</a> -->
-                    <!-- <a href="profil_saya.php" class='btn'>Massage</a> -->
-                </div>
-                <div class="detail-buttons">
+                    <hr>
                     <?php if (isset($_SESSION['id_user'])): ?>
-                        <hr>
                         <br><a href="checkout.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Beli Sekarang</a>
                         <a href="keranjang.php?id_pakaian=<?= $data['id_pakaian'] ?>" class="btn">Keranjang</a>
                     <?php else: ?>
-                        <p><em>Silakan login untuk membeli atau menambahkan ke keranjang.</em></p>
+                        <p><em><a href="login.php" style="color: #d63384;">Login untuk membeli</a> atau menambahkan ke keranjang.</em></p>
                     <?php endif; ?>
                 </div>
             </div>
@@ -198,32 +193,4 @@
             document.getElementById("mainImage").src = src;
         }
     </script>
-<!-- <footer>
-    <div class="footer-container">
-        <div class="footer-about">
-            <h3>Tentang Kami</h3>
-            <p>Website ini adalah platform preloved yang membantu pengguna menjual dan mendonasikan pakaian bekas yang masih layak pakai.</p>
-        </div>
-        <div class="footer-links">
-            <h3>Tautan Cepat</h3>
-            <ul>
-                <li><a href="#">Beranda</a></li>
-                <li><a href="#">Produk</a></li>
-                <li><a href="#">Donasi</a></li>
-                <li><a href="#">Kontak</a></li>
-            </ul>
-        </div>
-        <div class="footer-contact">
-            <h3>Kontak Kami</h3>
-            <p>Email: support@preloved.com</p>
-            <p>Telepon: +62 812 3456 7890</p>
-            <div class="social-icons">
-                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
-                <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
-                <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
-            </div>
-        </div>
-    </div>
-    <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
-</footer> -->
 </html>

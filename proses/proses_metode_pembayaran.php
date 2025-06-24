@@ -73,17 +73,17 @@ if ($metode === 'midtrans') {
         'customer_details' => [
             'first_name' => $user_data['nama'],
             'email' => $user_data['email'],
-            'phone' => $user_data['no_hp'],
+            'phone' => $user_data['no_telp'],
             'billing_address' => [
                 'first_name'    => $user_data['nama'],
                 'address'       => $user_data['alamat'],
-                'phone'         => $user_data['no_hp'],
+                'phone'         => $user_data['no_telp'],
                 'country_code'  => 'IDN'
             ],
             'shipping_address' => [ // <- perbaikan dari shipping_details
                 'first_name'    => $user_data['nama'],
                 'address'       => $user_data['alamat'],
-                'phone'         => $user_data['no_hp'],
+                'phone'         => $user_data['no_telp'],
                 'country_code'  => 'IDN'
             ]
         ]
@@ -102,22 +102,39 @@ if ($metode === 'midtrans') {
     $_SESSION['kode_invoice'] = $kode_invoice;
     header("Location: ../user/midtrans_callback.php");
     exit();
-} else {
-    // Update untuk COD
+}else if ($metode === 'cod') {
+    // Update transaksi
     $id_midtrans = 'COD-' . uniqid();
-    mysqli_query($koneksi, "UPDATE transaksi SET metode_pembayaran='cod', id_midtrans='$id_midtrans' WHERE id_transaksi='$id_transaksi'");
+    $update_transaksi = mysqli_query($koneksi, "UPDATE transaksi SET metode_pembayaran='cod', id_midtrans='$id_midtrans' WHERE id_transaksi='$id_transaksi'");
+    if (!$update_transaksi) {
+        die("Gagal update transaksi: " . mysqli_error($koneksi));
+    }
 
     // Update status produk
     foreach ($items as $item) {
         $id_produk = $item['id'];
-        mysqli_query($koneksi, "UPDATE pakaian SET status_ketersediaan='habis' WHERE id_pakaian='$id_produk'");
+        $update_produk = mysqli_query($koneksi, "UPDATE pakaian SET status_ketersediaan='Terjual' WHERE id_pakaian='$id_produk'");
+        if (!$update_produk) {
+            die("Gagal update status pakaian: " . mysqli_error($koneksi));
+        }
     }
 
-    // Hapus isi keranjang
-    mysqli_query($koneksi, "DELETE FROM keranjang_detail WHERE id_keranjang = (SELECT id_keranjang FROM transaksi WHERE id_transaksi = '$id_transaksi')");
-    header("Location: riwayat_transaksi.php?kode=$kode_invoice");
+    // Ambil dan hapus isi keranjang
+    $result = mysqli_query($koneksi, "SELECT id_keranjang FROM transaksi WHERE id_transaksi = '$id_transaksi'");
+    $data = mysqli_fetch_assoc($result);
+    $id_keranjang = $data['id_keranjang'] ?? null;
+
+    if ($id_keranjang) {
+        $hapus_keranjang = mysqli_query($koneksi, "DELETE FROM keranjang_detail WHERE id_keranjang = '$id_keranjang'");
+        if (!$hapus_keranjang) {
+            die("Gagal hapus keranjang: " . mysqli_error($koneksi));
+        }
+    }
+
+    header("Location: ../user/pesananku.php?kode=$kode_invoice");
     exit();
 }
+
 
 
 
