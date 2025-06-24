@@ -77,12 +77,11 @@
         <div class="header-top">
             <div class="logo">
                 <a href='index_user.php'>
-                    <i class="fas fa-heart me-2"></i>Prelove969</a>
+                    <i class="fas fa-heart me-2"></i> Prelove969</a>
             </div>
             <input type="text" id="search" class="search" placeholder="Cari pakaian...">
         </div>
         <nav class="navbar">
-            <!-- <a href="#">Anak</a> -->
             <a href="form_donasi.php" class="donate">
                 <i class="fa-solid fa-hand-holding-heart fa-2x"></i>
             </a>
@@ -94,7 +93,6 @@
             </a>
             <a href='profil_saya.php'>
                 &nbsp;<i class="fa-regular fa-circle-user fa-2x"></i></a>
-                <!-- <a href="logout.php" class='btn-primary'>Logout</a>   -->
             </nav>
     </header>
         <div class="main-links">
@@ -102,12 +100,7 @@
             <a href="pesananku.php">Pesanan saya</a>
             <a href="pesanan_masuk.php">Pesanan masuk</a>
             <a href="riwayat_donasi.php">Riwayat Donasi</a>
-            <!-- <a href="keranjang.php">Keranjang</a> -->
-            <!-- <a href="profil_saya.php">Profil saya</a> -->
-            <!-- <a href="wishlist.php">Wishlist</a> -->
-            <!-- <a href="?gender=wanita">Wanita</a>
-            <a href="?gender=pria">Pria</a>
-            <a href="?gender=unisex">Unisex</a> -->
+            
         </div>
 
     <!-- <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
@@ -186,32 +179,4 @@
             document.getElementById("mainImage").src = src;
         }
     </script>
-<!-- <footer>
-    <div class="footer-container">
-        <div class="footer-about">
-            <h3>Tentang Kami</h3>
-            <p>Website ini adalah platform preloved yang membantu pengguna menjual dan mendonasikan pakaian bekas yang masih layak pakai.</p>
-        </div>
-        <div class="footer-links">
-            <h3>Tautan Cepat</h3>
-            <ul>
-                <li><a href="#">Beranda</a></li>
-                <li><a href="#">Produk</a></li>
-                <li><a href="#">Donasi</a></li>
-                <li><a href="#">Kontak</a></li>
-            </ul>
-        </div>
-        <div class="footer-contact">
-            <h3>Kontak Kami</h3>
-            <p>Email: support@preloved.com</p>
-            <p>Telepon: +62 812 3456 7890</p>
-            <div class="social-icons">
-                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
-                <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
-                <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
-            </div>
-        </div>
-    </div>
-    <p class="footer-bottom">&copy; 2025 Preloved | Semua Hak Dilindungi</p>
-</footer> -->
 </html>

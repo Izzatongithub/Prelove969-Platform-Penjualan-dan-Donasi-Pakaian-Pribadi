@@ -1,6 +1,6 @@
 /* Custom CSS Variables untuk Warna */
 :root {
-    --primary-color: #ff6b9d !important;
+    --primary-color: ` !important;
     --secondary-color: #a8e6cf;
     --accent-color: #ffd93d;
     --light-pink: #ffe4e8;

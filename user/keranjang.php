@@ -112,8 +112,9 @@
                 echo "<h4>{$row['nama_pakaian']}</h4>";
                 echo "<p> {$row['ukuran']}</p>";
                 echo "<p>Rp " . number_format($row['harga'], 0, ',', '.') . "</p>";
-                // echo "<a href='hapus_keranjang.php?id_produk={$row['id_pakaian']}'>Hapus</a>";
-                echo "<form method='POST' action='hapus_keranjang.php' style='display: inline;' onsubmit=\"return confirm('Yakin ingin menghapus produk ini dari keranjang?')\">
+                // echo "<a href='hapus_keranjang.php?id_produk={$row['id_pakaian']}' class='btn' style='display: inline;' 
+                // onsubmit=\"return confirm('Yakin ingin menghapus produk ini dari keranjang?')\">Hapus</a>";
+                echo "<form method='POST' action='hapus_keranjang.php?id_produk={$row['id_pakaian']}' style='display: inline;' onsubmit=\"return confirm('Yakin ingin menghapus produk ini dari keranjang?')\">
                         <input type='hidden' name='id_produk' value='{$row['id_pakaian']}'>
                         <button type='submit' class='btn'>Hapus</button>
                     </form>";

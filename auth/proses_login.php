@@ -16,6 +16,14 @@ if ($cek > 0) {
     $_SESSION['username'] = $data['username'];
     $_SESSION['level'] = $data['level']; // simpan level ke session
 
+    // mditrans
+    // $_SESSION['id_user'] = $data['id_user'];
+    $_SESSION['nama'] = $data['nama'];
+    $_SESSION['email'] = $data['email'];
+    $_SESSION['no_telp'] = $data['no_telp'];
+    $_SESSION['alamat'] = $data['alamat'];
+
+
     // Redirect sesuai level
     if ($data['level'] == 'admin') {
         header("location: ../staff/admin.php");

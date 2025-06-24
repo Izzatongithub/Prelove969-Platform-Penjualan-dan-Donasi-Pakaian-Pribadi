@@ -60,6 +60,7 @@
             <a href="pesananku.php">Pesanan saya</a>
             <a href="pesanan_masuk.php">Pesanan masuk</a>
             <a href="riwayat_donasi.php">Riwayat Donasi</a>
+            <a href="riwayat_transaksi.php">Riwayat Transaksi</a>
             <!-- <a href="keranjang.php">Keranjang</a> -->
             <!-- <a href="profil_saya.php">Profil saya</a> -->
             <!-- <a href="wishlist.php">Wishlist</a> -->
@@ -166,14 +167,6 @@
             url.searchParams.set('kategori', kategori);
             url.searchParams.delete('ukuran'); // Reset ukuran
             window.location.href = url.toString();
-        });
-
-        document.getElementById("gender-filter").addEventListener("change", function() {
-            const selectedGender = this.value;
-            
-            // Lakukan aksi filter produk berdasarkan gender
-            // Misalnya: reload halaman atau fetch data baru
-            console.log("Filter berdasarkan gender:", selectedGender);
         });
 
         sizeSelect.addEventListener('change', function () {

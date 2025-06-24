@@ -73,17 +73,17 @@ if ($metode === 'midtrans') {
         'customer_details' => [
             'first_name' => $user_data['nama'],
             'email' => $user_data['email'],
-            'phone' => $user_data['no_hp'],
+            'phone' => $user_data['no_telp'],
             'billing_address' => [
                 'first_name'    => $user_data['nama'],
                 'address'       => $user_data['alamat'],
-                'phone'         => $user_data['no_hp'],
+                'phone'         => $user_data['no_telp'],
                 'country_code'  => 'IDN'
             ],
             'shipping_address' => [ // <- perbaikan dari shipping_details
                 'first_name'    => $user_data['nama'],
                 'address'       => $user_data['alamat'],
-                'phone'         => $user_data['no_hp'],
+                'phone'         => $user_data['no_telp'],
                 'country_code'  => 'IDN'
             ]
         ]
