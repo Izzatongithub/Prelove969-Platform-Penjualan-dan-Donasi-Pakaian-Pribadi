@@ -103,10 +103,6 @@
             </a>
             <a href='profil_saya.php'>
                 &nbsp;<i class="fa-regular fa-circle-user fa-2x"></i></a>
-<<<<<<< HEAD
-=======
-                <!-- <a href="logout.php" class='btn-primary'>Logout</a>    -->
->>>>>>> 097f3d365a0bc5c93ad4fa47a57a9e175b23add8
             </nav>
     </header>
         <div class="main-links">

@@ -3,7 +3,7 @@ session_start();
 include '../config.php';
 
 // Fungsi tampilkan foto profil
-function tampilkanFotoProfil($foto_profil, $path = '../uploads/profil/', $default = 'default.jpg', $width = 150, $height = 150) {
+function tampilkanFotoProfil($foto_profil, $path = '../upload/profil/', $default = 'default.jpg', $width = 150, $height = 150) {
     $foto = (!empty($foto_profil) && file_exists($path . $foto_profil)) ? $foto_profil : $default;
     echo "<img src=\"{$path}{$foto}\" alt=\"Foto Profil\" style=\"width:{$width}px; height:{$height}px; border-radius:50%; object-fit:cover;\">";
 }

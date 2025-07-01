@@ -8,8 +8,8 @@ namespace Midtrans;
 require_once dirname(__FILE__) . '../../midtrans/Midtrans.php';
 // Set Your server key
 // can find in Merchant Portal -> Settings -> Access keys
-Config::$serverKey = 'SB-Mid-server-VYeannctibrg8gOriM-hLpaK';
-Config::$clientKey = 'SB-Mid-client-YNYtads1Nffj3p6l';
+Config::$serverKey = 'Your-Server-Key';
+Config::$clientKey = 'Your-Client-key';
 
 // non-relevant function only used for demo/example purpose
 printExampleWarningMessage();
@@ -135,94 +135,14 @@ if ($metode === 'midtrans') {
     exit();
 }
 
-
-
-
-// $transaction_details = array(
-//     'order_id' => rand(),
-//     'gross_amount' => 94000, // no decimal allowed for creditcard
-// );
-
-// // Optional
-// $item1_details = array(
-//     'id' => 'a1',
-//     'price' => 18000,
-//     'quantity' => 3,
-//     'name' => "Apple"
-// );
-
-// // Optional
-// $item2_details = array(
-//     'id' => 'a2',
-//     'price' => 20000,
-//     'quantity' => 2,
-//     'name' => "Orange"
-// );
-
-// // Optional
-// $item_details = array ($item1_details, $item2_details);
-
-// // Optional
-// $billing_address = array(
-//     'first_name'    => "Andri",
-//     'last_name'     => "Litani",
-//     'address'       => "Mangga 20",
-//     'city'          => "Jakarta",
-//     'postal_code'   => "16602",
-//     'phone'         => "081122334455",
-//     'country_code'  => 'IDN'
-// );
-
-// // Optional
-// $shipping_address = array(
-//     'first_name'    => "Obet",
-//     'last_name'     => "Supriadi",
-//     'address'       => "Manggis 90",
-//     'city'          => "Jakarta",
-//     'postal_code'   => "16601",
-//     'phone'         => "08113366345",
-//     'country_code'  => 'IDN'
-// );
-
-// // Optional
-// $customer_details = array(
-//     'first_name'    => "Andri",
-//     'last_name'     => "Litani",
-//     'email'         => "andri@litani.com",
-//     'phone'         => "081122334455",
-//     'billing_address'  => $billing_address,
-//     'shipping_address' => $shipping_address
-// );
-
-// // Optional, remove this to display all available payment methods
-// $enable_payments = array('credit_card','cimb_clicks','mandiri_clickpay','echannel');
-
-// // Fill transaction details
-// $transaction = array(
-//     'enabled_payments' => $enable_payments,
-//     'transaction_details' => $transaction_details,
-//     'customer_details' => $customer_details,
-//     'item_details' => $item_details,
-// );
-
-// $snap_token = '';
-// try {
-//     $snap_token = Snap::getSnapToken($transaction);
-// }
-// catch (\Exception $e) {
-//     echo $e->getMessage();
-// }
-
-// echo "snapToken = ".$snap_token;
-
 function printExampleWarningMessage() {
-    if (strpos(Config::$serverKey, 'your ') != false ) {
+    if (strpos(Config::$serverKey, 'your-server-key') != false ) {
         echo "<code>";
         echo "<h4>Please set your server key from sandbox</h4>";
         echo "In file: " . __FILE__;
         echo "<br>";
         echo "<br>";
-        echo htmlspecialchars('Config::$serverKey = \'SB-Mid-server-VYeannctibrg8gOriM-hLpaK\';');
+        echo htmlspecialchars('Config::$serverKey = \'your-server-key\';');
         die();
     } 
 }

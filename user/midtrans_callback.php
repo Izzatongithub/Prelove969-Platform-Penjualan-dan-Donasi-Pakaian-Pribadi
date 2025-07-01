@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="../frontend/style1_baru.css">
     <script src="../frontend/script.js" defer></script>
     <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="SB-Mid-client-YNYtads1Nffj3p6l"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="your-client-key"></script>
 </head>
 <?php
     session_start();

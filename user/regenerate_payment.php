@@ -19,13 +19,6 @@ if (!$query) {
     die("Query gagal: " . mysqli_error($koneksi));
 }
 
-// Ambil data produk dari transaksi_detail
-// $detail_query = mysqli_query($koneksi, "SELECT dt.*, p.nama_produk, p.harga 
-//     FROM detail_transaksi dt
-//     JOIN pakaian p ON dt.id_produk = p.id_pakaian
-//     WHERE dt.id_transaksi = '$id_transaksi'
-// ");
-
 $detail_query = mysqli_query($koneksi, "SELECT dt.*, p.nama_pakaian, p.harga 
     FROM detail_transaksi dt
     JOIN pakaian p ON dt.id_produk = p.id_pakaian
@@ -49,18 +42,6 @@ while ($item = mysqli_fetch_assoc($detail_query)) {
         'name' => $item['nama_pakaian']
     ];
 }
-
-// $params = [
-//     'transaction_details' => [
-//         'order_id' => $transaksi['kode_invoice'],
-//         'gross_amount' => $transaksi['total'] // total dari database
-//     ],
-//     'item_details' => $items,
-//     'customer_details' => [
-//         'first_name' => $_SESSION['nama'], // asumsinya sudah ada di session
-//         'email' => $_SESSION['email'],
-//     ]
-// ];
 
 $order_id = $transaksi['kode_invoice'] . '-' . time(); // hasil: INV123456-1729870000
 $params = [
@@ -91,7 +72,7 @@ $params = [
 
 // Generate snap token
 try {
-    \Midtrans\Config::$serverKey = 'SB-Mid-server-VYeannctibrg8gOriM-hLpaK';
+    \Midtrans\Config::$serverKey = 'your-server-key';
     \Midtrans\Config::$isProduction = false;
     \Midtrans\Config::$isSanitized = true;
     \Midtrans\Config::$is3ds = true;
