@@ -1,5 +1,10 @@
 # Prelove969: Platform Penjualan dan Donasi Pakaian Pribadi
 
+## Anggota Kelompok
+- Fitri Nufa Dastana
+- Izzat Nazhiefa
+- M. Wahyu Hilal Abroor
+
 ## 📋 Deskripsi
 
 Prelove969 adalah platform berbasis web yang dirancang untuk memfasilitasi penjualan dan donasi pakaian bekas (preloved) yang masih layak pakai. Platform ini tidak hanya mempermudah transaksi jual-beli pakaian bekas, tetapi juga mendorong pengurangan limbah tekstil dan gaya hidup berkelanjutan melalui fitur donasi yang terintegrasi.
@@ -214,13 +219,6 @@ Platform menggunakan database MySQL dengan tabel utama:
 - CSRF protection
 - SQL injection prevention
 
-## 📱 Responsive Design
-
-Website didesain responsive menggunakan Bootstrap untuk kompatibilitas dengan berbagai device:
-- Desktop
-- Tablet
-- Mobile
-
 ## 🤝 Kontribusi
 
 Untuk berkontribusi pada proyek ini:
@@ -230,16 +228,10 @@ Untuk berkontribusi pada proyek ini:
 4. Push ke branch
 5. Buat Pull Request
 
-## 📄 Lisensi
-
-Proyek ini dilisensikan di bawah [Lisensi yang sesuai]
-
 ## 📞 Kontak
 
 Untuk pertanyaan atau dukungan:
-- Email: [email]
-- Website: [website]
-- Dokumentasi: [link dokumentasi]
+- Email: 818itachi@gmail.com
 
 ## 🔄 Changelog
 
@@ -253,9 +245,4 @@ Untuk pertanyaan atau dukungan:
 ---
 
 **Prelove969** - Platform Penjualan dan Donasi Pakaian Pribadi
-
-## Tertanda
-- Fitri Nufa Dastana
-- Izzat Nazhiefa
-- M. Wahyu Hilal Abroor
 
