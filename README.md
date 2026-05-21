@@ -1,9 +1,9 @@
 # Prelove969: Platform Penjualan dan Donasi Pakaian Pribadi
 
 ## Anggota Kelompok
-- Fitri Nufa Dastana (https://github.com/nuufaa)
-- Izzat Nazhiefa (https://github.com/Izzatongithub)
-- M. Wahyu Hilal Abroor (https://github.com/hilalabroor)
+- Fitri Nufa Dastana
+- Izzat Nazhiefa
+- M. Wahyu Hilal Abroor
 
 ## 📋 Deskripsi
 
